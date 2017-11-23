@@ -5,6 +5,10 @@ body {
     margin-top: 10px;
 }
 
+.dina {
+    margin-top: 300px;
+}
+
 .view {
     width: 400px;
     height: 60px;
@@ -23,3 +27,6 @@ body {
     color: white;
     font-size: small;
 }
+
+
+

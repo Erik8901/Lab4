@@ -9,7 +9,7 @@ window.addEventListener("load",function(event){
       console.log(obj.items[1].volumeInfo.title);
     }
   };
-  http.open("GET","https://www.googleapis.com/books/v1/volumes?key=AIzaSyCeCWE-_JEPML1urQm5_jMtzTiebFZ_4lc&q=lordoftherings")
+  http.open("GET","https://www.googleapis.com/books/v1/volumes?key=AIzaSyCeCWE-_JEPML1urQm5_jMtzTiebFZ_4lc&q=harrypotter")
   http.send();
 
 

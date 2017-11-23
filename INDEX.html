@@ -7,9 +7,10 @@
     <meta name="viewport" content="width=device=width">
       <script type="text/javascript">
       
-      window.addEventListener("load", nameFunction )
+      window.addEventListener("load", searchBooks )
         
-        function nameFunction() {
+        function searchBooks() {
+            
     
     
     };
@@ -23,18 +24,30 @@
 </head>
 <body>
     
-    <h1>Lab 4 Bok Bibliotek</h1>
+    <h1>Lab 4 Book Library</h1>
     
-    <p>Sök Bok:</p>
+    <p>Search Books:</p>
     <div id="plus" class="laggtill"></div>
-    Titel: <input id="lab1" type="text" value="titel"></input>
-    Författare: <input id="lab2" type="text" value="namn"></input>
+    Title: <input id="lab1" type="text" value="titel"></input>
+    Author: <input id="lab2" type="text" value="namn"></input>
     <input type="submit" value="Submit">
 
-    <p>Se böcker: </p>
+    <p> Our Books:</p>
+    
+    
+    <div id="hp1">
+        <h3>Harry Potter and the Sorcerer's Stone</h3>
+        <img src="https://books.google.com/books/content?id=wrOQLV6xB-wC&printsec=frontcover&img=1&zoom=5&source=gbs_api"/></div>
+
+
+    <div id="hp2">
+        <h3>Harry Potter and the Goblet of Fire</h3>
+        <img src="http://books.google.com/books/content?id=etukl7GfrxQC&printsec=frontcover&img=1&zoom=5&source=gbs_api"/></div>
+
+        <p class="dina">Your Books: </p>
         <input id="see" class="view" type="text"></input>
        
-    <p> Ta bort Bok:</p>
+    <p> Remove Book:</p>
         <button id="btn" class="knapp">Ta bort</button>
         <br/><input id="remove" class="bort" type="text"></input>
 
