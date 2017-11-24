@@ -1,15 +1,14 @@
-#menu, li {
+#menu li {
     display: inline;
-    list-style-type: none;;
+    padding: 0 1em 00;
+    margin: 0;
+    padding: 0;
 }
 
 	
 
 body {
     background-color: sienna;
-}
-.laggtill {
-    margin-top: 10px;
 }
 
 .dina {
