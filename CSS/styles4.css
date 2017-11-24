@@ -1,9 +1,14 @@
-#menu li {
+#menu  li {
     display: inline;
     padding: 0 1em 00;
     margin: 0;
     padding: 0;
 }
+
+.list {
+    columns: 2;
+}
+
 
 	
 
