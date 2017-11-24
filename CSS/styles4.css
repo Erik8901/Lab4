@@ -1,8 +1,23 @@
+#menu  li {
+    display: inline;
+    padding: 0 1em 00;
+    margin: 0;
+    padding: 0;
+}
+
+.list {
+    columns: 2;
+}
+
+
+	
+
 body {
     background-color: sienna;
 }
-.laggtill {
-    margin-top: 10px;
+
+.dina {
+    margin-top: 300px;
 }
 
 .view {
@@ -23,3 +38,6 @@ body {
     color: white;
     font-size: small;
 }
+
+
+

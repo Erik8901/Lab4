@@ -8,7 +8,6 @@ window.addEventListener("load", function() {
   let answer = "";
   let found = false;
 
-
   /* FUNKTION FÖR ATT KONTROLLERA LÖSENORD OCH LOGGA IN */
   btnLoggIn.addEventListener("click", function() {
     let key = "key=Ln9a4"; /*På denna nycklen lagras alla användare och lösenorden går ej att bytas ut eftersom de är kopplade till användarens bibliotek*/
