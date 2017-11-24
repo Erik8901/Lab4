@@ -4,6 +4,7 @@ window.addEventListener("load", function() {
   let userName = document.getElementById("userName"); /*Här är användarens id*/
   let userPassword = document.getElementById("userPassword"); /*Här skall nyckel sparas ner*/
   let btnKeyGen = document.getElementById("btnKeyGen");
+  let boxlogin = document.getElementById("boxlogin")
   let http = new XMLHttpRequest();
   let answer = "";
   let found = false;
@@ -41,21 +42,43 @@ window.addEventListener("load", function() {
   });
   /*   LOGGIN  END! */
 
-  /* FUNKTION FÖR ATT SKAPA EN NYCKEL */
+  /* FUNKTION FÖR ATT SKAPA EN NYCKEL *********************************/
   btnKeyGen.addEventListener("click", function() {
     http.onreadystatechange = function() {
       if (this.readyState == 4) {
         answer = JSON.parse(http.response);
         console.log(answer.key);
-        container.innerHTML += "Your key is: " + answer.key
+        boxlogin.innerHTML += "Your key is: " + answer.key
       }
     };
 
     http.open("GET", "https://www.forverkliga.se/JavaScript/api/crud.php?requestKey");
     http.send();
   });
-  /* --   END ----- FUNKTION FÖR ATT SKAPA EN NYCKEL*/
+  /* --   END ----- FUNKTION FÖR ATT SKAPA EN NYCKEL******************/
 
+
+
+
+ /* Navigeringsbar visa artikel  *************************************/
+ let navBar = document.getElementsByClassName("navBar");
+ let article  = document.getElementsByClassName('article')
+ article[0].style.display="block"; /* Denna skall bort med css*/
+
+  let showArticle = function(event){
+    for(i=0;i<article.length;i++){
+      if(event.target==navBar[i]){
+        article[i].style.display="block";
+      }else {
+        article[i].style.display="none";
+      }
+    }
+  }
+
+  for(i=0;i<navBar.length;i++){
+    navBar[i].addEventListener("click",showArticle);
+  }
+ /* Navigeringsbar END  **********************************************/
 
 
 });
