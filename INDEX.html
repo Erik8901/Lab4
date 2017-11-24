@@ -10,6 +10,20 @@
       window.addEventListener("load", searchBooks )
         
         function searchBooks() {
+            var input, filter, ul, li, a, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            ul = document.getElementById("menu");
+            li = ul.getElementsByTagName("li");
+            
+            for (i = 0; i < li.length; i++) {
+                a = li[i].getElementsByTagName("a")[0];
+                if(a.innerHTML.toUpperCase().indexOf(filter) > - 1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
             
     
     
@@ -26,26 +40,35 @@
     
     <h1>Lab 4 Book Library</h1>
     
-    <p>Search Books:</p>
-    <div id="plus" class="laggtill"></div>
-    Title: <input id="lab1" type="text" value="titel"></input>
-    Author: <input id="lab2" type="text" value="namn"></input>
-    <input type="submit" value="Submit">
-
-    <p> Our Books:</p>
+    <h2>Search Books:</h2>
+        Find Books:<input type="text" id="myInput" onkeyup="searchBooks()" placeholder="Search for Author or Title..." title="type in title of book">
     
     
-    <div id="hp1">
-        <h3>Harry Potter and the Sorcerer's Stone</h3>
-        <img src="https://books.google.com/books/content?id=wrOQLV6xB-wC&printsec=frontcover&img=1&zoom=5&source=gbs_api"/></div>
+    <h4>Our Books:</h4>
+    <ul id="menu" class="li">
+    
+        <li id="hp1" class="hp11">
+            <h3>Harry Potter and the Sorcerer's Stone, Rowling J.K</h3>
+            <img src="https://books.google.com/books/content?id=wrOQLV6xB-wC&printsec=frontcover&img=1&zoom=5&source=gbs_api"/>
+            <a href="https://books.google.se/books/about/Harry_Potter_and_the_Sorcerer_s_Stone.html?hl=&id=wrOQLV6xB-wC&redir_esc=y"</a></li>
 
 
-    <div id="hp2">
-        <h3>Harry Potter and the Goblet of Fire</h3>
-        <img src="http://books.google.com/books/content?id=etukl7GfrxQC&printsec=frontcover&img=1&zoom=5&source=gbs_api"/></div>
+        <li id="hp2" class="hp22">
+            <h3>Harry Potter and the Goblet of Fire, Rowling J.K</h3>
+            <img src="http://books.google.com/books/content?id=etukl7GfrxQC&printsec=frontcover&img=1&zoom=5&source=gbs_api"/>
+            <a href="https://books.google.se/books/about/Harry_Potter_and_the_Goblet_of_Fire.html?id=etukl7GfrxQC&redir_esc=y"</a></li>
 
+        <li id="lotr" class="lotr11">
+            <h3>The Lord Of The Rings, Tolkien J.R.R</h3>
+            <img src="http://books.google.com/books/content?id=yl4dILkcqm4C&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api"/>
+            <a href="https://books.google.se/books/about/The_Lord_of_the_Rings.html?hl=&id=yl4dILkcqm4C&redir_esc=y"</a></li>
+    </ul>
+        
+        
+        
         <p class="dina">Your Books: </p>
         <input id="see" class="view" type="text"></input>
+    
        
     <p> Remove Book:</p>
         <button id="btn" class="knapp">Ta bort</button>
