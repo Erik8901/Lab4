@@ -24,11 +24,24 @@
                     li[i].style.display = "none";
                 }
             }
-            
+        };
     
-    
-    };
-    
+        function addThem() {
+        
+        let knapp = document.getElementsByClassName("addTolibrary");
+          
+          knapp.addEventListener("click", 
+                    function(addBook) {
+              
+                var ul = document.getElementById("listBooks");
+                var li = document.getElementById("book1");
+                li.appendChild(document.getElementsByClassName("listan"));
+                ul.appendChild(li);
+
+          });
+        };
+              
+         
           
     
     
@@ -48,13 +61,13 @@
     <ul id="menu" class="listan">
     
         <li>
-            <div>
+            <div id="book1">
                 <p><a  href="https://books.google.se/books/about/Harry_Potter_and_the_Sorcerer_s_Stone.html?hl=&id=wrOQLV6xB-wC&redir_esc=y">Harry Potter And The Sorceres Stone, Rowling J.K</a></p>
             </div>
             <div>
                 <img src="https://books.google.com/books/content?id=wrOQLV6xB-wC&printsec=frontcover&img=1&zoom=5&source=gbs_api">
             </div>
-            
+            <div><button id="btn2" class="addTolibrary">Click to add to Library</button></div>
         </li> 
         
         <li>
@@ -64,7 +77,7 @@
             <div>
                 <img src="http://books.google.com/books/content?id=etukl7GfrxQC&printsec=frontcover&img=1&zoom=5&source=gbs_api">
             </div>
-            
+            <div><button id="btn2" class="addTolibrary">Click to add to Library</button></div>
         </li> 
         
         <li>
@@ -74,6 +87,7 @@
             <div>
                 <img src="http://books.google.com/books/content?id=yl4dILkcqm4C&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api">
             </div>
+            <div><button id="btn3" class="addTolibrary">Click to add to Library</button></div>
                 </li> 
         
         <li>
@@ -83,15 +97,22 @@
             <div>
                 <img src="http://books.google.com/books/content?id=gP_bCwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api">
             </div>
+            <div><button onclick="addThem()" id="btn4" class="addTolibrary">Click to add to Library</button></div>
         </li>
                 
                 
         <p class="dina">Your Books: </p>
-        <input id="see" class="view" type="text"></input>
-    
+        <div>
+            <ol id="listBooks">
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ol>
+        </div>
        
     <p> Remove Book:</p>
-        <button id="btn" class="knapp">Ta bort</button>
+        <button  id="btn" class="knapp">Ta bort</button>
         <br/><input id="remove" class="bort" type="text"></input>
 
 

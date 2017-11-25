@@ -1,19 +1,14 @@
-
-
-
-	
-
 body {
     background-color: sienna;
 }
 
 .dina {
-    margin-top: 300px;
+    margin-top: 100px;
 }
 
 .view {
     width: 400px;
-    height: 60px;
+    height: 30px;
     margin-top: 10px;
 }
 
@@ -29,6 +24,11 @@ body {
     color: white;
     font-size: small;
 }
+
+#btn1, #btn2, #btn3, #btn4 {
+    margin-top: 10px;
+}
+
 
 
 
