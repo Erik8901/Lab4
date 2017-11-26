@@ -1,11 +1,11 @@
 window.addEventListener("load", function() {
   let btnLoggIn = document.getElementById("btnLoggIn");
+  let btnKeyGen = document.getElementById("btnKeyGen");
+  let boxlogin = document.getElementById("boxlogin");
+  let http = new XMLHttpRequest();
   let container = document.getElementsByClassName("container")[0];
   let userName = document.getElementById("userName"); /*Här är användarens id*/
   let userPassword = document.getElementById("userPassword"); /*Här skall nyckel sparas ner*/
-  let btnKeyGen = document.getElementById("btnKeyGen");
-  let boxlogin = document.getElementById("boxlogin")
-  let http = new XMLHttpRequest();
   let answer = "";
   let found = false;
   let key = "";
