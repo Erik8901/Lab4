@@ -1,7 +1,7 @@
 *{
   padding:0;
   margin: 0;
-
+  font-family: Didot, sans-serif;
 }
 
 body{
@@ -24,6 +24,13 @@ body>.container{
   grid-gap: 10px;
   border-radius: 10px;
 }
+
+.container-flex{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+}
 header{
   grid-column: 1/13;
   grid-row: 1/1;
@@ -34,14 +41,21 @@ header{
 
 .header-right{
   margin: 10px 10px;
+  min-width: 150px;
   grid-column: 13/13;
   display: block;
-  border: 1px solid black;
+
 }
 nav{
-  margin: 10px 10px;
-  grid-column: 1/13;
-  grid-row: 1/1;
+  margin: 0px 0px;
+  grid-column: 2/13;
+  grid-row: 2/2;
+  z-index: 100;
+  height: 46px;
+  background-color: rgb(54, 52, 51);
+  padding: 10px 10px 0px 10px;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
 
 }
 .navBar{
@@ -49,10 +63,20 @@ nav{
   text-align: center;
   padding: 14px 16px;
   background-color: rgb(136, 136, 136);
+  box-shadow: inset 0px -8px rgba(120, 120, 120,0.5);
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+.navBarSelected{
+  border: 0px;
+  box-shadow: none;
 
+  color: rgba(69, 29, 0, 0.8);
+  color: gold;
 }
 .navBar:hover{
   background-color: rgb(175, 175, 175);
+  cursor: pointer;
 
 }
 aside{
@@ -63,13 +87,12 @@ aside{
   border-radius: 10px;
 }
 article{
+  padding-top: 70px;
   grid-column: 2/13;
   grid-row: 2/11;
   background-color: rgba(195, 193, 191, 0.7);
   border: 1px rgb(135, 135, 135) solid;
   border-radius: 10px;
-
-
 }
 footer{
   grid-column: 1/13;
@@ -99,4 +122,43 @@ footer{
 }
 article{
   display:none;
+}
+
+#loggOut{
+  border: 2px rgb(153, 3, 3) solid;
+  padding: 5px 10px;
+  background-color: rgb(249, 93, 93);
+  border-radius: 10px;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+
+}
+#loggOut:hover{
+  background-color: rgb(195, 13, 13);
+}
+
+#profileMenu{
+  display:none;
+}
+.header-right:hover #profileMenu{
+  display: block;
+  cursor: pointer;
+}
+.header-right ul{
+ list-style-type: none;
+}
+
+.book{
+  margin: 20px;
+  width: 250px;
+  height: 400px;
+  background-color: white;
+}
+.container-flex li{
+  display: inline-block;
+  border-radius: 5px;
+}
+.container-flex ul{
+  list-style-type: none;
 }

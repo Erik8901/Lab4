@@ -13,6 +13,8 @@ window.addEventListener("load", function() {
   let userId = "";
   let title = "";
   let author = "";
+  let headUserInfo = document.getElementById("headUserInfo");
+  let loggOut = document.getElementById("loggOut");
 
   /* FUNKTION FÖR ATT KONTROLLERA LÖSENORD OCH LOGGA IN */
   btnLoggIn.addEventListener("click", function() {
@@ -31,11 +33,13 @@ window.addEventListener("load", function() {
         for (i = 0; i < answer.data.length; i++) {
           if (userName.value == answer.data[i].title) {
             if (userPassword.value == answer.data[i].author) {
-              document.getElementsByClassName("header-right")[0].innerHTML="Inloggad: " + userName.value;
+              headUserInfo.innerHTML="Inloggad som: " + userName.value;
+              document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
               console.log("Rätt lösenord");
               key = "key="+ answer.data[i].author;
               userId = "id="+ answer.data[i].id;
               title  = "title="+answer.data[i].title;
+              loggOut.style.display="block";
               found=true;
 
               loadUserLib();
@@ -77,11 +81,15 @@ window.addEventListener("load", function() {
  article[0].style.display="block"; /* Denna skall bort med css*/
 
   let showArticle = function(event){
+
     for(i=0;i<article.length;i++){
       if(event.target==navBar[i]){
         article[i].style.display="block";
+        navBar[i].className="navBar navBarSelected";
+
       }else {
         article[i].style.display="none";
+        navBar[i].className="navBar";
       }
     }
   }
@@ -169,6 +177,17 @@ window.addEventListener("load", function() {
   /********************   Lägg till END   *************************************/
 
 
+  /*******************  Logga Ut Användare ***********************************/
+    loggOut.addEventListener("click",function(event){
+      if (key!==""){
+        headUserInfo.innerHTML="Ej Inloggad";
+        document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(142, 0, 0)";
+        key="";
+      }
+
+    });
+
+  /*******************  Logga ut Avnändare END *******************************/
 
   let btnTEST = document.getElementById("btnTest");
   btnTEST.addEventListener("click",function(){
