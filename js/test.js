@@ -189,8 +189,103 @@ window.addEventListener("load", function() {
 
   /*******************  Logga ut Avnändare END *******************************/
 
+  /********************  Hämta data från Google books  **********************/
+
+  function searchGoogle(){
+
+    http.onreadystatechange= function(){
+      if(this.readyState==4){
+        console.log("sucsess");
+        /*console.log(JSON.parse(http.response));*/
+        let result = (JSON.parse(http.response));
+        createBooks(result);
+      }
+    }
+
+    let searchAutorTextInput = document.getElementById("searchAutorTextInput");
+
+
+    http.open("GET","https://www.googleapis.com/books/v1/volumes?q="+searchAutorTextInput.value+"&printType=books",true);
+    http.send();
+
+  }
+
+
+
+
+  function createBooks(result){
+    let resultSearchBooks = document.getElementById("resultSearchBooks");
+    resultSearchBooks.innerHTML="";
+    console.log(result);
+
+    for(i=0;i<result.items.length;i++){
+      x = result.items[i];
+      let list = document.createElement("li");
+      let img = document.createElement("img");
+      let img2 = document.createElement("img");
+      let button  = document.createElement("button");
+      let div = document.createElement("div");
+
+
+      button.id="btnAddToShell";
+      button.innerHTML="Lägg till i biblo!";
+
+      if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
+      img.src=x.volumeInfo.imageLinks.smallThumbnail;
+
+      list.className="book";
+      list.appendChild(img);
+      list.appendChild(div);
+
+      /*img2.src="../img/boksida2.png"
+      div.appendChild(img2);*/
+
+      div.innerHTML+= x.volumeInfo.title +"<p>"+x.id+"</p>";
+      resultSearchBooks.appendChild(list);
+      list.appendChild(button);
+    }
+
+
+  };
+
+
+
+
+
+
+
+
+
+
+  /********************  Hämta data från Google books   END      *************/
+
+
+
+
+
+  let btnSearchGoogle = document.getElementById("btnSearchGoogle");
+
+  btnSearchGoogle.addEventListener("click",searchGoogle);
+
+
+
+
+
+
+
+
+
+
+
+
   let btnTEST = document.getElementById("btnTest");
   btnTEST.addEventListener("click",function(){
-    loadUserLib();
+    searchGoogle();
   });
+
+
+
+
+
+
 });

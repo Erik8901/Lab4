@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://use.fontawesome.com/4e877af7f8.js"></script>
     <script src="../js/test.js" type="text/javascript"></script>
+    <link href="https://fonts.googleapis.com/css?family=Average|Freckle+Face" rel="stylesheet">
 </head>
 <body>
   <div class="container">
@@ -38,28 +39,19 @@
 
     <article class="article">
       <div class="container-flex">
+        <div class="searchParameters">
+          <div>
+            <label for="searchAutorTextInput">Titel</label>
+            <input id="searchAutorTextInput" type="text" placeholder="Titel och id">
+            <button id="btnSearchGoogle" type="button" name="button">Sök</button>
+          </div>
+        </div>
+        <div>
 
-        <ul>
-          <li class="book">Första boken
-            <img src="http://books.google.com/books/content?id=zyTCAlFPjgYC&printsec=frontcover&img=1&zoom=2&edge=curl&imgtk=AFLRE73_JNmuQv5GJBktyVhwMD6GI1b394Jtl5yv_-p-VaseOk_VYxSxH3pWDhrLsTYm3cos0AbJ3r_PPd0shvBjdCspYRv-DEtnHdQ20VDFYcYPJncJDPnrHtlhdUqRnluMJHiFkdCr&source=gbs_api" alt="">
-            <p id="titel">zyTCAlFPjgYC</p>
-            <p id="author">Google</p>
-          </li>
-          <li class="book">Första boken</li>
-          <li class="book">Första boken</li>
-          <li class="book">Första boken</li>
-          <li class="book">Första boken</li>
-          <li class="book">Första boken</li>
-          <li class="book">Första boken</li>
-          <li class="book">Första boken</li>
-          <li class="book">andra boken</li>
-          <li class="book">andra boken</li>
-          <li class="book">andra boken</li>
-          <li class="book">andra boken</li>
-          <li class="book">andra boken</li>
+          <ul id="resultSearchBooks">
+          </ul>
 
-        </ul>
-
+        </div>
 
       </div>
     </article>
