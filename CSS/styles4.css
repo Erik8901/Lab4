@@ -2,8 +2,12 @@ body {
     background-color: sienna;
 }
 
+.listan, table, tr, td {
+    margin-top: 20px;
+}
+
 .dina {
-    margin-top: 100px;
+    margin-top: 30px;
 }
 
 .view {
