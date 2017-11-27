@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <title>Lab 4 AJAX/API</title>
-    <link rel="stylesheet" type="text/css" href="CSS/styles4.css">
+    <link rel="stylesheet" type="text/css" href="CSS/styles4.css"> 
+    <script src="./js/functions.js"></script>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device=width">
+    <meta name="viewport" content="width=device-width">
       <script type="text/javascript">
       
       window.addEventListener("load", searchBooks )
@@ -35,9 +36,9 @@
                     function(addBook) {
               
                 var ul = document.getElementById("listBooks");
-                var li = document.getElementById("book4");
-                li.appendChild(document.getElementsByClassName("listan"));
-                ul.appendChild(li);
+                var makeBook = document.createElement("li");
+                makeBook.innerHTML = "Title";
+                ul.appendChild(makeBook);
 
           });
         };
@@ -61,9 +62,9 @@
     <h4>Our Books:</h4>
     <table id="menu" class="listan">
         
-        <tr>
+        <tr id="book1">
             <td>
-                <div id="book1">
+                <div>
                 <p><a  href="https://books.google.se/books/about/Harry_Potter_and_the_Sorcerer_s_Stone.html?hl=&id=wrOQLV6xB-wC&redir_esc=y">Harry Potter And The Sorceres Stone, Rowling J.K</a></p>
                 </div>
                     <div>
@@ -72,6 +73,8 @@
                 <div>
                     <button id="btn1" class="addTolibrary">Click to add to Library</button>
                     </div>
+                <div>
+                    </br><button id="btn11" class="removeFromlibrary">Click to Remove from Library</button></div>
                 </td>
             </tr>
         <tr>
@@ -114,10 +117,6 @@
    <p class="dina">Your Books: </p>
         <div>
             <ol id="listBooks">
-                <li></li>
-                <li></li>
-                <li></li>
-                <li></li>
             </ol>
         </div>
        
