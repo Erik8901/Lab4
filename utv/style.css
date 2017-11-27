@@ -162,3 +162,7 @@ article{
 .container-flex ul{
   list-style-type: none;
 }
+
+.container-flex li img{
+  width: 100%;
+}
