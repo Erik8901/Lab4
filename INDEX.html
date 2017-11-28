@@ -28,7 +28,7 @@
             }
         }; 
     
-        function addThem() {
+        function addToLib() {
         
         let knapp = document.getElementById("btn4");
           
@@ -37,7 +37,7 @@
               
                 var ul = document.getElementById("listBooks");
                 var makeBook = document.createElement("td");
-                makeBook.innerHTML = "Title";
+                makeBook.innerHTML = "<a href='https://books.google.se/books?id=gP_bCwAAQBAJ&dq=lovecraft&hl=&source=gbs_api'>"
                 ul.appendChild(makeBook);
 
           });
@@ -110,7 +110,7 @@
             <div>
                 <img src="http://books.google.com/books/content?id=gP_bCwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api">
             </div>
-                <div><button type="button" id="btn4" onclick="addThem()" class="addTolibrary">Click to add to Library</button></div>
+                <div><button type="button" id="btn4" onclick="addToLib()" class="addTolibrary">Click to add to Library</button></div>
             </td>
         </tr>
     </table>          
