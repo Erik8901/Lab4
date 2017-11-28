@@ -26,7 +26,7 @@
                 }
             }
             }
-        };
+        }; 
     
         function addThem() {
         
@@ -36,12 +36,14 @@
                     function(addBook) {
               
                 var ul = document.getElementById("listBooks");
-                var makeBook = document.createElement("li");
+                var makeBook = document.createElement("td");
                 makeBook.innerHTML = "Title";
                 ul.appendChild(makeBook);
 
           });
         };
+          
+        
               
          
           
@@ -62,9 +64,9 @@
     <h4>Our Books:</h4>
     <table id="menu" class="listan">
         
-        <tr id="book1">
+        <tr>
             <td>
-                <div>
+                <div id="book1">
                 <p><a  href="https://books.google.se/books/about/Harry_Potter_and_the_Sorcerer_s_Stone.html?hl=&id=wrOQLV6xB-wC&redir_esc=y">Harry Potter And The Sorceres Stone, Rowling J.K</a></p>
                 </div>
                     <div>
@@ -79,7 +81,7 @@
             </tr>
         <tr>
             <td>
-                <div>
+                <div id="book2">
                 <p><a  href="https://books.google.se/books/about/Harry_Potter_and_the_Goblet_of_Fire.html?id=etukl7GfrxQC&redir_esc=y">Harry Potter And The Goblet of Fire,Rowling J.K</a></p>
                 </div>
                 <div>
@@ -90,7 +92,7 @@
         </tr> 
         <tr>
             <td>
-                <div>
+                <div id="book3">
                     <p><a  href="https://books.google.se/books/about/The_Lord_of_the_Rings.html?hl=&id=yl4dILkcqm4C&redir_esc=y">The Lord Of The Rings, Tolkien J.R.R</a></p>
                 </div>
                     <div>
@@ -108,7 +110,7 @@
             <div>
                 <img src="http://books.google.com/books/content?id=gP_bCwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api">
             </div>
-                <div><button onclick="addThem()" id="btn4" class="addTolibrary">Click to add to Library</button></div>
+                <div><button type="button" id="btn4" onclick="addThem()" class="addTolibrary">Click to add to Library</button></div>
             </td>
         </tr>
     </table>          
@@ -116,8 +118,11 @@
     
    <p class="dina">Your Books: </p>
         <div>
-            <ol id="listBooks">
-            </ol>
+            <table id="listBooks">
+            <tr>
+                
+                </tr>
+            </table>
         </div>
        
     <p> Remove Book:</p>

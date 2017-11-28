@@ -28,7 +28,7 @@
         } 
         
         
-        function removeBook(taBort) {
+     /*   function removeBook(taBort) {
         
         let req = new XMLHttpRequest();    
         
@@ -53,7 +53,7 @@
                         
                     }
             };
-        } removeBook(11734);
+        } removeBook(11734); */
         
         
     }); 
