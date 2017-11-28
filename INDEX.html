@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width">
       <script type="text/javascript">
       
-      window.addEventListener("load", searchBooks )
+      window.addEventListener("load", searchBooks,)
         
         function searchBooks() {
             var input, filter, td, tr, a, i;
@@ -27,6 +27,8 @@
             }
             }
         }; 
+          
+        window.addEventListener("load", addToLib)
     
         function addToLib() {
         
@@ -34,14 +36,34 @@
           
           knapp.addEventListener("click", 
                     function(addBook) {
-              
+              //console.log(addBook);
                 var ul = document.getElementById("listBooks");
                 var makeBook = document.createElement("td");
-                makeBook.innerHTML = "<a href='https://books.google.se/books?id=gP_bCwAAQBAJ&dq=lovecraft&hl=&source=gbs_api'>"
+                makeBook.innerHTML = "title"
                 ul.appendChild(makeBook);
 
           });
         };
+          
+        window.addEventListener("load", removeFromLib)
+          
+          function removeFromLib() {
+              
+            let knapp2 = document.getElementById("btnBort");
+              
+            knapp2.addEventListener("click",
+                    function(removeBook) {
+                document.getElementById("listBooks").deleteRow(0);
+                
+                
+                
+                
+                
+                
+            });
+        };
+          
+          
           
         
               
@@ -110,7 +132,7 @@
             <div>
                 <img src="http://books.google.com/books/content?id=gP_bCwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api">
             </div>
-                <div><button type="button" id="btn4" onclick="addToLib()" class="addTolibrary">Click to add to Library</button></div>
+                <div><button type="button" id="btn4"  class="addTolibrary">Click to add to Library</button></div>
             </td>
         </tr>
     </table>          
@@ -126,8 +148,8 @@
         </div>
        
     <p> Remove Book:</p>
-        <button  id="btn" class="knapp">Ta bort</button>
-        <br/><input id="remove" class="bort" type="text"></input>
+        <button  id="btnBort" class="knappen">Remove</button>
+    
 
 
     <p class="paragraf"> Erik Ojeda Johansson & Johan Augustsson, EC Utbildning Göteborg 2017</p>
