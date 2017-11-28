@@ -204,8 +204,9 @@ window.addEventListener("load", function() {
 
     let searchAutorTextInput = document.getElementById("searchAutorTextInput");
 
+    console.log("https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books");
 
-    http.open("GET","https://www.googleapis.com/books/v1/volumes?q="+searchAutorTextInput.value+"&printType=books",true);
+    http.open("GET","https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books",true);
     http.send();
 
   }
@@ -222,27 +223,26 @@ window.addEventListener("load", function() {
       x = result.items[i];
       let list = document.createElement("li");
       let img = document.createElement("img");
-      let img2 = document.createElement("img");
       let button  = document.createElement("button");
       let div = document.createElement("div");
+      let span = document.createElement("span");
 
 
+      span.innerHTML="<br>"+x.id;
       button.id="btnAddToShell";
-      button.innerHTML="Lägg till i biblo!";
+      /*button.innerHTML="Lägg till i biblo!";*/
 
       if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
       img.src=x.volumeInfo.imageLinks.smallThumbnail;
 
-      list.className="book";
-      list.appendChild(img);
+      list.className="books";
+      div.appendChild(img);
       list.appendChild(div);
-
-      /*img2.src="../img/boksida2.png"
-      div.appendChild(img2);*/
-
-      div.innerHTML+= x.volumeInfo.title +"<p>"+x.id+"</p>";
+      div.innerHTML+="<a href="+x.volumeInfo.infoLink+" target=_blank>" + x.volumeInfo.title+"</a><br>"+x.volumeInfo.description;
+      div.appendChild(span);
       resultSearchBooks.appendChild(list);
       list.appendChild(button);
+      console.log(list.children)
     }
 
 
