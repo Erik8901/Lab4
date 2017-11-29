@@ -42,9 +42,9 @@ window.addEventListener("load", function() {
               loggOut.style.display="block";
               found=true;
 
-              
+
             getDataFromDataBase(key);
-        
+
             } else {
               console.log("Felaktigt lösenord");
               found=true;
@@ -205,9 +205,7 @@ window.addEventListener("load", function() {
     }
 
     let searchAutorTextInput = document.getElementById("searchAutorTextInput");
-    if(searchAutorTextInput.value=""){
-      searchAutorTextInput.value="*";
-    }
+    
 
     console.log("https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books");
 
@@ -261,17 +259,7 @@ window.addEventListener("load", function() {
 
 
 
-
-
-
-
-
-
-
-
-
-  
-}); 
+});
 
   /************** Mouse leave scroll top funktion ***********/
   function mouseLeaveFunction() {
@@ -287,9 +275,4 @@ window.addEventListener("load", function() {
 
   }
 
-<<<<<<< HEAD
-    
-=======
   /***********END Mouser leave scroll top funktion END ******/
-});
->>>>>>> sandbox
