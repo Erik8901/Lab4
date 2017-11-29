@@ -42,7 +42,9 @@ window.addEventListener("load", function() {
               loggOut.style.display="block";
               found=true;
 
-              loadUserLib();
+              
+            getDataFromDataBase(key);
+        
             } else {
               console.log("Felaktigt lösenord");
               found=true;
@@ -264,7 +266,6 @@ window.addEventListener("load", function() {
 
 
   let btnSearchGoogle = document.getElementById("btnSearchGoogle");
-
   btnSearchGoogle.addEventListener("click",searchGoogle);
 
 
@@ -278,14 +279,9 @@ window.addEventListener("load", function() {
 
 
 
-  let btnTEST = document.getElementById("btnTest");
-  btnTEST.addEventListener("click",function(){
-    searchGoogle();
-  });
+  
+}); 
 
 
 
-
-
-
-});
+    

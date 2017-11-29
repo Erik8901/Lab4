@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Lab 4 AJAX/API</title>
+    <title>Lab 4 INDEX</title>
     <link rel="stylesheet" type="text/css" href="CSS/styles4.css"> 
     <script src="./js/functions.js"></script>
     <meta charset="utf-8">
@@ -38,30 +38,15 @@
                     function(addBook) {
               //console.log(addBook);
                 var ul = document.getElementById("listBooks");
-                var makeBook = document.createElement("td");
+                var makeBook = document.createElement("li");
                 makeBook.innerHTML = "title"
                 ul.appendChild(makeBook);
 
           });
         };
           
-        window.addEventListener("load", removeFromLib)
-          
-          function removeFromLib() {
-              
-            let knapp2 = document.getElementById("btnBort");
-              
-            knapp2.addEventListener("click",
-                    function(removeBook) {
-                document.getElementById("listBooks").deleteRow(0);
-                
-                
-                
-                
-                
-                
-            });
-        };
+      
+        
           
           
           
@@ -140,15 +125,13 @@
     
    <p class="dina">Your Books: </p>
         <div>
-            <table id="listBooks">
-            <tr>
+            <ul id="listBooks">
                 
-                </tr>
-            </table>
+                
+            </ul>
         </div>
        
-    <p> Remove Book:</p>
-        <button  id="btnBort" class="knappen">Remove</button>
+
     
 
 
