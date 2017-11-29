@@ -1,3 +1,6 @@
+let key = "";
+let keyMaster = "key=Ln9a4"; /*användarens inloggningsuppgifter sparas i detta bibliotek*/
+
 window.addEventListener("load", function() {
   let btnLoggIn = document.getElementById("btnLoggIn");
   let btnKeyGen = document.getElementById("btnKeyGen");
@@ -8,8 +11,6 @@ window.addEventListener("load", function() {
   let userPassword = document.getElementById("userPassword"); /*Här skall nyckel sparas ner*/
   let answer = "";
   let found = false;
-  let key = "";
-  let keyMaster = "key=Ln9a4"; /*användarens inloggningsuppgifter sparas i detta bibliotek*/
   let userId = "";
   let title = "";
   let author = "";
@@ -256,7 +257,8 @@ window.addEventListener("load", function() {
 
   let btnSearchGoogle = document.getElementById("btnSearchGoogle");
   btnSearchGoogle.addEventListener("click",searchGoogle);
-
+  
+  
 
 
 });
