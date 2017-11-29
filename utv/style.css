@@ -2,8 +2,6 @@
   padding:0;
   margin: 0;
   font-family: Average,Didot, sans-serif;
-
-
 }
 
 body{
@@ -153,78 +151,96 @@ article{
 }
 
 
+.container-flex li *::-webkit-scrollbar {
+  display: none;
+}
+.books{
+  width: 95%;
+  font-size: 1em;
+  height: 95%;
+  margin:10px;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+.books:hover{
+  overflow: auto;
+}
 
 .container-flex li{
   margin: 20px;
-  width: 25%;
-  height: 400px;
-  max-height: 400px;
+  width: 40%;
+  height: 500px;
+  max-height: 500px;
+  min-width: 280px;
   background-color: rgba(251, 255, 254, 0.25);
   display: inline-block;
   position: relative;
   border-radius: 5px;
   font-family: Arya, sans-serif;
-
 }
-.container-flex ul{
+.books ul{
   list-style-type: none;
 }
-
-.container-flex li img{
+.books li img{
   width: 220px;
   max-height: 250px;
   min-height: 250px;
-  float: left;
-  margin-right: 8px;
-  margin-bottom: 2px;
-
+  display: absolute;
 }
-
-.container-flex li div{
-  width: 100%;
-  font-size: 1em;
-  height: 100%;
-  overflow: hidden;
-  background-color: rgba(181, 181, 193,0.5);
+.books a{
+  color:black;
+  font-size: 1.2em;
+  padding: 10px;
 }
 
 #btnAddToShell{
-  background-color: rgb(0, 16, 84);
-  color:rgb(47, 184, 73);
+  background-color: #207cca;
+  color:#fafafa;
   width: 30px;
   height: 30px;
   border-radius: 100%;
   font-size: 1em;
   font-weight: 600;
   position: absolute;
-  top: 360px;
+  top: 460px;
   right: 5px;
-
 }
 #btnAddToShell:after{
   content:"+";
   padding:2px;
-
 }
 #btnAddToShell:focus{
   outline:none;
 }
-
 .searchParameters{
   flex: 1 1 100%;
   border: 1px solid black;
   height: 100px;
   background-color: rgba(209, 209, 209, 0.42);
-
 }
 .searchParameters div{
   padding: 5px;
   width: 100%;
   margin: 0 auto;
-
 }
 .searchParameters>div>*{
   padding: 10px;
   margin: 10px;
   font-size: 1em;
+}
+.searchParameters input{
+  border-radius: 7px;
+}
+.searchParameters input:focus{
+ outline: none;
+ box-shadow: 0 0 8px #508cdb;
+}
+#btnSearchGoogle{
+  border-radius: 10px;
+  padding:6px 15px;
+  background-color:#207cca;
+  color:#fafafa;
+}
+#btnSearchGoogle:focus{
+  outline:none;
 }
