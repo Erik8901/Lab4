@@ -206,7 +206,7 @@ window.addEventListener("load", function() {
     }
 
     let searchAutorTextInput = document.getElementById("searchAutorTextInput");
-    
+
 
     console.log("https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books");
 
@@ -257,8 +257,8 @@ window.addEventListener("load", function() {
 
   let btnSearchGoogle = document.getElementById("btnSearchGoogle");
   btnSearchGoogle.addEventListener("click",searchGoogle);
-  
-  
+
+
 
 
 });

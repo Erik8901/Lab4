@@ -104,24 +104,6 @@ footer{
   border-radius: 10px;
 }
 
-#boxlogin{
-  grid-column: 5/7;
-  grid-row: 3/4;
-  border: 1px solid black;
-  text-align: right;
-  font-size: 1.5em;
-  min-width: 350px;
-}
-#boxlogin input{
-  height: 20px;
-}
-#boxlogin button{
-  background-color: rgb(169, 181, 235);
-  width: 95%;
-  height: 50px;
-  display: inline-block;
-  margin: 10px;
-}
 article{
   display:none;
 }
@@ -244,3 +226,106 @@ article{
 #btnSearchGoogle:focus{
   outline:none;
 }
+#btnSearchGoogle:hover{
+  background-color: #53a1e3;
+  color: gold;
+
+}
+
+
+/********** login page *********************/
+
+.pop-up-Show:target{
+  opacity: 1;
+  pointer-events: auto;
+
+}
+.pop-up-Show:target .pop-up-loginMenu{
+    animation: drop 1s ease forwards;
+}
+
+.pop-up-Show{
+  position: fixed;
+  top:0;
+  right:0;
+  bottom:0;
+  left: 0;
+  opacity: 0;
+  z-index: 1000;
+	transition: opacity 700ms ease-in;
+  pointer-events: none;
+  background-color: rgba(43, 43, 43, 0.74);
+
+}
+
+.pop-up-loginMenu{
+  position: relative;
+  background-color: rgb(120, 120,120);
+  top: -400px;
+  width: 30%;
+  min-width: 500px;
+  margin: 0 auto;
+  height: 300px;
+  border-radius: 10px;
+  padding: 10px;
+}
+.pop-up-loginMenu *{
+  display: inline-block;
+
+}
+.pop-up-loginMenu label{
+  display: inline-block;
+  width: 25%;
+  text-align: right;
+  margin: 5px;
+}
+.pop-up-loginMenu p{
+  display: block;
+  position: relative;
+  top: 60px;
+  margin: 0 auto;
+
+}
+.pop-up-loginMenu a{
+  position: absolute;
+  right: 10px;
+
+}
+.pop-up-loginMenu>a>button{
+  width: 30px;
+  right: 0px;
+  padding: 5px;
+  border-radius: 50px;
+  text-decoration: none;
+  background-color: rgb(195, 13, 13);
+  font-weight: 600;
+  color:white;
+
+}
+.pop-up-loginMenu span{
+  left: 60%;
+  width: 150px;
+  height: 150px;
+  position: absolute;
+
+}
+.pop-up-loginMenu span button{
+  width: 100%;
+  padding: 10px;
+  background-color: rgb(224, 237, 78);
+  margin:5px;
+
+}
+
+
+.pop-up-loginMenu >a>button:hover{
+  background-color: rgb(249, 93, 93);
+  color:rgb(201, 201, 201);
+}
+
+@keyframes drop{
+  0%{opacity: 0.2}
+  70%{transform: translateY(700px)}
+  100%{transform: translateY(650px)}
+}
+/************* Login page END *******************/

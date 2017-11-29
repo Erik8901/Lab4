@@ -11,13 +11,34 @@
   <link href="https://fonts.googleapis.com/css?family=Arya" rel="stylesheet">
 </head>
 <body>
+
+  <div id="pop-up" class="pop-up-Show">
+    <div class="pop-up-loginMenu">
+
+        <a href="#close"><button type="button">X</button></a>
+        <p>
+          <label for="userName">Användar ID</label>
+          <input id="userName" type="text" name="" value=""><br>
+          <label for="userPassword">Lösenord</label>
+          <input id="userPassword" type="password" name="" value="">
+        </p>
+
+        <span>
+          <button id="btnLoggIn"type="button" name="button">Logga in</button>
+          <button id="btnKeyGen" type="button" name="button">Skapa Nyckel</button>
+          <button id="btnNewUser" type="button" name="button">Ny Användare</button>
+        </span>
+
+    </div>
+  </div>
+
+
   <div class="container">
 
     <header>
       <div class="container">
         <div class="header-right">
-          <i class="fa fa-user-circle fa-2x" style="color:rgb(142, 0, 0)" aria-hidden="true"></i>
-
+          <a href="#pop-up"><i class="fa fa-user-circle fa-2x" style="color:rgb(142, 0, 0)" aria-hidden="true"></i></a>
           <p id="headUserInfo">Ej Inloggad</p>
           <ul id="profileMenu">
             <li id="loggOut">x</li>
@@ -69,29 +90,16 @@
     <article class="article userLib">
         <div class="container-flex">
             <ul id="listBooks">
-           
+
             </ul>
         </div>
-        
+
 
 
     </article>
     <article class="article">UserLogin
       <button id="btnTest" type="button" name="button">Testknapp för utv</button>
       <div class="container">
-        <div id="boxlogin">
-          <p>
-            <label for="userName">Användare</label>
-            <input id="userName" type="text" name="" value="">
-          </p><br>
-          <p>
-            <label for="userPassword">Lösenord</label>
-            <input id="userPassword" type="password" name="" value="">
-          </p><br>
-          <button id="btnLoggIn"type="button" name="button">Logga in</button>
-          <button id="btnKeyGen" type="button" name="button">Make key</button>
-          <button id="btnNewUser" type="button" name="button">Ny Användare</button>
-        </div>
 
       </div>
     </article>
