@@ -203,6 +203,9 @@ window.addEventListener("load", function() {
     }
 
     let searchAutorTextInput = document.getElementById("searchAutorTextInput");
+    if(searchAutorTextInput.value=""){
+      searchAutorTextInput.value="*";
+    }
 
     console.log("https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books");
 
@@ -211,9 +214,6 @@ window.addEventListener("load", function() {
 
   }
 
-
-
-
   function createBooks(result){
     let resultSearchBooks = document.getElementById("resultSearchBooks");
     resultSearchBooks.innerHTML="";
@@ -221,11 +221,12 @@ window.addEventListener("load", function() {
 
     for(i=0;i<result.items.length;i++){
       x = result.items[i];
-      let list = document.createElement("li");
+      let list = document.createElement("li",{id:"books"});
       let img = document.createElement("img");
       let button  = document.createElement("button");
       let div = document.createElement("div");
       let span = document.createElement("span");
+      div.className="books";
 
 
       span.innerHTML="<br>"+x.id;
@@ -235,27 +236,17 @@ window.addEventListener("load", function() {
       if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
       img.src=x.volumeInfo.imageLinks.smallThumbnail;
 
-      list.className="books";
-      div.appendChild(img);
       list.appendChild(div);
-      div.innerHTML+="<a href="+x.volumeInfo.infoLink+" target=_blank>" + x.volumeInfo.title+"</a><br>"+x.volumeInfo.description;
+      div.appendChild(img);
+      div.innerHTML+="<br><a href="+x.volumeInfo.infoLink+" target=_blank>" + x.volumeInfo.title+"</a><br>"+x.volumeInfo.description;
       div.appendChild(span);
       resultSearchBooks.appendChild(list);
       list.appendChild(button);
       console.log(list.children)
     }
 
-
+    mouseLeaveFunction();
   };
-
-
-
-
-
-
-
-
-
 
   /********************  Hämta data från Google books   END      *************/
 
@@ -286,6 +277,19 @@ window.addEventListener("load", function() {
 
 
 
+  /************** Mouse leave scroll top funktion ***********/
+  function mouseLeaveFunction() {
+    let books = document.getElementsByClassName("books");
+
+    for(i=0;i<books.length;i++){
+      books[i].addEventListener("mouseout",function(event){
+        event.target.scrollTop=0;
+      });
+
+    }
 
 
+  }
+
+  /***********END Mouser leave scroll top funktion END ******/
 });
