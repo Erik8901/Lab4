@@ -7,72 +7,54 @@ window.addEventListener("load", function() {
   let boxlogin = document.getElementById("boxlogin");
   let http = new XMLHttpRequest();
   let container = document.getElementsByClassName("container")[0];
-  let userName = document.getElementById("userName"); /*Här är användarens id*/
-  let userPassword = document.getElementById("userPassword"); /*Här skall nyckel sparas ner*/
+  let i = 0;
   let answer = "";
-  let found = false;
   let userId = "";
   let title = "";
   let author = "";
   let headUserInfo = document.getElementById("headUserInfo");
   let loggOut = document.getElementById("loggOut");
+  let loggInStatus = 0;
+
+
+  let userName = document.getElementById("userName"); /*Här är användarens id*/
+  let userFirstName = document.getElementById("firstName");
+  let userLastName = document.getElementById("lastName");
+  let userEmail = document.getElementById("userEmail");
+  let userPassword = document.getElementById("userPassword"); /*Här skall nyckel sparas ner*/
+  let userKey = document.getElementById("userKey");
 
   /* FUNKTION FÖR ATT KONTROLLERA LÖSENORD OCH LOGGA IN */
   btnLoggIn.addEventListener("click", function() {
-    key = "key=Ln9a4"; /*På denna nycklen lagras alla användare och lösenorden går ej att bytas ut eftersom de är kopplade till användarens bibliotek*/
-    let typ = "op=select";
-    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
-    console.log(link + key + "&" + typ);
-    http.open("GET", link + key + "&" + typ, true);
-    http.send();
-
-    http.onreadystatechange = function() {
-
-      if (this.readyState === 4) {
-        console.log(JSON.parse(http.response));
-        answer = JSON.parse(http.response);
-        for (i = 0; i < answer.data.length; i++) {
-          if (userName.value == answer.data[i].title) {
-            if (userPassword.value == answer.data[i].author) {
-              headUserInfo.innerHTML="Inloggad som: " + userName.value;
-              document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
-              console.log("Rätt lösenord");
-              key = "key="+ answer.data[i].author;
-              userId = "id="+ answer.data[i].id;
-              title  = "title="+answer.data[i].title;
-              loggOut.style.display="block";
-              found=true;
-
-
-            getDataFromDataBase(key);
-
-            } else {
-              console.log("Felaktigt lösenord");
-              found=true;
-            }
-          }
-        }
-        if (!found) {
-          console.log("Användare Saknas");
-        }
-      }
-    };
+    i=0;
+    logInUser(i);
   });
   /*   LOGGIN  END! */
 
   /* FUNKTION FÖR ATT SKAPA EN NYCKEL *********************************/
-  btnKeyGen.addEventListener("click", function() {
-    http.onreadystatechange = function() {
-      if (this.readyState == 4) {
-        answer = JSON.parse(http.response);
-        console.log(answer.key);
-        boxlogin.innerHTML += "Your key is: " + answer.key
-      }
-    };
 
-    http.open("GET", "https://www.forverkliga.se/JavaScript/api/crud.php?requestKey");
-    http.send();
-  });
+  function makeNewKey(i){
+    if(userKey.value==""){
+          fetch("https://www.forverkliga.se/JavaScript/api/crud.php?requestKey").then(function(response){
+          return response.json();
+        }).then(function(json){
+          key = json.key;
+          userKey.value=key;
+          i=0;
+          makeUser(i);
+
+        }).catch(function(failRes){
+
+              console.log("Försökt 8 gånger utan att lyckats skapa nyckel: "+failRes);
+
+
+
+      });
+    }
+    key=userKey.value;
+    i=0;
+    makeUser(i);
+  }
   /* --   END ----- FUNKTION FÖR ATT SKAPA EN NYCKEL******************/
 
 
@@ -196,22 +178,14 @@ window.addEventListener("load", function() {
 
   function searchGoogle(){
 
-    http.onreadystatechange= function(){
-      if(this.readyState==4){
-        console.log("sucsess");
-        /*console.log(JSON.parse(http.response));*/
-        let result = (JSON.parse(http.response));
-        createBooks(result);
-      }
-    }
-
-    let searchAutorTextInput = document.getElementById("searchAutorTextInput");
-
-
-    console.log("https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books");
-
-    http.open("GET","https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books",true);
-    http.send();
+    fetch("https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books")
+      .then(function(result){
+        return result.json();
+      }).then(function(json){
+        createBooks(json);
+      }).catch(function(str){
+        console.log(str);
+      });
 
   }
 
@@ -221,7 +195,9 @@ window.addEventListener("load", function() {
     console.log(result);
 
     for(i=0;i<result.items.length;i++){
-      x = result.items[i];
+
+        x = result.items[i];
+
       let list = document.createElement("li",{id:"books"});
       let img = document.createElement("img");
       let button  = document.createElement("button");
@@ -253,10 +229,275 @@ window.addEventListener("load", function() {
 
 
 
+  /**********************  Spara Användare (skicka in objekt)*******************/
+
+  function saveNewUser(strObj,i){
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    /* På denna nycklen lagras alla användare och lösenorden går ej att bytas ut eftersom de är kopplade till användarens bibliotek*/
+    title = "&title="+ strObj;
+    typ = "&op=insert";
+    author="&author=not used";
+
+      fetch(link + keyMaster + typ + title + author).then(function(response){
+            return response.json();
+        }).then(function(json){
+            console.log(json);
+            if(json.status=="success"){
+              console.log("sparad?");
+
+            }else{
+              if(i<8){
+                i++;
+                saveNewUser(strObj,i);
+              }else{
+                console.log("mer än 8försök för att spara.. gick inte :<");
+              }
+            }
+          /*if(json.status=="error"){
+            console.log("ERROR");
+            if(i<8){
+              i++;
+              saveNewUser(strObj,i);
+            }
+          }else{
+            console.log("Sparad!");
+            console.log(json);
+          }
+          */
+
+        }).catch(function(res){
+          console.log("användaren blev ej sparad felkod: " + res);
+        });
+  }
+
+
+  /********************* Skapa Användare END **********************************/
+
+
+  /********************* Hämta Alla användare *********************************/
+  function getAllUsers(i){
+
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    typ = "&op=select";
+
+      fetch(link + keyMaster + typ).then(function(response){
+          return response.json();
+        }).then(function(json){
+          console.log(json);
+          if(json.status=="error"){
+            if(i<8){
+              i++;
+              getAllUsers(i);
+            }else{
+              console.log(json);
+            }
+          }
+        }).catch(function(res){
+          console.log("Efter 8st försök men går fortfarande inte: "+res);
+        });
+
+  };
+
+
+
+
+  /********************* Hämta Alla användare END *****************************/
+
+  /********************* Logga In  ********************************************/
+
+  function logInUser (i){
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+      typ = "&op=select";
+
+
+    console.log(link + keyMaster + typ);
+
+      fetch(link + keyMaster + typ).then(function(response){
+          return response.json();
+
+        }).then(function(json){
+          console.log(json);
+          if(json.status=="error"){
+            i++
+            if(i<8){
+              logInUser(i);
+            }else{
+              console.log("för många fel denna gång :< ");
+            }
+          }else{
+            i=0;
+            checkUser(json,i);
+
+          }
+        }).catch(function(res){
+          console.log("8st försök men funkar fortfarande inte"+res);
+        });
+
+  }
+
+  function checkUser(obj,i){   //kontrolerar lösenordet....
+    let userList = []
+    let j = "0";
+    let found = false;
+
+    for(i=0;i<obj.data.length;i++){
+      let userObj = JSON.parse(obj.data[i].title);
+      userList.push(userObj);
+    }
+    for(i=0;i<userList.length;i++){
+
+      if(userList[i].userId==userName.value){
+
+        if(userList[i].password===userPassword.value){
+          //console.log("Rätt lösenord");
+          found=true;
+          j=i;
+        }
+
+      }
+
+
+    }
+    console.log(found);
+    if(found){ //rätt lösenord och användare.. hämta data
+      let closeLoggInMenu = document.getElementById("closeLoggInMenu");
+      window.location.assign("#close");
+      key = userList[j].key;
+      //console.log("inloggad som "+ userList[j].userId);
+      headUserInfo.innerHTML="Inloggad som: " + userList[j].userId;
+      document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
+
+
+    }
+  }
+  /********************* Logga In  END ********************************************/
+
+  /********************* skapa användare ***************************************/
+  let btnMakeUser = document.getElementById("btnNewUser");
+  btnMakeUser.addEventListener("click",makeNewKey);
+
+  // makeKey --> makeUser   detta för att hinna med att få en nyckel från api:n
+
+  function makeUser (i){
+
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    typ = "&op=select";
+
+
+    //console.log(link + keyMaster + typ);
+
+      fetch(link + keyMaster + typ).then(function(response){
+          return response.json();
+        }).then(function(json){
+
+          checkUserInputs(json);
+          if(json.status=="error"){
+            if(i<8){
+              i++;
+              makeUser(i);
+            }else{
+              console.log("Mer än 8st error på skapa ny användare");
+            }
+          }
+
+        }).catch(function(res){
+              console.log("8st försök men funkar fortfarande inte"+res);
+        });
+
+  }
+
+  function checkUserInputs(obj){
+    let userList = []
+    let j = "0";
+    let found=false;
+
+
+    for(i=0;i<obj.data.length;i++){
+      let userObj = JSON.parse(obj.data[i].title);
+      userList.push(userObj);
+    }
+    //console.log(userList);
+
+    for(i=0;i<userList.length;i++){
+      //console.log(userList[i].userId);
+      if(userList[i].userId== userName.value){
+
+        found= true;
+        console.log("Användar ID redan upptaget, vänligen välj ett nytt");
+
+      }
+
+    }
+
+    if(!found){
+      let closeLoggInMenu = document.getElementById("closeLoggInMenu");
+
+      //console.log(userName.value,userPassword.value,userFirstName.value,userLastName.value,userEmail.value,key);
+      if(key===""){
+        console.log("Misslykades med att skapa användare pga saknad nyckel");
+      }else{
+        let x = new User(userName.value,userPassword.value,userFirstName.value,userLastName.value,userEmail.value,key)
+        x = JSON.stringify(x);
+        console.log(x);
+
+        saveNewUser(x,0);
+
+        headUserInfo.innerHTML="Inloggad som: " + userName.value;
+        document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
+        console.log("FUnkar.. ny user upplagd!1");
+        //window.location.assign("#close");
+      }
+
+
+
+
+    }
+  }
+  /********************* Logga In  END ********************************************/
+
+
+
+  /********************* Remove user ******************************************/
+  function removeUser(x){
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    typ = "&op=delete";
+    id= "&id="+x;
+
+      fetch(link + keyMaster + typ + id).then(function(response){
+          return response.json();
+        }).then(function(json){
+          console.log(json);
+
+        }).catch(function(res){
+            console.log("8st försök utan att lyckas"+ res);
+        });
+
+  };
+
+
+  /********************* Remove user END ************************************/
 
 
   let btnSearchGoogle = document.getElementById("btnSearchGoogle");
   btnSearchGoogle.addEventListener("click",searchGoogle);
+
+
+
+
+
+
+  //let johan = new User("johan80","admin","johan","Augustsson","zingo80@msn.com","fe7Hz");
+  //console.log(johan);
+  //let johanStr = (JSON.stringify(johan));
+
+
+
+  //saveNewUser(johanStr);
+  i=0;
+  getAllUsers(i);
+  //logInUser();
+  //removeUser(15068);
+   //makeNewKey();
 
 
 
@@ -278,3 +519,43 @@ window.addEventListener("load", function() {
   }
 
   /***********END Mouser leave scroll top funktion END ******/
+
+
+
+
+/************  Skapa användare med classes  *********************/
+
+class User {
+  constructor(myUserId,myPassword,myName,myLastName,myEmail,myKey){
+    this.userId=myUserId;
+    this.firstName=myName;
+    this.lastName=myLastName;
+    this.email=myEmail;
+    this.password=myPassword;
+    this.key=myKey;
+  }
+
+}
+
+
+
+
+class CreateBooks{
+  constructor(myBookObj,myServer){
+    this.BookId= myBookObj.id;
+    this.BookTitel = myBookObj.volumeInfo.infoLink;
+
+  }
+  getAllBookInfo(){
+      fetch("https://www.googleapis.com/books/v1/volumes?q=id="+this.BookId).then(function(response){
+      return response.json();
+    }).then(function(json){
+        console.log(json);
+        return JSON.stringify(json);
+    }).then(function(str){
+      console.log(str);
+    });
+
+  }
+
+};
