@@ -71,17 +71,14 @@
             console.log(key);
 
          for (let i = 0; i < obj.data.length; i++) {
-
-
-
-
-           console.log(obj.data[0].id);
+             console.log(obj.data[0].id);
 
            let listItem = document.createElement("li");
            let btnRemoveBook = document.createElement("button");
            let div = document.createElement("div"); 
            div.className = "books";
            btnRemoveBook.className = "knappTabort";
+           btnRemoveBook.id = "btnGone"
            btnRemoveBook.innerHTML = "Click to Remove Book";
         
 
@@ -94,16 +91,50 @@
              
                    
 
-           btnRemoveBook.addEventListener("click",
-             function() {
-
-               listBooks.removeChild(listItem);
-
-
-
-
-
-             });
+           
          }
-
        };
+
+
+   
+        
+        function removeBook() {
+        
+            let reqRemove = new XMLHttpRequest();
+            
+            reqRemove.open("GET", "https://www.forverkliga.se/JavaScript/api/crud.php?op=delete&" + key + id)
+            
+            reqRemove.sen()
+                console.log(reqRemove.response)
+            
+            
+            reqRemove.onreadystatechange = function() {
+                
+                if (this.readyState = 4 && this.status == 200) {
+                    
+                    let obj = JSON.parse(reqRmove.response);
+                        //console.log(obj);
+                    
+                        deleteBook();
+                }
+            }
+        };
+        
+        window.addEventListener("load", deleteBook) 
+
+            function deleteBook() {
+            
+            
+        let btnD = document.getElementById("btnGone");
+        
+        btnD.addEventListener("click",
+             function(event) {
+               var list = document.getElementById("listBooks"); 
+               list.removeChild(list.childNodes[0]);
+        });
+        
+    };
+    
+
+
+   
