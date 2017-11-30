@@ -41,6 +41,19 @@
        
        });
 
+     function deleteBook() {
+            
+            
+        let btnD = document.getElementById("btnGone");
+        
+        btnD.addEventListener("click",
+             function(event) {
+               var list = document.getElementById("listBooks"); 
+               list.removeChild(list.childNodes[0]);
+        });
+        
+    };
+
 
 
        var  getDataFromDataBase =  function() {
@@ -65,7 +78,7 @@
            }
          }
 
-       }
+       };
 
        function saveToLib(obj) {
             console.log(key);
@@ -78,7 +91,7 @@
            let div = document.createElement("div"); 
            div.className = "books";
            btnRemoveBook.className = "knappTabort";
-           btnRemoveBook.id = "btnGone"
+           btnRemoveBook.id = "btnGone";
            btnRemoveBook.innerHTML = "Click to Remove Book";
         
 
@@ -97,12 +110,15 @@
 
 
    
-        
+     /*   
         function removeBook() {
         
+            
+            let id = "";
+            let key = "";
             let reqRemove = new XMLHttpRequest();
             
-            reqRemove.open("GET", "https://www.forverkliga.se/JavaScript/api/crud.php?op=delete&" + key + id)
+            reqRemove.open("GET", "https://www.forverkliga.se/JavaScript/api/crud.php?op=delete&key=hVfr2&" + id)
             
             reqRemove.sen()
                 console.log(reqRemove.response)
@@ -120,7 +136,8 @@
             }
         };
         
-        window.addEventListener("load", deleteBook) 
+        */
+        //window.addEventListener("load", deleteBook) 
 
             function deleteBook() {
             
@@ -129,11 +146,43 @@
         
         btnD.addEventListener("click",
              function(event) {
+            console.log(event);
                var list = document.getElementById("listBooks"); 
                list.removeChild(list.childNodes[0]);
         });
         
     };
+
+
+  
+      
+ /*   window.addEventListener("load", event);
+          
+    function event()  { 
+    
+        let id = "";
+        let key = "";
+        let div = document.getElementById("myDiv");    
+    
+        fetch ("https://www.forverkliga.se/JavaScript/api/crud.php?op=delete&" + key + id)
+          .then(
+            function(result) {
+               console.log(response);
+                 return result.json();
+               })
+            .then(function(json) {
+             div.innerHTML = json
+                
+                
+            });
+          };
+          
+          */
+          
+    
+    
+    
+ 
     
 
 
