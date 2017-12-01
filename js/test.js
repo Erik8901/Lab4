@@ -1,8 +1,8 @@
 let key = "";
 let keyMaster = "key=Ln9a4"; /*användarens inloggningsuppgifter sparas i detta bibliotek*/
 let userLoggedIn = [];
-let resultUserBooks = [];
-let resultSearchBooks = [];
+let userBooks = [];
+let searchBooks = [];
 
 window.addEventListener("load", function() {
   let btnLoggIn = document.getElementById("btnLoggIn");
@@ -33,7 +33,7 @@ window.addEventListener("load", function() {
 
   /* FUNKTION FÖR ATT KONTROLLERA LÖSENORD OCH LOGGA IN */
   btnLoggIn.addEventListener("click", function() {
-    logInUser(0); // logInUser -> CheckUser = inloggad
+    logInUser(0); // logInUser -> CheckUser  -> getDataFromDataBase (functions.js) = inloggad
   });
   /*   LOGGIN  END! */
 
@@ -112,6 +112,7 @@ window.addEventListener("load", function() {
 
 
       window.location.assign("#close");
+      getDataFromDataBase(0);
 
     }
   }
@@ -150,7 +151,7 @@ window.addEventListener("load", function() {
               console.log("Försökt 8 gånger utan att lyckats skapa nyckel: "+failRes);
       });
     }else{
-      key= userKey.value;
+      key=userKey.value;
       makeUser(0);
     }
 
@@ -432,7 +433,7 @@ window.addEventListener("load", function() {
 
 
       span.innerHTML="<br>"+x.id;
-      button.id="btnAddToShell";
+      button.className="btnAddToShell";
       /*button.innerHTML="Lägg till i biblo!";*/
 
       if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
@@ -445,9 +446,59 @@ window.addEventListener("load", function() {
       resultSearchBooks.appendChild(list);
       list.appendChild(button);
       console.log(list.children)
+
+      let btnAddToShell = document.getElementsByClassName("btnAddToShell")[i];
+      btnAddToShell.addEventListener("click",function(){
+        let li = event.target.parentElement;
+        let uniqueBook = li.querySelector("span").innerHTML;
+
+        addBookToLibarary(uniqueBook,0);
+
+
+      })
+
     }
 
     mouseLeaveFunction();
+
+
+
+    function addBookToLibarary(uniqueBook,i){
+
+      let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+      typ = "&op=insert";
+      title = "&title="+uniqueBook;
+      author = "&author=not used";
+
+        fetch(link + key + typ + title + author).then(function(response){
+            return response.json();
+          }).then(function(json){
+            console.log(json);
+            if(json.status=="error"){
+              if(i<8){
+                i++;
+                addBookToLibarary(i);
+              }else{
+                console.log(json);
+              }
+            }else{
+              console.log("sparad");
+            }
+          }).catch(function(res){
+            console.log("Efter 8st försök men går fortfarande inte: "+res);
+          });
+
+    };
+
+
+
+
+
+
+
+
+
+
   };
 
   /********************  Hämta data från Google books   END      *************/
@@ -541,7 +592,10 @@ window.addEventListener("load", function() {
 
 
  let test2 = document.getElementById("test2");
-   test2.addEventListener("click",function(){
+ test2.addEventListener("click",function(){
+    removebb();
+  });
+  /* test2.addEventListener("click",function(){
     let pos = -40;
     let inter = setInterval(frame,0.5);
     function frame(){
@@ -555,9 +609,18 @@ window.addEventListener("load", function() {
         userPassword.style.backgroundColor="rgba(237, 152, 164, 0.3)";
       }
     }
+    */
 
 
-  })
+
+
+
+
+
+
+
+
+
 
 
 
@@ -620,5 +683,3 @@ class CreateBooks{
   }
 
 };
-
-
