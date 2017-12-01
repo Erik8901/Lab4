@@ -2,6 +2,7 @@
   padding:0;
   margin: 0;
   font-family: Average,Didot, sans-serif;
+  box-sizing: border-box;
 }
 
 body{
@@ -133,24 +134,47 @@ article{
 }
 
 
-.container-flex li *::-webkit-scrollbar {
-  display: none;
-}
 .books{
   width: 95%;
   font-size: 1em;
   height: 95%;
-  margin:10px;
+  padding: 10px;
+  padding-top: 40px;
   overflow: hidden;
   scroll-behavior: smooth;
 }
 .books:hover{
   overflow: auto;
+
+}
+.books a{
+  width: 100%;
+  text-decoration: none;
+  position: absolute;
+  background-color: rgba(231, 235, 233,0.8);
+  top: 0px;
+  left: 0px;
+  padding: 10px;
+  color: black;
+
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+
+}
+.books ul{
+  list-style-type: none;
+}
+.books li img{
+  width: 220px;
+  max-height: 2250px;
+  min-height: 280px;
+  display: absolute;
 }
 
 .container-flex li{
+  box-sizing: border-box;
   margin: 20px;
-  width: 40%;
+  width: 280px;
   height: 500px;
   max-height: 500px;
   min-width: 280px;
@@ -159,21 +183,19 @@ article{
   position: relative;
   border-radius: 5px;
   font-family: Arya, sans-serif;
+  transition: all 200ms ease-in;
+  transform: scale(1);
 }
-.books ul{
-  list-style-type: none;
+.container-flex li *::-webkit-scrollbar {
+  display: none;
 }
-.books li img{
-  width: 220px;
-  max-height: 250px;
-  min-height: 250px;
-  display: absolute;
+.container-flex li:hover{
+  box-shadow: 10px 10px 10px rgb(119, 77, 7);
+  transition: all 200ms ease-in;
+ transform: scale(1.05);
 }
-.books a{
-  color:black;
-  font-size: 1.2em;
-  padding: 10px;
-}
+
+
 
 .btnAddToShell{
   background-color: #207cca;
@@ -264,6 +286,7 @@ article{
   top: -400px;
   width: 30%;
   min-width: 500px;
+  max-width: 500px;
   margin: 0 auto;
   height: 300px;
   border-radius: 10px;
@@ -296,11 +319,9 @@ article{
 .pop-up-loginMenu p{
   display: inline-block;
   position: relative;
-  top: 20px;
-  left: 10px;
+  top: 40px;
+  left: 0px;
   width: 80%;
-
-  margin: 0 auto;
 }
 .pop-up-loginMenu a{
   position: absolute;
@@ -312,7 +333,7 @@ article{
   padding: 5px;
   border-radius: 50px;
   text-decoration: none;
-  background-color: rgb(195, 13, 13);
+  background-color: rgb(175, 173, 173);
   font-weight: 600;
   color:white;
 
@@ -320,10 +341,11 @@ article{
 }
 .pop-up-loginMenu > span{
   top: 50px;
-  left:300px;
+  left:60%;
   width: 200px;
   height: 150px;
   position: absolute;
+
 
 }
 .pop-up-loginMenu span button{

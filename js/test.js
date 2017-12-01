@@ -6,7 +6,6 @@ let searchBooks = [];
 
 window.addEventListener("load", function() {
   let btnLoggIn = document.getElementById("btnLoggIn");
-  let btnKeyGen = document.getElementById("btnKeyGen");
   let boxlogin = document.getElementById("boxlogin");
   let http = new XMLHttpRequest();
   let i = 0;
@@ -44,19 +43,18 @@ window.addEventListener("load", function() {
       typ = "&op=select";
 
 
-    console.log(link + keyMaster + typ);
+    //console.log(link + keyMaster + typ);
 
       fetch(link + keyMaster + typ).then(function(response){
-          console.log("hej");
+          //console.log("hej");
           return response.json();
 
         }).then(function(json){
-          console.log("Hej");
+          //console.log("Hej");
           if(json.status=="error"){
 
             if(i<8){
               i++;
-              console.log(i + " antal gånger");
               logInUser(i);
             }else{
               console.log(" Misslyckades att logga in :< ");
@@ -76,6 +74,7 @@ window.addEventListener("load", function() {
     let userList = []
     let j = "0";
     let found = false;
+    let anvFound = false;
 
     for(i=0;i<obj.data.length;i++){
       let userObj = JSON.parse(obj.data[i].title);
@@ -84,25 +83,26 @@ window.addEventListener("load", function() {
     for(i=0;i<userList.length;i++){
 
       if(userList[i].userId==userName.value){
-
+        anvFound=true;
         if(userList[i].password===userPassword.value){
           //console.log("Rätt lösenord");
           found=true;
           j=i;
-        }else{
-
-          loggMenu("Felaktigt lösenord");
-
-
         }
+      }
+    }
 
-      }else{
-        loggMenu("Användare Saknas");
+    if(anvFound){
+      if(!found){
+        //användare hittade men felakigt lösenord
+        loggMenu("Felaktigt lösenord");
       }
 
-
+    }else{
+      //användare ej hittad
+      loggMenu("Användare id saknas");
     }
-    console.log(found);
+
     if(found){ //rätt lösenord och användare.. hämta data
       //let closeLoggInMenu = document.getElementById("closeLoggInMenu");
       loggMenu("inloggad som "+ userList[j].userId);
@@ -402,9 +402,30 @@ window.addEventListener("load", function() {
 
   /********************  Hämta data från Google books  **********************/
 
-  function searchGoogle(){
+  function searchGoogle(searchForStr){
+    let searchStr="";
+    let resultSearchBooks = document.getElementById("resultSearchBooks");
+    resultSearchBooks.innerHTML="";
+    let searchTitelTextInput = document.getElementById("searchTitelTextInput");
+    let searchAutorTextInput = document.getElementById("searchAutorTextInput");
 
-    fetch("https://www.googleapis.com/books/v1/volumes?q="+"inauthor:"+searchAutorTextInput.value+"&printType=books")
+    if(searchForStr!=""){             //om str medskickad till funktion
+      searchStr =searchForStr;
+      console.log(searchForStr);
+    }else{
+      if(searchTitelTextInput.value){
+        searchStr= searchTitelTextInput.value
+      }
+      if(searchAutorTextInput.value) {
+        searchStr+="+inauthor:"+searchAutorTextInput.value;
+      }
+    }
+
+    searchStr+="&printType=books"
+    let link = "https://www.googleapis.com/books/v1/volumes?q=";
+    console.log(link+searchStr);
+
+    fetch("https://www.googleapis.com/books/v1/volumes?q="+searchStr+"&key=AIzaSyCeCWE-_JEPML1urQm5_jMtzTiebFZ_4lc")
       .then(function(result){
         return result.json();
       }).then(function(json){
@@ -417,12 +438,23 @@ window.addEventListener("load", function() {
 
   function createBooks(result){
     let resultSearchBooks = document.getElementById("resultSearchBooks");
-    resultSearchBooks.innerHTML="";
     console.log(result);
-
+    let textsnippet ="";
     for(i=0;i<result.items.length;i++){
 
         x = result.items[i];
+      let description = x.volumeInfo.description;
+      let infoLink = x.volumeInfo.infoLink;
+      let bookTitel = x.volumeInfo.title
+      let searchSnippet = "Saknar beskrivande text"
+      if(x.hasOwnProperty("searchInfo")){
+        if(x.searchInfo.hasOwnProperty("textSnippet")){
+          console.log("nu funkar proterpt");
+          searchSnippet = x.searchInfo.textSnippet;
+        }
+      };
+
+
 
       let list = document.createElement("li",{id:"books"});
       let img = document.createElement("img");
@@ -439,13 +471,14 @@ window.addEventListener("load", function() {
       if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
       img.src=x.volumeInfo.imageLinks.smallThumbnail;
 
+
       list.appendChild(div);
       div.appendChild(img);
-      div.innerHTML+="<br><a href="+x.volumeInfo.infoLink+" target=_blank>" + x.volumeInfo.title+"</a><br>"+x.volumeInfo.description;
+      div.innerHTML+="<br><a href="+infoLink +" target=_blank><h3>" + bookTitel +"</h3></a><br>"+ searchSnippet + "<br><br>"+"<h4>Sammanfattning: </h4><br>"+ description;
       div.appendChild(span);
       resultSearchBooks.appendChild(list);
       list.appendChild(button);
-      console.log(list.children)
+
 
       let btnAddToShell = document.getElementsByClassName("btnAddToShell")[i];
       btnAddToShell.addEventListener("click",function(){
@@ -516,7 +549,6 @@ window.addEventListener("load", function() {
       fetch(link + keyMaster + typ).then(function(response){
           return response.json();
         }).then(function(json){
-          console.log(json);
           if(json.status=="error"){
             if(i<8){
               i++;
@@ -524,6 +556,8 @@ window.addEventListener("load", function() {
             }else{
               console.log(json);
             }
+          }else{
+            console.log(json);
           }
         }).catch(function(res){
           console.log("Efter 8st försök men går fortfarande inte: "+res);
@@ -574,14 +608,14 @@ window.addEventListener("load", function() {
   //let johanStr = (JSON.stringify(johan));
 
 
-
+  // **  Funktioner som körs när man kommer till sidan ************************//
   //saveNewUser(johanStr);
   i=0;
   getAllUsers(i);
   //logInUser();
   //removeUser(15068);
    //makeNewKey();
-
+  searchGoogle("liza marklund");
 
 
 
