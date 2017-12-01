@@ -44,8 +44,8 @@ header{
   margin: 10px 10px;
   min-width: 150px;
   grid-column: 13/13;
-  display: block; 
-  opacity: 1;  
+  display: block;
+  opacity: 1;
 }
 nav{
   margin: 0px 0px;
@@ -175,7 +175,7 @@ article{
   padding: 10px;
 }
 
-#btnAddToShell{
+.btnAddToShell{
   background-color: #207cca;
   color:#fafafa;
   width: 30px;
@@ -187,11 +187,11 @@ article{
   top: 460px;
   right: 5px;
 }
-#btnAddToShell:after{
+.btnAddToShell:after{
   content:"+";
   padding:2px;
 }
-#btnAddToShell:focus{
+.btnAddToShell:focus{
   outline:none;
 }
 .searchParameters{
