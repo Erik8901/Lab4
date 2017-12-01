@@ -1,8 +1,8 @@
 let key = "";
 let keyMaster = "key=Ln9a4"; /*användarens inloggningsuppgifter sparas i detta bibliotek*/
 let userLoggedIn = [];
-let userBooks = [];
-let searchBooks = [];
+let resultUserBooks = [];
+let resultSearchBooks = [];
 
 window.addEventListener("load", function() {
   let btnLoggIn = document.getElementById("btnLoggIn");
@@ -150,7 +150,7 @@ window.addEventListener("load", function() {
               console.log("Försökt 8 gånger utan att lyckats skapa nyckel: "+failRes);
       });
     }else{
-      key=userKey.value;
+      key= userKey.value;
       makeUser(0);
     }
 
@@ -620,3 +620,5 @@ class CreateBooks{
   }
 
 };
+
+
