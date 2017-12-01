@@ -1,20 +1,25 @@
 let key = "";
 let keyMaster = "key=Ln9a4"; /*användarens inloggningsuppgifter sparas i detta bibliotek*/
+let userLoggedIn = [];
+let userBooks = [];
+let searchBooks = [];
 
 window.addEventListener("load", function() {
   let btnLoggIn = document.getElementById("btnLoggIn");
   let btnKeyGen = document.getElementById("btnKeyGen");
   let boxlogin = document.getElementById("boxlogin");
   let http = new XMLHttpRequest();
-  let container = document.getElementsByClassName("container")[0];
   let i = 0;
-  let answer = "";
-  let userId = "";
   let title = "";
   let author = "";
   let headUserInfo = document.getElementById("headUserInfo");
   let loggOut = document.getElementById("loggOut");
-  let loggInStatus = 0;
+  let menuText = document.getElementsByClassName("pop-up-Text")[0];
+
+  //let loggInStatus = 0;
+  //let container = document.getElementsByClassName("container")[0];
+  //let userId = "";
+  //let answer = "";
 
 
   let userName = document.getElementById("userName"); /*Här är användarens id*/
@@ -24,38 +29,258 @@ window.addEventListener("load", function() {
   let userPassword = document.getElementById("userPassword"); /*Här skall nyckel sparas ner*/
   let userKey = document.getElementById("userKey");
 
+
+
   /* FUNKTION FÖR ATT KONTROLLERA LÖSENORD OCH LOGGA IN */
   btnLoggIn.addEventListener("click", function() {
-    i=0;
-    logInUser(i);
+    logInUser(0); // logInUser -> CheckUser = inloggad
   });
   /*   LOGGIN  END! */
 
-  /* FUNKTION FÖR ATT SKAPA EN NYCKEL *********************************/
+  /********************* Logga In  ********************************************/
 
+  function logInUser (i){
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+      typ = "&op=select";
+
+
+    console.log(link + keyMaster + typ);
+
+      fetch(link + keyMaster + typ).then(function(response){
+          console.log("hej");
+          return response.json();
+
+        }).then(function(json){
+          console.log("Hej");
+          if(json.status=="error"){
+
+            if(i<8){
+              i++;
+              console.log(i + " antal gånger");
+              logInUser(i);
+            }else{
+              console.log(" Misslyckades att logga in :< ");
+
+            }
+          }else{
+            checkUser(json,0);
+          }
+        }).catch(function(res){
+          console.log("detta skrivs ut");
+          console.log("8st försök men funkar fortfarande inte"+res);
+        });
+
+  }
+
+  function checkUser(obj,i){   //kontrolerar lösenordet....
+    let userList = []
+    let j = "0";
+    let found = false;
+
+    for(i=0;i<obj.data.length;i++){
+      let userObj = JSON.parse(obj.data[i].title);
+      userList.push(userObj);
+    }
+    for(i=0;i<userList.length;i++){
+
+      if(userList[i].userId==userName.value){
+
+        if(userList[i].password===userPassword.value){
+          //console.log("Rätt lösenord");
+          found=true;
+          j=i;
+        }else{
+
+          loggMenu("Felaktigt lösenord");
+
+
+        }
+
+      }else{
+        loggMenu("Användare Saknas");
+      }
+
+
+    }
+    console.log(found);
+    if(found){ //rätt lösenord och användare.. hämta data
+      //let closeLoggInMenu = document.getElementById("closeLoggInMenu");
+      loggMenu("inloggad som "+ userList[j].userId);
+      key = userList[j].key;
+      headUserInfo.innerHTML="Inloggad som: " + userList[j].userId;
+      document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
+
+
+      window.location.assign("#close");
+
+    }
+  }
+  /********************* Logga In  END ********************************************/
+
+
+
+
+  /********************* SKAPA ANVÄNDARE ***************************************/
+  // makeKey --> makeUser   detta för att hinna med att få en nyckel från api:n
+
+  let btnMakeUser = document.getElementById("btnNewUser");
+  btnMakeUser.addEventListener("click",makeNewKey);
+
+
+  /********************** skapar en nyckel ************************************/
   function makeNewKey(i){
-    if(userKey.value==""){
+
+    if(userKey.value==""){  //kontrolerar om nyckeln redan är satt
           fetch("https://www.forverkliga.se/JavaScript/api/crud.php?requestKey").then(function(response){
           return response.json();
         }).then(function(json){
-          key = json.key;
-          userKey.value=key;
-          i=0;
-          makeUser(i);
+          if(json.status=="error"){
+            if(i<8){
+              i++;
+              maekNewKey(i);
+            }
+          }else{
+            key = json.key;
+            userKey.value=key;
+            makeUser(0);
+          }
 
         }).catch(function(failRes){
-
+              loggMenu("Misslyckades att skapa nyckel");
               console.log("Försökt 8 gånger utan att lyckats skapa nyckel: "+failRes);
-
-
-
       });
+    }else{
+      key=userKey.value;
+      makeUser(0);
     }
-    key=userKey.value;
-    i=0;
-    makeUser(i);
+
   }
-  /* --   END ----- FUNKTION FÖR ATT SKAPA EN NYCKEL******************/
+  /******************  skapar en nyckel END     *******************************/
+
+  /****************** Hämtar databas över användare *************************/
+  function makeUser (i){
+
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    typ = "&op=select";
+
+
+    //console.log(link + keyMaster + typ);
+
+      fetch(link + keyMaster + typ).then(function(response){
+          return response.json();
+        }).then(function(json){
+
+          if(json.status=="error"){
+            if(i<8){
+              i++;
+              makeUser(i);
+            }else{
+              loggMenu("Misslyckades!");
+              console.log("makeUser: Fler än 8st försök");
+            }
+          }else{
+            checkUserInputs(json);
+          }
+
+        }).catch(function(res){
+            loggMenu("Inloggning misslyckades : "+ res);
+            console.log("makeUser felkod: "+res);
+        });
+
+  }
+
+
+  /*****************  kontrolerar så att anv inte redan finns *****************/
+  function checkUserInputs(obj){
+    let userList = []
+    let j = "0";
+    let found=false;
+
+
+    for(i=0;i<obj.data.length;i++){
+      let userObj = JSON.parse(obj.data[i].title);
+      userList.push(userObj);
+    }
+    //console.log(userList);
+
+    for(i=0;i<userList.length;i++){
+      //console.log(userList[i].userId);
+      if(userList[i].userId== userName.value){
+
+        found= true;
+        console.log("Användar ID redan upptaget, vänligen välj ett nytt");
+
+      }
+
+    }
+
+    if(!found){
+      //console.log(userName.value,userPassword.value,userFirstName.value,userLastName.value,userEmail.value,key);
+      if(key===""){
+        console.log("Misslykades med att skapa användare pga saknad nyckel");
+      }else{
+        let x = new User(userName.value,userPassword.value,userFirstName.value,userLastName.value,userEmail.value,key)
+        x = JSON.stringify(x);
+        console.log(x);
+
+        saveNewUser(x,0);
+
+        headUserInfo.innerHTML="Inloggad som: " + userName.value;
+        document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
+        console.log("FUnkar.. ny user upplagd!1");
+        //window.location.assign("#close");
+      }
+
+
+
+
+    }
+  }
+  /********************* kontroll av användare END  ****************************/
+
+  /**********************  Spara Användare (skicka in objekt)*******************/
+
+  function saveNewUser(strObj,i){
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    /* På denna nycklen lagras alla användare och lösenorden går ej att bytas ut eftersom de är kopplade till användarens bibliotek*/
+    title = "&title="+ strObj;
+    typ = "&op=insert";
+    author="&author=not used";
+
+      fetch(link + keyMaster + typ + title + author).then(function(response){
+            return response.json();
+        }).then(function(json){
+          if(json.status=="error"){
+            if(i<8){
+              i++;
+              saveNewUser(strObj,i);
+            }else{
+              loggMenu("Misslyckades att spara användare : "+ res);
+            }
+          }else{
+            loggMenu("Användare Sparad!");
+            console.log("Sparad!");
+            console.log(json);
+          }
+      }).catch(function(res){
+        loggMenu("Misslyckades att spara användare");
+        console.log("användaren blev ej sparad felkod: " + res);
+      });
+  }
+
+
+  /********************* Skapa Användare END **********************************/
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -229,49 +454,6 @@ window.addEventListener("load", function() {
 
 
 
-  /**********************  Spara Användare (skicka in objekt)*******************/
-
-  function saveNewUser(strObj,i){
-    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
-    /* På denna nycklen lagras alla användare och lösenorden går ej att bytas ut eftersom de är kopplade till användarens bibliotek*/
-    title = "&title="+ strObj;
-    typ = "&op=insert";
-    author="&author=not used";
-
-      fetch(link + keyMaster + typ + title + author).then(function(response){
-            return response.json();
-        }).then(function(json){
-            console.log(json);
-            if(json.status=="success"){
-              console.log("sparad?");
-
-            }else{
-              if(i<8){
-                i++;
-                saveNewUser(strObj,i);
-              }else{
-                console.log("mer än 8försök för att spara.. gick inte :<");
-              }
-            }
-          /*if(json.status=="error"){
-            console.log("ERROR");
-            if(i<8){
-              i++;
-              saveNewUser(strObj,i);
-            }
-          }else{
-            console.log("Sparad!");
-            console.log(json);
-          }
-          */
-
-        }).catch(function(res){
-          console.log("användaren blev ej sparad felkod: " + res);
-        });
-  }
-
-
-  /********************* Skapa Användare END **********************************/
 
 
   /********************* Hämta Alla användare *********************************/
@@ -303,157 +485,7 @@ window.addEventListener("load", function() {
 
   /********************* Hämta Alla användare END *****************************/
 
-  /********************* Logga In  ********************************************/
 
-  function logInUser (i){
-    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
-      typ = "&op=select";
-
-
-    console.log(link + keyMaster + typ);
-
-      fetch(link + keyMaster + typ).then(function(response){
-          return response.json();
-
-        }).then(function(json){
-          console.log(json);
-          if(json.status=="error"){
-            i++
-            if(i<8){
-              logInUser(i);
-            }else{
-              console.log("för många fel denna gång :< ");
-            }
-          }else{
-            i=0;
-            checkUser(json,i);
-
-          }
-        }).catch(function(res){
-          console.log("8st försök men funkar fortfarande inte"+res);
-        });
-
-  }
-
-  function checkUser(obj,i){   //kontrolerar lösenordet....
-    let userList = []
-    let j = "0";
-    let found = false;
-
-    for(i=0;i<obj.data.length;i++){
-      let userObj = JSON.parse(obj.data[i].title);
-      userList.push(userObj);
-    }
-    for(i=0;i<userList.length;i++){
-
-      if(userList[i].userId==userName.value){
-
-        if(userList[i].password===userPassword.value){
-          //console.log("Rätt lösenord");
-          found=true;
-          j=i;
-        }
-
-      }
-
-
-    }
-    console.log(found);
-    if(found){ //rätt lösenord och användare.. hämta data
-      let closeLoggInMenu = document.getElementById("closeLoggInMenu");
-      window.location.assign("#close");
-      key = userList[j].key;
-      //console.log("inloggad som "+ userList[j].userId);
-      headUserInfo.innerHTML="Inloggad som: " + userList[j].userId;
-      document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
-
-
-    }
-  }
-  /********************* Logga In  END ********************************************/
-
-  /********************* skapa användare ***************************************/
-  let btnMakeUser = document.getElementById("btnNewUser");
-  btnMakeUser.addEventListener("click",makeNewKey);
-
-  // makeKey --> makeUser   detta för att hinna med att få en nyckel från api:n
-
-  function makeUser (i){
-
-    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
-    typ = "&op=select";
-
-
-    //console.log(link + keyMaster + typ);
-
-      fetch(link + keyMaster + typ).then(function(response){
-          return response.json();
-        }).then(function(json){
-
-          checkUserInputs(json);
-          if(json.status=="error"){
-            if(i<8){
-              i++;
-              makeUser(i);
-            }else{
-              console.log("Mer än 8st error på skapa ny användare");
-            }
-          }
-
-        }).catch(function(res){
-              console.log("8st försök men funkar fortfarande inte"+res);
-        });
-
-  }
-
-  function checkUserInputs(obj){
-    let userList = []
-    let j = "0";
-    let found=false;
-
-
-    for(i=0;i<obj.data.length;i++){
-      let userObj = JSON.parse(obj.data[i].title);
-      userList.push(userObj);
-    }
-    //console.log(userList);
-
-    for(i=0;i<userList.length;i++){
-      //console.log(userList[i].userId);
-      if(userList[i].userId== userName.value){
-
-        found= true;
-        console.log("Användar ID redan upptaget, vänligen välj ett nytt");
-
-      }
-
-    }
-
-    if(!found){
-      let closeLoggInMenu = document.getElementById("closeLoggInMenu");
-
-      //console.log(userName.value,userPassword.value,userFirstName.value,userLastName.value,userEmail.value,key);
-      if(key===""){
-        console.log("Misslykades med att skapa användare pga saknad nyckel");
-      }else{
-        let x = new User(userName.value,userPassword.value,userFirstName.value,userLastName.value,userEmail.value,key)
-        x = JSON.stringify(x);
-        console.log(x);
-
-        saveNewUser(x,0);
-
-        headUserInfo.innerHTML="Inloggad som: " + userName.value;
-        document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
-        console.log("FUnkar.. ny user upplagd!1");
-        //window.location.assign("#close");
-      }
-
-
-
-
-    }
-  }
-  /********************* Logga In  END ********************************************/
 
 
 
@@ -498,6 +530,35 @@ window.addEventListener("load", function() {
   //logInUser();
   //removeUser(15068);
    //makeNewKey();
+
+
+
+
+
+   function loggMenu(str){
+     menuText.innerHTML=str;
+    }
+
+
+ let test2 = document.getElementById("test2");
+   test2.addEventListener("click",function(){
+    let pos = -40;
+    let inter = setInterval(frame,0.5);
+    function frame(){
+      if(pos==100){
+        clearInterval(inter);
+        //userPassword.style.backgroundColor="white";
+        console.log("Test");
+      }else if(pos<100){
+        pos++;
+        userPassword.style.left = pos + "px";
+        userPassword.style.backgroundColor="rgba(237, 152, 164, 0.3)";
+      }
+    }
+
+
+  })
+
 
 
 

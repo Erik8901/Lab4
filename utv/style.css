@@ -296,7 +296,7 @@ article{
 .pop-up-loginMenu p{
   display: inline-block;
   position: relative;
-  top: 60px;
+  top: 20px;
   left: 10px;
   width: 80%;
 
@@ -309,7 +309,6 @@ article{
 }
 .pop-up-loginMenu>a>button{
   width: 30px;
-  right: 0px;
   padding: 5px;
   border-radius: 50px;
   text-decoration: none;
@@ -317,22 +316,36 @@ article{
   font-weight: 600;
   color:white;
 
+
 }
-.pop-up-loginMenu span{
-  left: 60%;
-  width: 150px;
+.pop-up-loginMenu > span{
+  top: 50px;
+  left:300px;
+  width: 200px;
   height: 150px;
   position: absolute;
 
 }
 .pop-up-loginMenu span button{
-  width: 100%;
+  width: 80%;
   padding: 10px;
-  background-color: rgb(224, 237, 78);
+  border-radius: 10px;
+  background-color: rgb(92, 92, 92);
   margin:5px;
-
+  color: white;
+}
+.pop-up-loginMenu span button:hover{
+  background-color: rgb(128, 128, 128);
 }
 
+.pop-up-Text{
+  margin-top: 20px;
+  margin-left: 40px;
+  width: 90%;
+  height: 40px;
+  color:White;
+  font-size: 1.2em;
+}
 
 .pop-up-loginMenu >a>button:hover{
   background-color: rgb(249, 93, 93);
