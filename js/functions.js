@@ -2,7 +2,7 @@
 
                      let btnTEST = document.getElementById("btnTest");
                      btnTEST.addEventListener("click", function() {
-                       getDataFromDataBase();
+                       getDataFromDataBase(0);
                      });
                 });
 
@@ -18,31 +18,37 @@
                 };
 
 
+                function getDataFromDataBase(i) {
+                    
+                    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?op=select&"
+                    
+                    fetch(link + key).then(function(response) {
+                        
+                       return response.json();
+                        
+                        }).then(function(json){
+                        
+                        
+                        console.log(json);
 
-                var  getDataFromDataBase =  function() {
-         
-                     let listBooks = document.getElementById("listBooks");
-                     listBooks.innerHTML = ""
+                        if(json.status == "error") {
+                            console.log("asdasdsadsdas")
 
-                     let req = new XMLHttpRequest();
+                            if(i < 8) {
+                                i++
+                                
+                                console.log("helo")
+                                getDataFromDataBase(i);
+                                
+                            }
+                        } else {
+                        showInUserLib(json); 
+                            
+                        }
+                }
 
-                     req.open("GET", "https://www.forverkliga.se/JavaScript/api/crud.php?op=select&" + key);
-
-                     req.send();
-                     //console.log(req.response);
-
-                     req.onreadystatechange = function() {
-
-                       if (this.readyState == 4 && this.status == 200) {
-
-                         //console.log(req.response);
-                         let obj = JSON.parse(req.response);
-                         console.log(obj);
-
-                         showInUserLib(obj);
-                       }
-                     }
-                };
+        )};
+            
 
                 function showInUserLib(obj) {
                     console.log(key);
