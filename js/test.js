@@ -34,7 +34,7 @@ window.addEventListener("load", function() {
   btnLoggIn.addEventListener("click", function() {
     logInUser(0); // logInUser -> CheckUser  -> getDataFromDataBase (functions.js) = inloggad
   });
-  /*   LOGGIN  END! */
+
 
   /********************* Logga In  ********************************************/
 
@@ -402,14 +402,16 @@ window.addEventListener("load", function() {
 
   /********************  Hämta data från Google books  **********************/
 
-  function searchGoogle(searchForStr){
+  function searchGoogle(event,searchForStr){
+    //event skickas med från addEventListener konstigt nog.. därav ligger den med här men används ej
+
     let searchStr="";
     let resultSearchBooks = document.getElementById("resultSearchBooks");
     resultSearchBooks.innerHTML="";
     let searchTitelTextInput = document.getElementById("searchTitelTextInput");
     let searchAutorTextInput = document.getElementById("searchAutorTextInput");
 
-    if(searchForStr!=""){             //om str medskickad till funktion
+    if(searchForStr!=undefined){             //om str medskickad till funktion
       searchStr =searchForStr;
       console.log(searchForStr);
     }else{
@@ -436,26 +438,45 @@ window.addEventListener("load", function() {
 
   }
 
-  function createBooks(result){
-    let resultSearchBooks = document.getElementById("resultSearchBooks");
+  /********************** Funktion för att skapa book li element *********************/
+
+  function createBooks(result,myOwnBook){
     console.log(result);
     let textsnippet ="";
-    for(i=0;i<result.items.length;i++){
+    let output ="";
+    let biblo = true;
 
+    if(myOwnBook!=undefined){
+      console.log("egen bok");
+      output = document.getElementById("listBooks");
+      biblo = false;
+      buildBook(myOwnBook);
+    }else{
+
+      output = document.getElementById("resultSearchBooks");
+      for(i=0;i<result.items.length;i++){
+        let book = {};
         x = result.items[i];
-      let description = x.volumeInfo.description;
-      let infoLink = x.volumeInfo.infoLink;
-      let bookTitel = x.volumeInfo.title
-      let searchSnippet = "Saknar beskrivande text"
-      if(x.hasOwnProperty("searchInfo")){
-        if(x.searchInfo.hasOwnProperty("textSnippet")){
-          console.log("nu funkar proterpt");
-          searchSnippet = x.searchInfo.textSnippet;
-        }
-      };
+        book.description = x.volumeInfo.description;
+        book.infoLink = x.volumeInfo.infoLink;
+        book.bookTitel = x.volumeInfo.title
+        book.searchSnippet = "Saknar beskrivande text"
+        book.Id=x.id;
+        if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
+        book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
+
+        if(x.hasOwnProperty("searchInfo")){
+          if(x.searchInfo.hasOwnProperty("textSnippet")){
+            book.searchSnippet = x.searchInfo.textSnippet;
+          }
+        };
+
+        buildBook(book);
+      }
+    }
 
 
-
+    function buildBook(book){
       let list = document.createElement("li",{id:"books"});
       let img = document.createElement("img");
       let button  = document.createElement("button");
@@ -464,53 +485,84 @@ window.addEventListener("load", function() {
       div.className="books";
 
 
-      span.innerHTML="<br>"+x.id;
-      button.className="btnAddToShell";
+      span.innerHTML="<br>"+book.Id;
+      if (biblo) {
+        button.className="btnAddToShell";
+      }else {
+
+        button.className="knappTabort";
+      }
       /*button.innerHTML="Lägg till i biblo!";*/
 
-      if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
-      img.src=x.volumeInfo.imageLinks.smallThumbnail;
-
-
+      img.src=book.imgSrc;
       list.appendChild(div);
       div.appendChild(img);
-      div.innerHTML+="<br><a href="+infoLink +" target=_blank><h3>" + bookTitel +"</h3></a><br>"+ searchSnippet + "<br><br>"+"<h4>Sammanfattning: </h4><br>"+ description;
+      div.innerHTML+="<br><a href="+book.infoLink +" target=_blank><h3>" + book.bookTitel +"</h3></a><br>"+ book.searchSnippet + "<br><br>"+"<h4>Sammanfattning: </h4><br>"+ book.description;
       div.appendChild(span);
-      resultSearchBooks.appendChild(list);
+      output.appendChild(list);
       list.appendChild(button);
 
 
-      let btnAddToShell = document.getElementsByClassName("btnAddToShell")[i];
-      btnAddToShell.addEventListener("click",function(){
-        let li = event.target.parentElement;
-        let uniqueBook = li.querySelector("span").innerHTML;
-
-        addBookToLibarary(uniqueBook,0);
 
 
-      })
+
+
+      if(biblo){
+
+        let btnAddToShell = document.getElementsByClassName("btnAddToShell")[i];
+        btnAddToShell.addEventListener("click",function(){
+          let li = event.target.parentElement;
+          let uniqueBook = li.querySelector("span").innerHTML;
+          console.log("hej");
+
+          let p = new Promise(function(){
+              return JSON.stringify(book);
+            }).catch(function(){
+              console.log("nu gick de fel");
+            });
+
+            addBookToLibarary(p,0);
+
+        });
+      }else{
+        console.log("antal böecker: "+userBooks.data.length);
+        let numberOfBooks = userBooks.data.length
+        let btnAddToShell = document.getElementsByClassName("knappTabort")[numberOfBooks];
+        btnAddToShell.addEventListener("click",function(){
+          console.log(event.target.parentElement);
+          let li = event.target.parentElement;
+          let uniqueBook = li.querySelector(".uniqueBook").innerHTML;
+
+          removeBook(uniqueBook, li,0);
+          console.log("remove knapp tillagd");
+        })
+
+
+      };
 
     }
+    /*********************     skapa li bok elemnt END ***********************/
 
     mouseLeaveFunction();
 
 
+    /********************** lägg bok i databasen ****************************/
 
     function addBookToLibarary(uniqueBook,i){
-
+      console.log("add to libarary "+uniqueBook);
       let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
       typ = "&op=insert";
       title = "&title="+uniqueBook;
       author = "&author=not used";
 
-        fetch(link + key + typ + title + author).then(function(response){
+        fetch(link +"key="+ key + typ + title + author).then(function(response){
             return response.json();
           }).then(function(json){
             console.log(json);
             if(json.status=="error"){
               if(i<8){
                 i++;
-                addBookToLibarary(i);
+                addBookToLibarary(uniqueBook,i);
               }else{
                 console.log(json);
               }
@@ -595,6 +647,38 @@ window.addEventListener("load", function() {
   /********************* Remove user END ************************************/
 
 
+
+
+  /********************  MakeOwnBook Start **********************************/
+
+  function makeOwnBook(){
+    let a = document.getElementById("myBookid").value;
+    let b = document.getElementById("myBookTitle").value;
+    let c = document.getElementById("myBookAuthor").value;
+    let d = document.getElementById("myBookLink").value;
+    let e = document.getElementById("myBoookDescription").value;
+    let f = document.getElementById("myBookSearchSnippet").value;
+    let g = document.getElementById("myBookImgSrc").value;
+    let h = document.getElementById("myBookServer").value;
+
+    let newBook = new CreateBooks(a,b,c,d,e,f,g,h);
+
+    console.log(newBook);
+    createBooks(false,newBook);
+
+  }
+
+
+
+
+
+
+  let btnMakeOwnBook = document.getElementById("btnMakeOwnBook");
+  btnMakeOwnBook.addEventListener("click",function(){
+    console.log("make own book");
+    makeOwnBook();
+  })
+
   let btnSearchGoogle = document.getElementById("btnSearchGoogle");
   btnSearchGoogle.addEventListener("click",searchGoogle);
 
@@ -615,7 +699,9 @@ window.addEventListener("load", function() {
   //logInUser();
   //removeUser(15068);
    //makeNewKey();
-  searchGoogle("liza marklund");
+
+
+  //searchGoogle("liza marklund");
 
 
 
@@ -662,7 +748,7 @@ window.addEventListener("load", function() {
 
 });
 
-  /************** Mouse leave scroll top funktion ***********/
+/************** Mouse leave scroll top funktion ***********/
   function mouseLeaveFunction() {
     let books = document.getElementsByClassName("books");
 
@@ -676,8 +762,7 @@ window.addEventListener("load", function() {
 
   }
 
-  /***********END Mouser leave scroll top funktion END ******/
-
+/***********END Mouser leave scroll top funktion END ******/
 
 
 
@@ -693,26 +778,18 @@ class User {
     this.key=myKey;
   }
 
-}
-
-
-
+};
 
 class CreateBooks{
-  constructor(myBookObj,myServer){
-    this.BookId= myBookObj.id;
-    this.BookTitel = myBookObj.volumeInfo.infoLink;
-
-  }
-  getAllBookInfo(){
-      fetch("https://www.googleapis.com/books/v1/volumes?q=id="+this.BookId).then(function(response){
-      return response.json();
-    }).then(function(json){
-        console.log(json);
-        return JSON.stringify(json);
-    }).then(function(str){
-      console.log(str);
-    });
+  constructor(myBookId,myBookTitel,myBookAuthor,myBookLink,myBookDescription,myBookSearchSnippet,myBookImgSrc,myServer){
+    this.id= myBookId;
+    this.titel = myBookTitel;
+    this.author = myBookAuthor;
+    this.infoLink = myBookLink;
+    this.description = myBookDescription;
+    this.searchSnippet = myBookSearchSnippet;
+    this.imgSrc = myBookImgSrc;
+    this.server = myServer;
 
   }
 

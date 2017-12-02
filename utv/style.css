@@ -197,6 +197,36 @@ article{
 
 
 
+.knappTabort{
+  background-color: #ba0636;
+  color:#fafafa;
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  font-size: 1em;
+  font-weight: 600;
+  position: absolute;
+  top: 460px;
+  right: 5px;
+}
+.knappTabort:after{
+  content:"+";
+  padding:2px;
+}
+.knappTabort:focus{
+  outline:none;
+}
+
+
+
+
+
+
+
+
+
+
+
 .btnAddToShell{
   background-color: #207cca;
   color:#fafafa;
