@@ -288,22 +288,24 @@ window.addEventListener("load", function() {
 
  /* Navigeringsbar visa artikel  *************************************/
  let navBar = document.getElementsByClassName("navBar");
- let article  = document.getElementsByClassName('article')
+ let article  = document.getElementsByClassName("article");
  article[0].style.display="block"; /* Denna skall bort med css*/
 
   let showArticle = function(event){
+    parent= (event.target.parentElement);
 
     for(i=0;i<article.length;i++){
-      if(event.target==navBar[i]){
+      if(parent.children[i]!=event.target){
+          article[i].style.display="none";
+          navBar[i].className="navBar";
+      }else{
+        navBar[i].className="navBar navBarSelected"
         article[i].style.display="block";
-        navBar[i].className="navBar navBarSelected";
-
-      }else {
-        article[i].style.display="none";
-        navBar[i].className="navBar";
       }
     }
+
   }
+
 
   for(i=0;i<navBar.length;i++){
     navBar[i].addEventListener("click",showArticle);
@@ -514,7 +516,7 @@ window.addEventListener("load", function() {
         btnAddToShell.addEventListener("click",function(){
           let li = event.target.parentElement;
           let uniqueBook = li.querySelector("span").innerHTML;
-          
+
           addBookToLibarary(uniqueBook,0);
           /*
           let p =  new Promise(function(succeed,fail){
@@ -739,7 +741,7 @@ window.addEventListener("load", function() {
    //makeNewKey();
 
 
-  //searchGoogle("liza marklund");
+   searchGoogle("","liza marklund");
 
 
 
@@ -771,8 +773,19 @@ window.addEventListener("load", function() {
 
 
 
-
-
+    let searchParameters = document.getElementsByClassName("searchParameters")[0];
+    let btnConfigSearch = document.getElementById("btnConfigSearch");
+    let searchConfigExpand = false;
+    btnConfigSearch.addEventListener("click",function(event){
+      if (!searchConfigExpand){
+        searchParameters.style.height="400px";
+        searchConfigExpand=true;
+      }else{
+        searchParameters.style.height="80px";
+        searchConfigExpand=false;
+      }
+      console.log(searchParameters);
+    });
 
 
 

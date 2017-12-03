@@ -9,6 +9,8 @@
     <script src="../js/test.js" type="text/javascript"></script>
     <script src="../js/functions.js" type="text/javascript"></script>
   <link href="https://fonts.googleapis.com/css?family=Arya" rel="stylesheet">
+  <link rel="stylesheet" href="../CSS/animation.css">
+
 </head>
 <body>
 
@@ -49,47 +51,67 @@
         </div>
       </div>
     </header>
-    <nav>
-      <div class="navBar navBarSelected" name="test">Home</div>
-      <div class="navBar">About</div>
-      <div class="navBar">Contact</div>
-      <div class="navBar">User Liberary</div>
-      <div class="navBar">User</div>
 
-    </nav>
 
-    <aside>aside</aside>
+    <aside>
+      <nav>
+        <ul>
+          <li class="navBar navBarSelected"><i class="fa fa-home fa-3x faa-wrench animated-hover" aria-hidden="true"></i></li>
+          <li class="navBar">About</li>
+          <li class="navBar">Contact</li>
+          <li class="navBar">User Libarary</li>
+          <li class="navBar">User</li>
+        </ul>
+
+      </nav>
+    </aside>
     <footer>footer</footer>
 
 
     <article class="article">
+
       <div class="container-flex">
+
         <div class="searchParameters">
           <div>
             <input id="searchTitelTextInput" type="text" placeholder="Titel eller ID" name="" value="">
             <input id="searchAutorTextInput" type="text" placeholder="Författare">
             <button id="btnSearchGoogle" type="button" name="button">Sök</button>
+             <span id="btnConfigSearch"><i class="fa fa-cog fa-2x" aria-hidden="true"></i></button></span>
+            <div class="advancedSearch">
+              <input id="searchHowManyitem" type="text" name="" value="0">
+              <input id="searchNext" type="text" name="" value="0">
+            </div>
           </div>
+
         </div>
         <div>
 
           <ul id="resultSearchBooks">
           </ul>
 
-        </div>
 
-      </div>
+
+        </div>
+        </div>
     </article>
+
+
     <article class="article">
       <div class="container">
         Artikel 2
       </div>
     </article>
+
+
+
     <article class="article">
       <div class="container-flex">
-
+        artikel 3
       </div>
     </article>
+
+
     <article class="article userLib">
         <div class="container-flex">
             <ul id="listBooks">

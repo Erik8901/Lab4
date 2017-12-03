@@ -39,6 +39,7 @@ header{
   background-color: rgba(195, 193, 191, 0.7);
   border: 1px rgb(135, 135, 135) solid;
   border-radius: 10px;
+
 }
 
 .header-right{
@@ -50,29 +51,24 @@ header{
 }
 nav{
   margin: 0px 0px;
-  grid-column: 2/13;
-  grid-row: 2/2;
   z-index: 100;
-  height: 46px;
   background-color: rgb(54, 52, 51);
-  padding: 10px 10px 0px 10px;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-
 }
 .navBar{
-  display: inline-block;
+  display: block;
+  width: 100%;
+  height: 80px;
+  padding: 20px ;
   text-align: center;
-  padding: 14px 16px;
-  background-color: rgb(136, 136, 136);
-  box-shadow: inset 0px -8px rgba(120, 120, 120,0.5);
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
+  background-color: rgb(60, 59, 59);
+  color: white;
+
 }
 .navBarSelected{
   border: 0px;
   box-shadow: none;
-
   color: rgba(69, 29, 0, 0.8);
   color: gold;
 }
@@ -81,10 +77,14 @@ nav{
   cursor: pointer;
 
 }
+.navBar:nth-child(1){
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
 aside{
   grid-column: 1/2;
   grid-row: 2/11;
-  background-color: rgba(195, 193, 191, 0.7);
+  background-color: rgb(60, 59, 59);
   border: 1px rgb(135, 135, 135) solid;
   border-radius: 10px;
 }
@@ -97,16 +97,16 @@ article{
   border-radius: 10px;
 
 }
+.article{
+  display: none;
+}
+
 footer{
   grid-column: 1/13;
   grid-rows:11/11;
   background-color: rgba(195, 193, 191, 0.7);
   border: 1px rgb(135, 135, 135) solid;
   border-radius: 10px;
-}
-
-article{
-  display:none;
 }
 
 #loggOut{
@@ -228,7 +228,7 @@ article{
 
 
 .btnAddToShell{
-  background-color: #207cca;
+  background-color: #555555;
   color:#fafafa;
   width: 30px;
   height: 30px;
@@ -246,16 +246,23 @@ article{
 .btnAddToShell:focus{
   outline:none;
 }
+btnAddToShell:active{
+  color:gold;
+}
 .searchParameters{
+  margin:0 0;
   flex: 1 1 100%;
-  border: 1px solid black;
-  height: 100px;
+  height: 80px;
+  overflow: hidden;
   background-color: rgba(209, 209, 209, 0.42);
 }
+
+
 .searchParameters div{
   padding: 5px;
   width: 100%;
   margin: 0 auto;
+
 }
 .searchParameters>div>*{
   padding: 10px;
@@ -269,19 +276,34 @@ article{
  outline: none;
  box-shadow: 0 0 8px #508cdb;
 }
+
+.searchParameters span{
+  color: #555555;
+}
+.searchParameters span:hover{
+  color: rgba(209, 209, 209, 0.42);
+
+}
+
+.advancedSearch input{
+  width: 50px;
+}
 #btnSearchGoogle{
   border-radius: 10px;
   padding:6px 15px;
-  background-color:#207cca;
+  background-color:#555555;
   color:#fafafa;
 }
 #btnSearchGoogle:focus{
   outline:none;
 }
 #btnSearchGoogle:hover{
-  background-color: #53a1e3;
-  color: gold;
+  background-color: #a1a1a1;
 
+}
+#btnSearchGoogle:active{
+
+  color: gold;
 }
 
 
@@ -410,3 +432,8 @@ article{
   100%{transform: translateY(650px)}
 }
 /************* Login page END *******************/
+
+
+
+
+/******* Animation *************************/
