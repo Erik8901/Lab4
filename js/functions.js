@@ -51,6 +51,7 @@
 
 
                 function showInUserLib(obj) {
+                  listBooks.innerHTML="";
                     console.log(key);
 
                  for (let i = 0; i < obj.data.length; i++) {
@@ -61,7 +62,7 @@
            let div = document.createElement("div");
            div.className = "books";
            btnRemoveBook.className = "knappTabort";
-           btnRemoveBook.innerHTML = "Click to Remove Book";
+           //btnRemoveBook.innerHTML = "Click to Remove Book";
 
 
            div.innerHTML = "<p class=uniqueBook>" + obj.data[i].id + "</p>" + "<p>" + obj.data[i].title + "</p>" + "<p>" + obj.data[i].author + "</p>";

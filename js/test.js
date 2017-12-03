@@ -441,7 +441,7 @@ window.addEventListener("load", function() {
   /********************** Funktion för att skapa book li element *********************/
 
   function createBooks(result,myOwnBook){
-    console.log(result);
+    console.log(result+ myOwnBook);
     let textsnippet ="";
     let output ="";
     let biblo = true;
@@ -477,6 +477,7 @@ window.addEventListener("load", function() {
 
 
     function buildBook(book){
+      console.log(biblo);
       let list = document.createElement("li",{id:"books"});
       let img = document.createElement("img");
       let button  = document.createElement("button");
@@ -492,7 +493,7 @@ window.addEventListener("load", function() {
 
         button.className="knappTabort";
       }
-      /*button.innerHTML="Lägg till i biblo!";*/
+
 
       img.src=book.imgSrc;
       list.appendChild(div);
@@ -513,22 +514,26 @@ window.addEventListener("load", function() {
         btnAddToShell.addEventListener("click",function(){
           let li = event.target.parentElement;
           let uniqueBook = li.querySelector("span").innerHTML;
-          console.log("hej");
-
-          let p = new Promise(function(){
-              return JSON.stringify(book);
-            }).catch(function(){
-              console.log("nu gick de fel");
+          
+          addBookToLibarary(uniqueBook,0);
+          /*
+          let p =  new Promise(function(succeed,fail){
+              book = JSON.stringify(book);
+              succeed(book);
+              fail("Något gick fel");
+            }).then(function(json){
+              addBookToLibarary(json,0);
+            }).catch(function(fail){
+              console.log(fail);
             });
-
-            addBookToLibarary(p,0);
+          */
 
         });
       }else{
         console.log("antal böecker: "+userBooks.data.length);
         let numberOfBooks = userBooks.data.length
-        let btnAddToShell = document.getElementsByClassName("knappTabort")[numberOfBooks];
-        btnAddToShell.addEventListener("click",function(){
+        let knappTaBort = document.getElementsByClassName("knappTabort")[numberOfBooks];
+        knappTaBort.addEventListener("click",function(){
           console.log(event.target.parentElement);
           let li = event.target.parentElement;
           let uniqueBook = li.querySelector(".uniqueBook").innerHTML;
@@ -549,11 +554,10 @@ window.addEventListener("load", function() {
     /********************** lägg bok i databasen ****************************/
 
     function addBookToLibarary(uniqueBook,i){
-      console.log("add to libarary "+uniqueBook);
       let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
       typ = "&op=insert";
-      title = "&title="+uniqueBook;
-      author = "&author=not used";
+      title = "&title="+(uniqueBook);
+      author = "&author="+"not used";
 
         fetch(link +"key="+ key + typ + title + author).then(function(response){
             return response.json();
@@ -567,6 +571,7 @@ window.addEventListener("load", function() {
                 console.log(json);
               }
             }else{
+              console.log("add to libarary "+ uniqueBook);
               console.log("sparad");
             }
           }).catch(function(res){
@@ -623,6 +628,37 @@ window.addEventListener("load", function() {
   /********************* Hämta Alla användare END *****************************/
 
 
+  /********************* Hämta EN användares Biblo *********************************/
+  function getOneUser(x,i){
+
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    typ = "&op=select";
+
+
+      fetch(link + x + typ).then(function(response){
+          return response.json();
+        }).then(function(json){
+          if(json.status=="error"){
+            if(i<8){
+              i++;
+              getOneUser(x,i);
+            }else{
+              console.log(json);
+            }
+          }else{
+            console.log(json);
+
+          }
+        }).catch(function(res){
+          console.log("Efter 8st försök men går fortfarande inte: "+res);
+        });
+
+  };
+
+
+
+
+  /********************* Hämta Alla användare END *****************************/
 
 
 
@@ -696,6 +732,8 @@ window.addEventListener("load", function() {
   //saveNewUser(johanStr);
   i=0;
   getAllUsers(i);
+  getOneUser("key=wWTnh",0);
+
   //logInUser();
   //removeUser(15068);
    //makeNewKey();

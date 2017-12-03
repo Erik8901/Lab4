@@ -210,7 +210,7 @@ article{
   right: 5px;
 }
 .knappTabort:after{
-  content:"+";
+  content:"x";
   padding:2px;
 }
 .knappTabort:focus{
