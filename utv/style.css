@@ -436,4 +436,34 @@ btnAddToShell:active{
 
 
 
-/******* Animation *************************/
+/******* userSettings *************************/
+
+.userSettings{
+
+
+  text-align: right;
+  min-width: 250px;
+  max-width: 300px;
+  padding: 10px;
+  margin: 0 auto;
+
+}
+.userSettings >label{
+  display:block;
+  margin: 10px;
+
+}
+.userSettings > label >input{
+  margin-left: 10px;
+  border-radius: 5px;
+
+}
+.userSettings button{
+  padding: 10px;
+  background-color: rgb(139, 139, 139);
+
+}
+
+#settingId,#settingUserKey,#settingUpdated{
+  background-color: rgb(204, 204, 204);
+}

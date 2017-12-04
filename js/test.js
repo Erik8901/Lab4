@@ -43,7 +43,7 @@ window.addEventListener("load", function() {
       typ = "&op=select";
 
 
-    //console.log(link + keyMaster + typ);
+    console.log(link + keyMaster + typ);
 
       fetch(link + keyMaster + typ).then(function(response){
           //console.log("hej");
@@ -64,7 +64,6 @@ window.addEventListener("load", function() {
             checkUser(json,0);
           }
         }).catch(function(res){
-          console.log("detta skrivs ut");
           console.log("8st försök men funkar fortfarande inte"+res);
         });
 
@@ -75,11 +74,13 @@ window.addEventListener("load", function() {
     let j = "0";
     let found = false;
     let anvFound = false;
-
+    console.log(obj);
     for(i=0;i<obj.data.length;i++){
       let userObj = JSON.parse(obj.data[i].title);
       userList.push(userObj);
     }
+
+
     for(i=0;i<userList.length;i++){
 
       if(userList[i].userId==userName.value){
@@ -91,7 +92,7 @@ window.addEventListener("load", function() {
         }
       }
     }
-
+    console.log("unikt id"+obj.data[j].id);
     if(anvFound){
       if(!found){
         //användare hittade men felakigt lösenord
@@ -108,6 +109,11 @@ window.addEventListener("load", function() {
       loggMenu("inloggad som "+ userList[j].userId);
       userLoggedIn.push(userList[j]);
       key = userList[j].key;
+      console.log(obj.data[j].updated);
+      userLoggedIn.id = obj.data[j].id;
+      userLoggedIn.updated = obj.data[j].updated;
+
+      loadSettings();
       headUserInfo.innerHTML="Inloggad som: " + userList[j].userId;
       document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
 
@@ -274,11 +280,77 @@ window.addEventListener("load", function() {
   /********************* Skapa Användare END **********************************/
 
 
+  /**********************  lägg upp info om aktuell användare *****************/
+  let settingUserName=document.getElementById("settingUserName");
+  let settingUserPassword=document.getElementById("settingUserPassword");
+  let settingFirstName=document.getElementById("settingFirstName");
+  let settingLastName=document.getElementById("settingLastName");
+  let settingUserEmail=document.getElementById("settingUserEmail");
+  let settingUserKey=document.getElementById("settingUserKey");
+  let settingUpdated=document.getElementById("settingUpdated");
+  let settingId=document.getElementById("settingId");
+
+  function loadSettings(){
+    settingUserName.value= userLoggedIn[0].userId;
+    settingUserPassword.value=userLoggedIn[0].password;
+    settingFirstName.value = userLoggedIn[0].firstName;
+    settingLastName.value = userLoggedIn[0].lastName;
+    settingUserEmail.value = userLoggedIn[0].email;
+    settingUserKey.value = userLoggedIn[0].key;
+    settingUpdated.value = userLoggedIn.updated;
+    settingId.value = userLoggedIn.id;
 
 
+  }
 
 
+  function updateUserSettings(strObj,i){
 
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+
+    id= "&id=" + userLoggedIn.id
+    typ = "&op=update";
+    title = "&title="+ strObj;
+    author="&author=not used";
+    console.log(link + keyMaster + typ + id + title + author);
+
+      fetch(link + keyMaster + typ + id + title + author).then(function(response){
+            return response.json();
+        }).then(function(json){
+          if(json.status=="error"){
+            if(i<8){
+              i++;
+              updateUserSettings(strObj,i);
+            }else{
+              loggMenu("Misslyckades att updatera användare : "+ res);
+            }
+          }else{
+            loggMenu("Användare updaterad!");
+            console.log("uppdaterad!");
+            console.log(json);
+          }
+      }).catch(function(res){
+        loggMenu("Misslyckades att updatera användare");
+        console.log("användaren blev ej updatera felkod: " + res);
+      });
+  }
+
+  let btnsettingUpdated = document.getElementById("btnsettingUpdated");
+  btnsettingUpdated.addEventListener("click",function(){
+    userLoggedIn[0].userId = settingUserName.value;
+    userLoggedIn[0].password = settingUserPassword.value;
+    userLoggedIn[0].firstName = settingFirstName.value;
+    userLoggedIn[0].lastName = settingLastName.value;
+    userLoggedIn[0].email = settingUserEmail.value;
+    //settingUserKey.value = userLoggedIn[0].key;
+    //settingUpdated.value = userLoggedIn.updated;
+    //settingId.value = userLoggedIn.id;
+
+
+    userLoggedInStr = JSON.stringify(userLoggedIn[0]);
+    console.log(userLoggedInStr);
+    updateUserSettings(userLoggedInStr,0)
+  });
 
 
 
@@ -449,7 +521,7 @@ window.addEventListener("load", function() {
     let output ="";
     let biblo = true;
 
-      
+
     if(myOwnBook!=undefined){
       console.log("egen bok");
       output = document.getElementById("listBooks");
@@ -740,21 +812,21 @@ window.addEventListener("load", function() {
 
   //logInUser();
   //removeUser(15068);
-   //makeNewKey();
+  //makeNewKey();
 
 
-   searchGoogle("","liza marklund");
+  //searchGoogle("","liza marklund");
 
 
 
 
-   function loggMenu(str){
-     menuText.innerHTML=str;
-    }
+  function loggMenu(str){
+    menuText.innerHTML=str;
+  }
 
 
- let test2 = document.getElementById("test2");
- test2.addEventListener("click",function(){
+  let test2 = document.getElementById("test2");
+    test2.addEventListener("click",function(){
     removebb();
   });
   /* test2.addEventListener("click",function(){
@@ -771,23 +843,23 @@ window.addEventListener("load", function() {
         userPassword.style.backgroundColor="rgba(237, 152, 164, 0.3)";
       }
     }
-    */
+  */
 
 
 
-    let searchParameters = document.getElementsByClassName("searchParameters")[0];
-    let btnConfigSearch = document.getElementById("btnConfigSearch");
-    let searchConfigExpand = false;
-    btnConfigSearch.addEventListener("click",function(event){
-      if (!searchConfigExpand){
-        searchParameters.style.height="400px";
-        searchConfigExpand=true;
-      }else{
-        searchParameters.style.height="80px";
-        searchConfigExpand=false;
-      }
+  let searchParameters = document.getElementsByClassName("searchParameters")[0];
+  let btnConfigSearch = document.getElementById("btnConfigSearch");
+  let searchConfigExpand = false;
+  btnConfigSearch.addEventListener("click",function(event){
+    if (!searchConfigExpand){
+      searchParameters.style.height="400px";
+      searchConfigExpand=true;
+    }else{
+      searchParameters.style.height="80px";
+      searchConfigExpand=false;
+    }
       console.log(searchParameters);
-    });
+  });
 
 
 
