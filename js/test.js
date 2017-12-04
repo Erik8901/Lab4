@@ -449,6 +449,7 @@ window.addEventListener("load", function() {
     let output ="";
     let biblo = true;
 
+      
     if(myOwnBook!=undefined){
       console.log("egen bok");
       output = document.getElementById("listBooks");
