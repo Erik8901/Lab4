@@ -106,6 +106,7 @@ window.addEventListener("load", function() {
     if(found){ //rätt lösenord och användare.. hämta data
       //let closeLoggInMenu = document.getElementById("closeLoggInMenu");
       loggMenu("inloggad som "+ userList[j].userId);
+      userLoggedIn.push(userList[j]);
       key = userList[j].key;
       headUserInfo.innerHTML="Inloggad som: " + userList[j].userId;
       document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
