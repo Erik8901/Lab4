@@ -69,7 +69,12 @@
         </div>
       </nav>
     </aside>
-    <footer>footer</footer>
+    <footer>
+        <div class="map">
+					<script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script><div style='overflow:hidden;height:370px;width:100%;'><div id='gmap_canvas' style='height:370px;width:100%;'></div><div><small><a href="https://embedgooglemaps.com/en/how-to-embed-google-maps-into-your-website/">			
+					</a></small></div><div><small><a href="https://ww.premiumlinkgenerator.com/gigapeta-info">Premium linkGenerator</a></small></div><style>#gmap_canvas img{max-width:none!important;background:none!important}</style></div><script type='text/javascript'>function init_map(){var myOptions = {zoom:10,center:new google.maps.LatLng(57.6834228,12.000160999999935),mapTypeId: google.maps.MapTypeId.ROADMAP};map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(57.6834228,12.000160999999935)});infowindow = new google.maps.InfoWindow({content:'<strong>Our Library</strong><br>Mölndalsvägen 77, 412 63 Göteborg<br>'});google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker);});infowindow.open(map,marker);}google.maps.event.addDomListener(window, 'load', init_map);</script>
+			</div>
+      </footer>
 
 
     <article class="article">
@@ -102,8 +107,9 @@
 
 
     <article class="article">
-      <div class="container">
-        Artikel 2
+      <div class="container-flex">
+        <h3>Om detta bibliotek:</h3>
+          </br><p>Detta är vårat "imdb" för böcker som vi har gjort i samband med javascript2 kursen. Vi har byggt en sida med loginfunktion där användaren har ett eget personligt bibliotek med böcker som enbart den inloggade kan se samt lägga till och ta bort dem ut sitt bibliotek. Böckerna som användaren kan välja från är tagna från Googlebooks api som vi använt oss av. Vi har även en sök funktion där man kan söka på författare eller titel på boken, och man får fram en lista på 10 sökträffar från Googlebooks.</p>
       </div>
     </article>
 
@@ -111,8 +117,14 @@
 
     <article class="article">
       <div class="container-flex">
-        artikel 3
-      </div>
+        
+          <address>
+            <p><b>Email: <a href="info@ourlibrary.com">Our Library</a>
+            </br>Visit us at: 
+            </br>Ourlibrary.com
+            </br>EC Utbildning, Mölndalsvägen 81 
+            </br>412 63 Götborg</b></p></address>
+        </div>
     </article>
 
 
