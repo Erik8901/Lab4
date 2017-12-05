@@ -1,0 +1,8 @@
+
+kvar att fixa: 
+
+- utöka sök kriterierna, välja antal träffa samt visa antal träffar totalt.
+- när man scrollar ner skall nästa söksida med träffar visas.
+- loggar in så skall -> meny rensas.
+- hamburgermeny på små telefoner
+- 
