@@ -30,7 +30,7 @@ body>.container{
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  
+
 }
 
 .contact {
@@ -40,15 +40,13 @@ body>.container{
 
 
 
-
-
-p {
+.info p {
     margin-top: 10px;
     color: white;
     text-align: left;
 }
 
-h3 {
+.info h3 {
     color: white;
 }
 
@@ -115,10 +113,11 @@ article{
   padding-top: 70px;
   grid-column: 2/13;
   grid-row: 1/11;
-  background-color: rgb(54, 52, 51);
+  background-color: rgba(213, 213, 213, 0.88);
   border: 1px rgb(135, 135, 135) solid;
   border-radius: 10px;
   opacity: 0.9;
+
 
 }
 .article{
@@ -145,6 +144,9 @@ footer{
   background-color: rgb(224, 48, 178);
   padding: 5px;
   display: none;
+  border-radius: 5px;
+  margin: 10px auto;
+  
 }
 #loggOut:hover{
   background-color: rgb(209, 209, 209);
@@ -232,15 +234,6 @@ footer{
 .knappTabort:focus{
   outline:none;
 }
-
-
-
-
-
-
-
-
-
 
 
 .btnAddToShell{

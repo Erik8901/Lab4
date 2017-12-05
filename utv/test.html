@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://use.fontawesome.com/4e877af7f8.js"></script>
+
+    <link rel="stylesheet" href="../font-awesome/css/font-awesome.min.css">
     <script src="../js/test.js" type="text/javascript"></script>
     <script src="../js/functions.js" type="text/javascript"></script>
   <link href="https://fonts.googleapis.com/css?family=Arya" rel="stylesheet">
@@ -61,9 +62,10 @@
           <div>
             <a href="#pop-up"><i class="fa fa-user-circle fa-2x" style="color:rgb(142, 0, 0)" aria-hidden="true"></i></a>
             <span id="headUserInfo">Ej inloggad</span>
-            <ul id="profileMenu">
+            <!--<ul id="profileMenu">
               <li id="loggOut">Logga ut</li>
-            </ul>
+            </ul> -->
+            <button id="loggOut" type="button" name="button">Logga ut</button>
 
           </div>
         </div>
@@ -71,7 +73,7 @@
     </aside>
     <footer>
         <div class="map">
-					<script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script><div style='overflow:hidden;height:370px;width:100%;'><div id='gmap_canvas' style='height:370px;width:100%;'></div><div><small><a href="https://embedgooglemaps.com/en/how-to-embed-google-maps-into-your-website/">			
+					<script src='https://maps.googleapis.com/maps/api/js?v=3.exp'></script><div style='overflow:hidden;height:370px;width:100%;'><div id='gmap_canvas' style='height:370px;width:100%;'></div><div><small><a href="https://embedgooglemaps.com/en/how-to-embed-google-maps-into-your-website/">
 					</a></small></div><div><small><a href="https://ww.premiumlinkgenerator.com/gigapeta-info">Premium linkGenerator</a></small></div><style>#gmap_canvas img{max-width:none!important;background:none!important}</style></div><script type='text/javascript'>function init_map(){var myOptions = {zoom:10,center:new google.maps.LatLng(57.6834228,12.000160999999935),mapTypeId: google.maps.MapTypeId.ROADMAP};map = new google.maps.Map(document.getElementById('gmap_canvas'), myOptions);marker = new google.maps.Marker({map: map,position: new google.maps.LatLng(57.6834228,12.000160999999935)});infowindow = new google.maps.InfoWindow({content:'<strong>Our Library</strong><br>Mölndalsvägen 77, 412 63 Göteborg<br>'});google.maps.event.addListener(marker, 'click', function(){infowindow.open(map,marker);});infowindow.open(map,marker);}google.maps.event.addDomListener(window, 'load', init_map);</script>
 			</div>
       </footer>
@@ -117,12 +119,12 @@
 
     <article class="article">
       <div class="container-flex">
-        
+
           <address>
             <p><b>Email: <a href="info@ourlibrary.com">Our Library</a>
-            </br>Visit us at: 
+            </br>Visit us at:
             </br>Ourlibrary.com
-            </br>EC Utbildning, Mölndalsvägen 81 
+            </br>EC Utbildning, Mölndalsvägen 81
             </br>412 63 Götborg</b></p></address>
         </div>
     </article>

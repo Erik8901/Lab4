@@ -119,10 +119,10 @@ window.addEventListener("load", function() {
       headUserInfo.innerHTML=userList[j].userId;
       document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
 
+      loggOut.style.display="block";
+      window.location.assign("#close");
 
       getDataFromDataBase(0);
-      window.location.assign("#close");
-      loggOut.style.display="block";
 
 
     }
@@ -492,6 +492,8 @@ window.addEventListener("load", function() {
 
 
   /*******************  Logga Ut Användare ***********************************/
+
+
     loggOut.addEventListener("click",function(event){
       if (key!==""){
         headUserInfo.innerHTML="Ej Inloggad";
