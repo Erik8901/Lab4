@@ -52,6 +52,8 @@ body>.container{
 
 
 
+
+
 /*
 header{
   grid-column: 1/13;
@@ -120,8 +122,23 @@ article{
 
 
 }
+
 .article{
   display: none;
+}
+
+
+
+.Us {
+    margin-top: 30px;
+}
+
+#map {
+        height: 700px;
+        width: 700px;
+        opacity: 1;
+        margin-top: 30px;
+        
 }
 
 footer{
