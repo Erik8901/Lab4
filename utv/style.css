@@ -13,7 +13,7 @@ body{
 }
 
 body>.container{
-  margin: 10px 10%;
+  margin: 3% 5%;
 }
 
 .container{
@@ -33,6 +33,7 @@ body>.container{
 
 
 }
+/*
 header{
   grid-column: 1/13;
   grid-row: 1/1;
@@ -49,6 +50,7 @@ header{
   display: block;
   opacity: 1;
 }
+*/
 nav{
   margin: 0px 0px;
   z-index: 100;
@@ -83,7 +85,7 @@ nav{
 }
 aside{
   grid-column: 1/2;
-  grid-row: 2/11;
+  grid-row: 1/11;
   background-color: rgb(60, 59, 59);
   border: 1px rgb(135, 135, 135) solid;
   border-radius: 10px;
@@ -91,7 +93,7 @@ aside{
 article{
   padding-top: 70px;
   grid-column: 2/13;
-  grid-row: 2/11;
+  grid-row: 1/11;
   background-color: rgba(195, 193, 191, 0.7);
   border: 1px rgb(135, 135, 135) solid;
   border-radius: 10px;
@@ -109,30 +111,21 @@ footer{
   border-radius: 10px;
 }
 
+.userOnNavBar{
+  background-color: rgb(60, 59, 59);
+  color: white;
+  text-align: center;
+  margin-top: 80px;
+}
 #loggOut{
-  border: 2px rgb(153, 3, 3) solid;
-  padding: 5px 10px;
-  background-color: rgb(249, 93, 93);
-  border-radius: 10px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  margin-top: 30px;
+  background-color: rgb(224, 48, 178);
+  padding: 5px;
+  display: none;
 }
 #loggOut:hover{
-  background-color: rgb(195, 13, 13);
+  background-color: rgb(209, 209, 209);
 }
-
-#profileMenu{
-  display:none;
-}
-.header-right:hover #profileMenu{
-  display: block;
-  cursor: pointer;
-}
-.header-right ul{
- list-style-type: none;
-}
-
 
 .books{
   width: 95%;
@@ -466,4 +459,50 @@ btnAddToShell:active{
 
 #settingId,#settingUserKey,#settingUpdated{
   background-color: rgb(204, 204, 204);
+}
+
+
+@media screen and (max-width: 1200px){
+  body>.container{
+    margin: 1% 1%;
+  }
+}
+
+@media screen and (max-width: 900px){
+  aside{
+    grid-column: 1/13;
+    grid-row: 1/1;
+
+  }
+  article{
+    grid-column: 1/13;
+    grid-row: 2/13;
+  }
+  .navBar{
+    display:inline-block;
+    width: auto;
+    height: auto;
+
+  }
+  .navBar li{
+    display:inline-block;
+    width: auto;
+    margin: 0px auto;
+  }
+  .userOnNavBar{
+    margin: 0 auto;
+    padding: 5px;
+
+  }
+  nav ul{
+    display: inline-block;
+  }
+  .userOnNavbar div{
+    display: inline-block;
+  }
+  #loggOut{
+    margin: 15px;
+    border-radius: 5px;
+    padding: 5px;
+  }
 }

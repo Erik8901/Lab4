@@ -32,26 +32,21 @@
           <button id="btnLoggIn"type="button" name="button">Logga in</button>
           <button id="btnNewUser" type="button" name="button">Ny Användare</button>
         </span>
-        <button id="test2" type="button" name="button">click me</button>
 
     </div>
   </div>
 
 
   <div class="container">
-
+    <!--
     <header>
       <div class="container">
         <div class="header-right">
-          <a href="#pop-up"><i class="fa fa-user-circle fa-2x" style="color:rgb(142, 0, 0)" aria-hidden="true"></i></a>
-          <p id="headUserInfo">Ej Inloggad</p>
-          <ul id="profileMenu">
-            <li id="loggOut">x</li>
-          </ul>
+
         </div>
       </div>
     </header>
-
+  -->
 
     <aside>
       <nav>
@@ -60,9 +55,18 @@
           <li class="navBar">About</li>
           <li class="navBar">Contact</li>
           <li class="navBar">User Libarary</li>
-          <li class="navBar">User</li>
+          <li class="navBar">User settings</li>
         </ul>
+        <div class="userOnNavBar">
+          <div>
+            <a href="#pop-up"><i class="fa fa-user-circle fa-2x" style="color:rgb(142, 0, 0)" aria-hidden="true"></i></a>
+            <span id="headUserInfo">Ej inloggad</span>
+            <ul id="profileMenu">
+              <li id="loggOut">Logga ut</li>
+            </ul>
 
+          </div>
+        </div>
       </nav>
     </aside>
     <footer>footer</footer>
@@ -142,12 +146,12 @@
     <article class="article">
       <div class="container-none">
         <div class="userSettings">
-          <label>Användar ID<input id="settingUserName" type="text"></label>
+          <label>Användar Id<input id="settingUserName" type="text"></label>
           <label>Lösenord<input id="settingUserPassword" type="password" name="" value=""></label>
           <label>Förnamn<input id="settingFirstName" type="text" name="" value=""></label>
           <label>Efternamn<input id="settingLastName" type="text" name="" value=""></label>
           <label>Mejl<input id="settingUserEmail" type="text" name="" value=""></label><br>
-          <label>Unikt ID<input id="settingId" type="text" name="" value="" readonly="readonly"></label>
+          <label>ID nummer<input id="settingId" type="text" name="" value="" readonly="readonly"></label>
           <label>Key<input id="settingUserKey" type="text" name="" value="" readonly="readonly"></label>
           <label>Time<input id="settingUpdated" type="text" name="" value="" readonly="readonly"></label>
 
@@ -158,7 +162,7 @@
       </div>
     </article>
 
-</div>
+  </div>
 
 
 </body>

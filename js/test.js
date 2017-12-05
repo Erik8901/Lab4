@@ -97,10 +97,12 @@ window.addEventListener("load", function() {
       if(!found){
         //användare hittade men felakigt lösenord
         loggMenu("Felaktigt lösenord");
+        showFailMenu(userPassword,userName);
       }
 
     }else{
       //användare ej hittad
+      showFailMenu(userName,userPassword);
       loggMenu("Användare id saknas");
     }
 
@@ -114,12 +116,14 @@ window.addEventListener("load", function() {
       userLoggedIn.updated = obj.data[j].updated;
 
       loadSettings();
-      headUserInfo.innerHTML="Inloggad som: " + userList[j].userId;
+      headUserInfo.innerHTML=userList[j].userId;
       document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
 
 
-      window.location.assign("#close");
       getDataFromDataBase(0);
+      window.location.assign("#close");
+      loggOut.style.display="block";
+
 
     }
   }
@@ -217,7 +221,7 @@ window.addEventListener("load", function() {
 
         found= true;
         console.log("Användar ID redan upptaget, vänligen välj ett nytt");
-
+        showFailMenu(userName,userPassword);
       }
 
     }
@@ -233,7 +237,7 @@ window.addEventListener("load", function() {
 
         saveNewUser(x,0);
 
-        headUserInfo.innerHTML="Inloggad som: " + userName.value;
+        headUserInfo.innerHTML="Välkommen: " + userName.value;
         document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
         console.log("FUnkar.. ny user upplagd!1");
         //window.location.assign("#close");
@@ -245,6 +249,28 @@ window.addEventListener("load", function() {
     }
   }
   /********************* kontroll av användare END  ****************************/
+  /********************  markera fel lösenord eller användare ******************/
+  function showFailMenu(x,x2){
+    x2.style.backgroundColor="white";
+    let pos = -50;
+    let inter = setInterval(frame,0.5);
+    function frame(){
+      if(pos==95){
+        clearInterval(inter);
+        //userPassword.style.backgroundColor="white";
+
+
+      }else if(pos<95){
+        pos++;
+        x.style.left = pos + "px";
+        x.style.backgroundColor="rgba(242, 0, 34, 0.61)";
+
+      }
+
+    }
+  }
+  /********************  markera fel lösenord eller användare ******************/
+
 
   /**********************  Spara Användare (skicka in objekt)*******************/
 
@@ -278,6 +304,8 @@ window.addEventListener("load", function() {
 
 
   /********************* Skapa Användare END **********************************/
+
+
 
 
   /**********************  lägg upp info om aktuell användare *****************/
@@ -469,6 +497,7 @@ window.addEventListener("load", function() {
         headUserInfo.innerHTML="Ej Inloggad";
         document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(142, 0, 0)";
         key="";
+        event.target.style.display="none";
       }
 
     });
@@ -821,29 +850,18 @@ window.addEventListener("load", function() {
 
 
   function loggMenu(str){
-    menuText.innerHTML=str;
+    menuText.innerHTML=str
+    setTimeout(function(){
+        menuText.innerHTML="";
+
+    },3000);
+
   }
 
 
-  let test2 = document.getElementById("test2");
-    test2.addEventListener("click",function(){
-    removebb();
-  });
-  /* test2.addEventListener("click",function(){
-    let pos = -40;
-    let inter = setInterval(frame,0.5);
-    function frame(){
-      if(pos==100){
-        clearInterval(inter);
-        //userPassword.style.backgroundColor="white";
-        console.log("Test");
-      }else if(pos<100){
-        pos++;
-        userPassword.style.left = pos + "px";
-        userPassword.style.backgroundColor="rgba(237, 152, 164, 0.3)";
-      }
-    }
-  */
+
+
+
 
 
 
