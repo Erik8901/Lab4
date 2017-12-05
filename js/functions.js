@@ -4,122 +4,146 @@ window.addEventListener("load", function() {
   btnTEST.addEventListener("click", function() {
     getDataFromDataBase(0);
   });
+
+
         //console.log(obj);
-  function searchGoogleOneBook(searchForStr,i) {
+  function searchGoogleOneBook(searchForStr,i,maxLength) {
+    /*
+    function wait(ms){
+      var start = new Date().getTime();
+      var end = start;
+      while(end < start + ms) {
+        end = new Date().getTime();
+      }
+    }
+
+    console.log('before');
+    wait(1000);  //7 seconds in milliseconds
+    console.log('after');
+   */
 
     let link = "https://www.googleapis.com/books/v1/volumes?q=";
       //console.log(link + searchForStr);
 
-
+      console.log("detta är sökning nummer " + i + "och söker på");
+    console.log(link + searchForStr + "&key=AIzaSyCeCWE-_JEPML1urQm5_jMtzTiebFZ_4lc");
     fetch(link + searchForStr)
       .then(function(result) {
         return result.json();
       }).then(function(json) {
-          objBook.push(json.items[i]);
-
-          waitForJson(i);
-
+          //console.log(json);
+          objBook[i] = (json.items[0]);
+          //console.log(maxLength-1);
+          //console.log(i);
+          if (i==maxLength-1) {
+            //waitForJson();
+          }
       }).catch(function(str) {
-        console.log(str);
+              console.log("fick inget svar från google"+ str);
+
       });
 
   };
 
-
-
-
   let objBook= [];
-  let AllBooksInLib = [];
+  let userBooks = [];
+
   function showInUserLib(obj) {
     objBook = [];
-    AllBooksInLib= [];
-    AllBooksInLib.push(obj);
+
 
     //console.log(objBook)
     listBooks.innerHTML = "";
     //console.log(key);
+    maxLength =  (obj.data.length);
+    for (let i = 0; i < maxLength; i++) {
+      console.log("detta är från titeln : "+ obj.data[i].title);
+      console.log("leta rätt på bok : " + obj.data[i].title);
+      searchGoogleOneBook(obj.data[i].title,i,maxLength);
 
-    for (let i = 0; i < obj.data.length; i++) {
-
-      searchGoogleOneBook(obj.data[i].title,i);
     }
 
 
   };
 
-  function waitForJson(i){
-    let book = {};
+  let btnTest2 = document.getElementById("btnTest2");
+  btnTest2.addEventListener("click",function(){
 
-    x = objBook[i];
-    console.log(x);
-    console.log(AllBooksInLib);
-    book.description = x.volumeInfo.description;
-    book.infoLink = x.volumeInfo.infoLink;
-    book.bookTitel = x.volumeInfo.title
-    book.searchSnippet = "Saknar beskrivande text"
-    book.Id = x.id;
-    if (x.volumeInfo.imageLinks.smallThumbnail != undefined)
+    waitForJson();
+
+  });
+
+
+  function waitForJson(i){
+    console.log("nu är vi inne i wait for json.. ");3
+    console.log(userBooks);
+    console.log(objBook);
+
+
+    for(i = 0; i < objBook.length; i++){
+
+      output = document.getElementById("listBooks");
+
+
+      let book = {};
+      x = objBook[i];
+
+      book.description = x.volumeInfo.description;
+      book.infoLink = x.volumeInfo.infoLink;
+      book.bookTitel = x.volumeInfo.title
+      book.searchSnippet = "Saknar beskrivande text"
+      book.Id=x.id;
+      if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
       book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
 
-    if (x.hasOwnProperty("searchInfo")) {
-      if (x.searchInfo.hasOwnProperty("textSnippet")) {
-        book.searchSnippet = x.searchInfo.textSnippet;
-      }
-    };
+      if(x.hasOwnProperty("searchInfo")){
+        if(x.searchInfo.hasOwnProperty("textSnippet")){
+          book.searchSnippet = x.searchInfo.textSnippet;
+        }
+      };
 
-    //console.log(obj.data[0].id);
-
-
-    let btnRemoveBook = document.createElement("button");
-    let div = document.createElement("div");
-    let listItem = document.createElement("li");
-    let img = document.createElement("img");
-    let span = document.createElement("span");
-
-    listItem.id = "books"
-    div.className = "books";
-    span.innerHTML = "</br>" + objBook.id;
-    div.className = "books";
-    btnRemoveBook.className = "knappTabort";
-
-
-
-
-    //btnRemoveBook.innerHTML = "Click to Remove Book";
-
-
-    div.innerHTML = "<p class=uniqueBook>" + obj.data[i].id + "</p>" + "<p>" + obj.data[i].title + "</p>" + "<p>" + obj.data[i].author + "</p>";
-
-    img.src = objBook.imgSrc;
-    listItem.appendChild(div);
-    div.appendChild(img);
-
-    listItem.appendChild(btnRemoveBook);
-    listBooks.appendChild(listItem);
-
-    div.innerHTML += "<br><a href=" + objbBook.infoLink + " target=_blank><h3>" + objBook.bookTitel + "</h3></a><br>" + objBook.searchSnippet + "<br><br>" + "<h4>Sammanfattning: </h4><br>" + objBook.description;
-    div.appendChild(span);
+      let list = document.createElement("li",{id:"books"});
+      let img = document.createElement("img");
+      let button  = document.createElement("button");
+      let div = document.createElement("div");
+      let span = document.createElement("span");
+      div.className="books";
+      button.className="knappTabort";
+      span.innerHTML = userBooks.data[i].id;
+      img.src=book.imgSrc;
+      list.appendChild(div);
+      div.appendChild(img);
+      div.innerHTML+="<br><a href="+book.infoLink +" target=_blank><h3>" + book.bookTitel +
+        "</h3></a><br>"+ book.searchSnippet + "<br><br>"+"<h4>Sammanfattning: </h4><br>"+
+        book.description +"<br> Google ID: "+ userBooks.data[i].title + "<br> Databas Id: ";
+      div.appendChild(span);
+      output.appendChild(list);
+      list.appendChild(button);
 
 
 
+      //btnRemoveBook.innerHTML = "Click to Remove Book";
 
 
-    let knappBort = document.getElementsByClassName("knappTabort")[i];
+      let knappBort = document.getElementsByClassName("knappTabort")[i];
 
-    knappBort.addEventListener("click",
+      knappBort.addEventListener("click",
       function(event) {
-
 
         //console.log(event.target.parentElement);
 
         let li = event.target.parentElement;
-        let uniqueBook = li.querySelector(".uniqueBook").innerHTML;
+        let uniqueBook = li.querySelector("span").innerHTML;
         //console.log(uniqueBook);
 
         removeBook(uniqueBook, li, 0);
 
       })
-  }
+    }
+
+
+
+    }
 
 
 
@@ -144,12 +168,14 @@ window.addEventListener("load", function() {
       userBooks = json;
       //console.log(json);
       if (json.status == "error") {
-        if (i < 8) {
+        if (i < 12) {
           i++
           getDataFromDataBase(i);
         }
       } else {
+
         showInUserLib(json);
+
       }
     });
   };

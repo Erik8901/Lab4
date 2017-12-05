@@ -767,7 +767,7 @@ window.addEventListener("load", function() {
 
 
 
-  /********************* Remove user ******************************************/
+  /********************* Remove book ******************************************/
   function removeBookManualy(x){
     let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
     typ = "&op=delete";
@@ -832,15 +832,6 @@ window.addEventListener("load", function() {
   //let johan = new User("johan80","admin","johan","Augustsson","zingo80@msn.com","fe7Hz");
   //console.log(johan);
   //let johanStr = (JSON.stringify(johan));
-  let btnTest2 = document.getElementById("btnTest2");
-  btnTest2.addEventListener("click",function(){
-    removeBookManualy("18371");
-    removeBookManualy("18370");
-    removeBookManualy("18369");
-    removeBookManualy("16691");
-
-
-  });
 
 
   // **  Funktioner som körs när man kommer till sidan ************************//
