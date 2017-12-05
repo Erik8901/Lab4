@@ -4,10 +4,10 @@ window.addEventListener("load", function() {
   btnTEST.addEventListener("click", function() {
     getDataFromDataBase(0);
   });
-
+        console.log(obj);
   function searchGoogleOneBook(searchForStr) {
     //event skickas med från addEventListener konstigt nog.. därav ligger den med här men används ej
-
+      
     let searchStr = "";
     let resultSearchBooks = document.getElementById("resultSearchBooks");
     resultSearchBooks.innerHTML = "";
