@@ -4,14 +4,12 @@ window.addEventListener("load", function() {
   btnTEST.addEventListener("click", function() {
     getDataFromDataBase(0);
   });
-        console.log(obj);
+        //console.log(obj);
   function searchGoogleOneBook(searchForStr) {
     //event skickas med från addEventListener konstigt nog.. därav ligger den med här men används ej
-<<<<<<< HEAD
-      
-=======
+
     /*
->>>>>>> 98be7f6ef3d4a81f729f18732aba7300efb5a1cb
+
     let searchStr = "";
     let resultSearchBooks = document.getElementById("resultSearchBooks");
     resultSearchBooks.innerHTML = "";
@@ -32,7 +30,8 @@ window.addEventListener("load", function() {
         return result.json();
       }).then(function(json) {
         console.log(json);
-
+        objBook.json.items[0];
+        console.log(objBook);
       }).catch(function(str) {
         console.log(str);
       });
@@ -55,6 +54,7 @@ window.addEventListener("load", function() {
       searchGoogleOneBook(obj.data[i].title);
       let book = {};
       x = objBook[i];
+        
       book.description = x.volumeInfo.description;
       book.infoLink = x.volumeInfo.infoLink;
       book.bookTitel = x.volumeInfo.title
