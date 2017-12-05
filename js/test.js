@@ -591,7 +591,7 @@ window.addEventListener("load", function() {
       div.className="books";
 
 
-      span.innerHTML="<br>"+book.Id;
+      span.innerHTML= book.Id;
       if (biblo) {
         button.className="btnAddToShell";
       }else {
@@ -768,12 +768,13 @@ window.addEventListener("load", function() {
 
 
   /********************* Remove user ******************************************/
-  function removeUser(x){
+  function removeBookManualy(x){
     let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
     typ = "&op=delete";
     id= "&id="+x;
 
-      fetch(link + keyMaster + typ + id).then(function(response){
+
+      fetch(link + "key="+key + typ + id).then(function(response){
           return response.json();
         }).then(function(json){
           console.log(json);
@@ -831,6 +832,15 @@ window.addEventListener("load", function() {
   //let johan = new User("johan80","admin","johan","Augustsson","zingo80@msn.com","fe7Hz");
   //console.log(johan);
   //let johanStr = (JSON.stringify(johan));
+  let btnTest2 = document.getElementById("btnTest2");
+  btnTest2.addEventListener("click",function(){
+    removeBookManualy("18371");
+    removeBookManualy("18370");
+    removeBookManualy("18369");
+    removeBookManualy("16691");
+
+
+  });
 
 
   // **  Funktioner som körs när man kommer till sidan ************************//
@@ -840,7 +850,7 @@ window.addEventListener("load", function() {
   getOneUser("key=wWTnh",0);
 
   //logInUser();
-  //removeUser(15068);
+  //removeBookManualy(15068);
   //makeNewKey();
 
 
