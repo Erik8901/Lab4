@@ -87,12 +87,14 @@ function getDataFromDataBase(i) {
 
 function showInUserLib(obj) {
   let objBook = [];
-  searchGoogleOneBook(obj.data[i].id);
+    //console.log(obj.data[i].id)
+  
   //console.log(objBook)
   listBooks.innerHTML = "";
   console.log(key);
 
   for (let i = 0; i < obj.data.length; i++) {
+    searchGoogleOneBook(obj.data[i].title);
     let book = {};
     x = objBook[i];
     book.description = x.volumeInfo.description;
