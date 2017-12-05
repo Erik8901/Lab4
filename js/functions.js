@@ -5,33 +5,20 @@ window.addEventListener("load", function() {
     getDataFromDataBase(0);
   });
         //console.log(obj);
-  function searchGoogleOneBook(searchForStr) {
-    //event skickas med från addEventListener konstigt nog.. därav ligger den med här men används ej
-
-    /*
-
-    let searchStr = "";
-    let resultSearchBooks = document.getElementById("resultSearchBooks");
-    resultSearchBooks.innerHTML = "";
-    let searchTitelTextInput = document.getElementById("searchTitelTextInput");
-    let searchAutorTextInput = document.getElementById("searchAutorTextInput");
-    searchStr += "&printType=books"
-    */
-
-
-
+  function searchGoogleOneBook(searchForStr,i) {
 
     let link = "https://www.googleapis.com/books/v1/volumes?q=";
-      console.log(link + searchForStr);
+      //console.log(link + searchForStr);
 
 
     fetch(link + searchForStr)
       .then(function(result) {
         return result.json();
       }).then(function(json) {
-        console.log(json);
-        objBook.json.items[0];
-        console.log(objBook);
+          objBook.push(json.items[i]);
+
+          waitForJson(i);
+
       }).catch(function(str) {
         console.log(str);
       });
@@ -41,90 +28,98 @@ window.addEventListener("load", function() {
 
 
 
-
+  let objBook= [];
+  let AllBooksInLib = [];
   function showInUserLib(obj) {
-    let objBook = [];
+    objBook = [];
+    AllBooksInLib= [];
+    AllBooksInLib.push(obj);
 
     //console.log(objBook)
     listBooks.innerHTML = "";
-    console.log(key);
+    //console.log(key);
 
     for (let i = 0; i < obj.data.length; i++) {
-      console.log("här är titeln: "+ obj.data[i].title);
-      searchGoogleOneBook(obj.data[i].title);
-      let book = {};
-      x = objBook[i];
-        
-      book.description = x.volumeInfo.description;
-      book.infoLink = x.volumeInfo.infoLink;
-      book.bookTitel = x.volumeInfo.title
-      book.searchSnippet = "Saknar beskrivande text"
-      book.Id = x.id;
-      if (x.volumeInfo.imageLinks.smallThumbnail != undefined)
-        book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
 
-      if (x.hasOwnProperty("searchInfo")) {
-        if (x.searchInfo.hasOwnProperty("textSnippet")) {
-          book.searchSnippet = x.searchInfo.textSnippet;
-        }
-      };
-
-      //console.log(obj.data[0].id);
-
-
-
-      let listItem = document.createElement("li");
-      listItem.id = "books"
-      let img = document.createElement("img");
-      let span = document.createElement("span");
-      div.className = "books";
-
-      span.innerHTML = "</br>" + objBook.id;
-
-
-
-      let btnRemoveBook = document.createElement("button");
-      let div = document.createElement("div");
-      div.className = "books";
-      btnRemoveBook.className = "knappTabort";
-      //btnRemoveBook.innerHTML = "Click to Remove Book";
-
-
-      div.innerHTML = "<p class=uniqueBook>" + obj.data[i].id + "</p>" + "<p>" + obj.data[i].title + "</p>" + "<p>" + obj.data[i].author + "</p>";
-
-      img.src = objBook.imgSrc;
-      listItem.appendChild(div);
-      div.appendChild(img);
-
-      listItem.appendChild(btnRemoveBook);
-      listBooks.appendChild(listItem);
-
-      div.innerHTML += "<br><a href=" + objbBook.infoLink + " target=_blank><h3>" + objBook.bookTitel + "</h3></a><br>" + objBook.searchSnippet + "<br><br>" + "<h4>Sammanfattning: </h4><br>" + objBook.description;
-      div.appendChild(span);
-
-
-
-
-
-      let knappBort = document.getElementsByClassName("knappTabort")[i];
-
-      knappBort.addEventListener("click",
-        function(event) {
-
-
-          console.log(event.target.parentElement);
-
-          let li = event.target.parentElement;
-          let uniqueBook = li.querySelector(".uniqueBook").innerHTML;
-          console.log(uniqueBook);
-
-          removeBook(uniqueBook, li, 0);
-
-        })
+      searchGoogleOneBook(obj.data[i].title,i);
     }
+
+
   };
 
+  function waitForJson(i){
+    let book = {};
 
+    x = objBook[i];
+    console.log(x);
+    console.log(AllBooksInLib);
+    book.description = x.volumeInfo.description;
+    book.infoLink = x.volumeInfo.infoLink;
+    book.bookTitel = x.volumeInfo.title
+    book.searchSnippet = "Saknar beskrivande text"
+    book.Id = x.id;
+    if (x.volumeInfo.imageLinks.smallThumbnail != undefined)
+      book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
+
+    if (x.hasOwnProperty("searchInfo")) {
+      if (x.searchInfo.hasOwnProperty("textSnippet")) {
+        book.searchSnippet = x.searchInfo.textSnippet;
+      }
+    };
+
+    //console.log(obj.data[0].id);
+
+
+    let btnRemoveBook = document.createElement("button");
+    let div = document.createElement("div");
+    let listItem = document.createElement("li");
+    let img = document.createElement("img");
+    let span = document.createElement("span");
+
+    listItem.id = "books"
+    div.className = "books";
+    span.innerHTML = "</br>" + objBook.id;
+    div.className = "books";
+    btnRemoveBook.className = "knappTabort";
+
+
+
+
+    //btnRemoveBook.innerHTML = "Click to Remove Book";
+
+
+    div.innerHTML = "<p class=uniqueBook>" + obj.data[i].id + "</p>" + "<p>" + obj.data[i].title + "</p>" + "<p>" + obj.data[i].author + "</p>";
+
+    img.src = objBook.imgSrc;
+    listItem.appendChild(div);
+    div.appendChild(img);
+
+    listItem.appendChild(btnRemoveBook);
+    listBooks.appendChild(listItem);
+
+    div.innerHTML += "<br><a href=" + objbBook.infoLink + " target=_blank><h3>" + objBook.bookTitel + "</h3></a><br>" + objBook.searchSnippet + "<br><br>" + "<h4>Sammanfattning: </h4><br>" + objBook.description;
+    div.appendChild(span);
+
+
+
+
+
+    let knappBort = document.getElementsByClassName("knappTabort")[i];
+
+    knappBort.addEventListener("click",
+      function(event) {
+
+
+        //console.log(event.target.parentElement);
+
+        let li = event.target.parentElement;
+        let uniqueBook = li.querySelector(".uniqueBook").innerHTML;
+        //console.log(uniqueBook);
+
+        removeBook(uniqueBook, li, 0);
+
+      })
+  }
 
 
 
@@ -147,7 +142,7 @@ window.addEventListener("load", function() {
       return response.json();
     }).then(function(json) {
       userBooks = json;
-      console.log(json);
+      //console.log(json);
       if (json.status == "error") {
         if (i < 8) {
           i++
@@ -173,7 +168,7 @@ window.addEventListener("load", function() {
       return response.json();
 
     }).then(function(json) {
-      console.log(json);
+      //console.log(json);
 
       if (json.status == "error") {
 
