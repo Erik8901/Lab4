@@ -43,7 +43,7 @@ window.addEventListener("load", function() {
       typ = "&op=select";
 
 
-    console.log(link + keyMaster + typ);
+    //console.log(link + keyMaster + typ);
 
       fetch(link + keyMaster + typ).then(function(response){
           //console.log("hej");
@@ -92,7 +92,7 @@ window.addEventListener("load", function() {
         }
       }
     }
-    console.log("unikt id"+obj.data[j].id);
+    //console.log("unikt id"+obj.data[j].id);
     if(anvFound){
       if(!found){
         //användare hittade men felakigt lösenord
@@ -111,7 +111,7 @@ window.addEventListener("load", function() {
       loggMenu("inloggad som "+ userList[j].userId);
       userLoggedIn.push(userList[j]);
       key = userList[j].key;
-      console.log(obj.data[j].updated);
+      //console.log(obj.data[j].updated);
       userLoggedIn.id = obj.data[j].id;
       userLoggedIn.updated = obj.data[j].updated;
 
@@ -122,7 +122,7 @@ window.addEventListener("load", function() {
       loggOut.style.display="block";
       window.location.assign("#close");
 
-      getDataFromDataBase(0);
+      //getDataFromDataBase(0);
 
 
     }
@@ -340,7 +340,7 @@ window.addEventListener("load", function() {
     typ = "&op=update";
     title = "&title="+ strObj;
     author="&author=not used";
-    console.log(link + keyMaster + typ + id + title + author);
+    //console.log(link + keyMaster + typ + id + title + author);
 
       fetch(link + keyMaster + typ + id + title + author).then(function(response){
             return response.json();
@@ -355,7 +355,7 @@ window.addEventListener("load", function() {
           }else{
             loggMenu("Användare updaterad!");
             console.log("uppdaterad!");
-            console.log(json);
+            //console.log(json);
           }
       }).catch(function(res){
         loggMenu("Misslyckades att updatera användare");
@@ -365,19 +365,21 @@ window.addEventListener("load", function() {
 
   let btnsettingUpdated = document.getElementById("btnsettingUpdated");
   btnsettingUpdated.addEventListener("click",function(){
-    userLoggedIn[0].userId = settingUserName.value;
-    userLoggedIn[0].password = settingUserPassword.value;
-    userLoggedIn[0].firstName = settingFirstName.value;
-    userLoggedIn[0].lastName = settingLastName.value;
-    userLoggedIn[0].email = settingUserEmail.value;
-    //settingUserKey.value = userLoggedIn[0].key;
-    //settingUpdated.value = userLoggedIn.updated;
-    //settingId.value = userLoggedIn.id;
+    if(key!=""){
+      userLoggedIn[0].userId = settingUserName.value;
+      userLoggedIn[0].password = settingUserPassword.value;
+      userLoggedIn[0].firstName = settingFirstName.value;
+      userLoggedIn[0].lastName = settingLastName.value;
+      userLoggedIn[0].email = settingUserEmail.value;
+      //settingUserKey.value = userLoggedIn[0].key;
+      //settingUpdated.value = userLoggedIn.updated;
+      //settingId.value = userLoggedIn.id;
 
 
-    userLoggedInStr = JSON.stringify(userLoggedIn[0]);
-    console.log(userLoggedInStr);
-    updateUserSettings(userLoggedInStr,0)
+      userLoggedInStr = JSON.stringify(userLoggedIn[0]);
+      //console.log(userLoggedInStr);
+      updateUserSettings(userLoggedInStr,0)
+    }
   });
 
 
@@ -519,7 +521,7 @@ window.addEventListener("load", function() {
 
     if(searchForStr!=undefined){             //om str medskickad till funktion
       searchStr =searchForStr;
-      console.log(searchForStr);
+      //console.log(searchForStr);
     }else{
       if(searchTitelTextInput.value){
         searchStr= searchTitelTextInput.value
@@ -531,13 +533,19 @@ window.addEventListener("load", function() {
 
     searchStr+="&printType=books"
     let link = "https://www.googleapis.com/books/v1/volumes?q=";
-    console.log(link+searchStr);
+    //console.log(link+searchStr);
 
     fetch("https://www.googleapis.com/books/v1/volumes?q="+searchStr+"&key=AIzaSyCeCWE-_JEPML1urQm5_jMtzTiebFZ_4lc")
       .then(function(result){
         return result.json();
       }).then(function(json){
-        createBooks(json);
+        //console.log(json.totalItems);
+        if(json.totalItems!= 0){
+
+          createBooks(json);
+        }else {
+          console.log("0 träffar");
+        }
       }).catch(function(str){
         console.log(str);
       });
@@ -547,14 +555,14 @@ window.addEventListener("load", function() {
   /********************** Funktion för att skapa book li element *********************/
 
   function createBooks(result,myOwnBook){
-    console.log(result+ myOwnBook);
+    //console.log(result+ myOwnBook);
     let textsnippet ="";
     let output ="";
     let biblo = true;
 
 
     if(myOwnBook!=undefined){
-      console.log("egen bok");
+      //console.log("egen bok");
       output = document.getElementById("listBooks");
       biblo = false;
       buildBook(myOwnBook);
@@ -569,9 +577,18 @@ window.addEventListener("load", function() {
         book.bookTitel = x.volumeInfo.title
         book.searchSnippet = "Saknar beskrivande text"
         book.Id=x.id;
-        if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
-        book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
 
+        book.imgSrc ="http://books.google.com/books/content?id=nPJGEKuANX8C&printsec=frontcover&img=1&zoom=5&source=gbs_api"
+
+        if(x.volumeInfo.hasOwnProperty("imageLinks")){
+          if(x.volumeInfo.imageLinks.hasOwnProperty("smallThumbnail")){
+            if(x.volumeInfo.imageLinks.smallThumbnail!=undefined){
+              book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
+
+            }else{
+            }
+          }
+        }
         if(x.hasOwnProperty("searchInfo")){
           if(x.searchInfo.hasOwnProperty("textSnippet")){
             book.searchSnippet = x.searchInfo.textSnippet;
@@ -584,7 +601,7 @@ window.addEventListener("load", function() {
 
 
     function buildBook(book){
-      console.log(biblo);
+      //console.log(biblo);
       let list = document.createElement("li",{id:"books"});
       let img = document.createElement("img");
       let button  = document.createElement("button");
@@ -622,7 +639,8 @@ window.addEventListener("load", function() {
           let li = event.target.parentElement;
           let uniqueBook = li.querySelector("span").innerHTML;
 
-          addBookToLibarary(uniqueBook,0);
+          if (key!="")
+            addBookToLibarary(uniqueBook,0);
           /*
           let p =  new Promise(function(succeed,fail){
               book = JSON.stringify(book);
@@ -678,7 +696,7 @@ window.addEventListener("load", function() {
                 console.log(json);
               }
             }else{
-              console.log("add to libarary "+ uniqueBook);
+              //console.log("add to libarary "+ uniqueBook);
               console.log("sparad");
             }
           }).catch(function(res){
@@ -824,7 +842,11 @@ window.addEventListener("load", function() {
   })
 
   let btnSearchGoogle = document.getElementById("btnSearchGoogle");
-  btnSearchGoogle.addEventListener("click",searchGoogle);
+  btnSearchGoogle.addEventListener("click",function(event){
+    if(searchTitelTextInput.value!="" || searchAutorTextInput.value!="")
+      searchGoogle();
+
+  });
 
 
 
@@ -847,7 +869,7 @@ window.addEventListener("load", function() {
   //makeNewKey();
 
 
-  //searchGoogle("","liza marklund");
+  searchGoogle("","liza marklund");
 
 
 
@@ -860,32 +882,6 @@ window.addEventListener("load", function() {
     },3000);
 
   }
-
-
-
-
-
-
-
-
-  let searchParameters = document.getElementsByClassName("searchParameters")[0];
-  let btnConfigSearch = document.getElementById("btnConfigSearch");
-  let searchConfigExpand = false;
-  btnConfigSearch.addEventListener("click",function(event){
-    if (!searchConfigExpand){
-      searchParameters.style.height="400px";
-      searchConfigExpand=true;
-    }else{
-      searchParameters.style.height="80px";
-      searchConfigExpand=false;
-    }
-      console.log(searchParameters);
-  });
-
-
-
-
-
 
 
 

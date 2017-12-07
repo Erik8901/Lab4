@@ -25,8 +25,8 @@ window.addEventListener("load", function() {
     let link = "https://www.googleapis.com/books/v1/volumes?q=";
       //console.log(link + searchForStr);
 
-      console.log("detta är sökning nummer " + i + "och söker på");
-    console.log(link + searchForStr + "&key=AIzaSyCeCWE-_JEPML1urQm5_jMtzTiebFZ_4lc");
+      //console.log("detta är sökning nummer " + i + "och söker på");
+    //console.log(link + searchForStr + "&key=AIzaSyCeCWE-_JEPML1urQm5_jMtzTiebFZ_4lc");
     fetch(link + searchForStr)
       .then(function(result) {
         return result.json();
@@ -57,8 +57,8 @@ window.addEventListener("load", function() {
     //console.log(key);
     maxLength =  (obj.data.length);
     for (let i = 0; i < maxLength; i++) {
-      console.log("detta är från titeln : "+ obj.data[i].title);
-      console.log("leta rätt på bok : " + obj.data[i].title);
+      //console.log("detta är från titeln : "+ obj.data[i].title);
+      //console.log("leta rätt på bok : " + obj.data[i].title);
       searchGoogleOneBook(obj.data[i].title,i,maxLength);
 
     }
@@ -71,13 +71,14 @@ window.addEventListener("load", function() {
 
     waitForJson();
 
+
   });
 
 
   function waitForJson(i){
-    console.log("nu är vi inne i wait for json.. ");3
-    console.log(userBooks);
-    console.log(objBook);
+    //console.log("nu är vi inne i wait for json.. ");3
+    //console.log(userBooks);
+    //console.log(objBook);
 
 
     for(i = 0; i < objBook.length; i++){
@@ -93,6 +94,23 @@ window.addEventListener("load", function() {
       book.bookTitel = x.volumeInfo.title
       book.searchSnippet = "Saknar beskrivande text"
       book.Id=x.id;
+
+
+      if(x.volumeInfo.hasOwnProperty("imageLinks")){
+        if(x.volumeInfo.imageLinks.hasOwnProperty("smallThumbnail")){
+          if(x.volumeInfo.imageLinks.smallThumbnail!=undefined){
+            book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
+
+          }else{
+          }
+        }
+      }
+      if(x.hasOwnProperty("searchInfo")){
+        if(x.searchInfo.hasOwnProperty("textSnippet")){
+          book.searchSnippet = x.searchInfo.textSnippet;
+        }
+      };
+      /*
       if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
       book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
 
@@ -101,7 +119,7 @@ window.addEventListener("load", function() {
           book.searchSnippet = x.searchInfo.textSnippet;
         }
       };
-
+      */
       let list = document.createElement("li",{id:"books"});
       let img = document.createElement("img");
       let button  = document.createElement("button");
@@ -213,6 +231,3 @@ window.addEventListener("load", function() {
     });
   };
 });
-
-
-

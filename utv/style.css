@@ -138,7 +138,7 @@ article{
         width: 700px;
         opacity: 1;
         margin-top: 30px;
-        
+
 }
 
 footer{
@@ -163,7 +163,7 @@ footer{
   display: none;
   border-radius: 5px;
   margin: 10px auto;
-  
+
 }
 #loggOut:hover{
   background-color: rgb(209, 209, 209);
@@ -465,24 +465,19 @@ btnAddToShell:active{
 /******* userSettings *************************/
 
 .userSettings{
-
-
   text-align: right;
-  min-width: 250px;
-  max-width: 300px;
+  min-width: 350px;
+  max-width: 350px;
   padding: 10px;
   margin: 0 auto;
-
 }
 .userSettings >label{
   display:block;
   margin: 10px;
-
 }
 .userSettings > label >input{
   margin-left: 10px;
   border-radius: 5px;
-
 }
 .userSettings button{
   padding: 10px;
@@ -490,10 +485,59 @@ btnAddToShell:active{
 
 }
 
-#settingId,#settingUserKey,#settingUpdated{
+#settingId,#settingUserKey,#settingUpdated,#settingUserName{
   background-color: rgb(204, 204, 204);
 }
 
+@media screen and (max-width: 600px){
+  .container-flex li{
+    width: 95%;
+    margin: 10px 0px;
+    min-width: 0px;
+  }
+  .container-flex li *{
+    min-width: 0px;
+  }
+
+  nav ul{
+    width: 100%;
+    min-width: 0px;
+  }
+  nav ul .navBar{
+    display: block;
+    width: 100%;
+  }
+  .searchParameters>div>*{
+    margin: 10px 1px;
+    width: 98%;
+
+  }
+  .userSettings > label >input{
+    margin-left: 0px;
+    border-radius: 5px;
+    display: block;
+    width: 95%;
+  }
+  .userSettings{
+    text-align: right;
+    width: 100%;
+    padding: 0px;
+    margin: 0 0;
+    max-width: 100%;
+    min-width: 0%;
+  }
+  .userSettings >label{
+    display:block;
+    margin: 10px 0px;
+    text-align: left;
+    width: 100%;
+  }
+  .userSettings >button{
+    display:block;
+    width: 100%;
+
+  }
+}
 
 @media screen and (max-width: 1200px){
   body>.container{
@@ -537,5 +581,8 @@ btnAddToShell:active{
     margin: 15px;
     border-radius: 5px;
     padding: 5px;
+  }
+  .searchParameters{
+    height: auto;
   }
 }
