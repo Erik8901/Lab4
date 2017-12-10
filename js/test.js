@@ -119,7 +119,9 @@ window.addEventListener("load", function() {
       headUserInfo.innerHTML=userList[j].userId;
       document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
 
+      getOneUser();
       loggOut.style.display="block";
+
       window.location.assign("#close");
 
       //getDataFromDataBase(0);
@@ -698,6 +700,8 @@ window.addEventListener("load", function() {
             }else{
               //console.log("add to libarary "+ uniqueBook);
               console.log("sparad");
+              getOneUser();
+
             }
           }).catch(function(res){
             console.log("Efter 8st försök men går fortfarande inte: "+res);
@@ -754,29 +758,32 @@ window.addEventListener("load", function() {
 
 
   /********************* Hämta EN användares Biblo *********************************/
-  function getOneUser(x,i){
+  function getOneUser(i=0){
+
 
     let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
     typ = "&op=select";
 
 
-      fetch(link + x + typ).then(function(response){
-          return response.json();
-        }).then(function(json){
-          if(json.status=="error"){
-            if(i<8){
-              i++;
-              getOneUser(x,i);
-            }else{
-              console.log(json);
-            }
-          }else{
-            console.log(json);
+    fetch(link + "key="+key + typ).then(function(response){
+      return response.json();
+    }).then(function(json){
+      if(json.status=="error"){
+        if(i<8){
+          i++;
+          getOneUser(x,i);
+        }else{
+          console.log(json);
+        }
+      }else{
+        console.log(json);
+        userBooks=json.data;
+      }
+    }).catch(function(res){
+      console.log("Efter 8st försök men går fortfarande inte: "+res);
+    });
 
-          }
-        }).catch(function(res){
-          console.log("Efter 8st försök men går fortfarande inte: "+res);
-        });
+
 
   };
 
@@ -862,7 +869,7 @@ window.addEventListener("load", function() {
   //saveNewUser(johanStr);
   i=0;
   getAllUsers(i);
-  getOneUser("key=wWTnh",0);
+  //getOneUser("key=wWTnh",0);
 
   //logInUser();
   //removeBookManualy(15068);
