@@ -34,6 +34,7 @@ window.addEventListener("load", function() {
 
   /* FUNKTION FÖR ATT KONTROLLERA LÖSENORD OCH LOGGA IN */
   btnLoggIn.addEventListener("click", function() {
+
     logInUser(0); // logInUser -> CheckUser  -> getDataFromDataBase (functions.js) = inloggad
   });
 
@@ -86,7 +87,9 @@ window.addEventListener("load", function() {
 
 
     for(i=0;i<userList.length;i++){
-
+      //console.log(userList);
+      //console.log("namn från databas"+userList[i].userId);
+      //console.log("namn som skrivits in"+userName.value);
       if(userList[i].userId==userName.value){
         anvFound=true;
         if(userList[i].password===userPassword.value){
@@ -126,6 +129,14 @@ window.addEventListener("load", function() {
       getOneUser();
       loggOut.style.display="block";
 
+      userName.value="";
+      userFirstName.value="";
+      userLastName.value ="";
+      userEmail.value ="";
+      userPassword.value ="";
+      userKey.value ="";
+      userPassword.style.backgroundColor="white"
+      userName.style.backgroundColor="white"
       window.location.assign("#close");
 
       //getDataFromDataBase(0);
@@ -142,11 +153,20 @@ window.addEventListener("load", function() {
   // makeKey --> makeUser   detta för att hinna med att få en nyckel från api:n
 
   let btnMakeUser = document.getElementById("btnNewUser");
-  btnMakeUser.addEventListener("click",makeNewKey);
+  btnMakeUser.addEventListener("click",function(event){
+    if(userName.value!=""){
+      if(userPassword!=""){
+        makeNewKey();
+
+      }
+    }
+
+
+  });
 
 
   /********************** skapar en nyckel ************************************/
-  function makeNewKey(i){
+  function makeNewKey(i=0){
 
     if(userKey.value==""){  //kontrolerar om nyckeln redan är satt
           fetch("https://www.forverkliga.se/JavaScript/api/crud.php?requestKey").then(function(response){
@@ -249,10 +269,12 @@ window.addEventListener("load", function() {
 
         saveNewUser(x,0);
 
+        //logInUser(0);
+        /*
         headUserInfo.innerHTML="Välkommen: " + userName.value;
         document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(22, 142, 8)";
-        console.log("FUnkar.. ny user upplagd!1");
-        //window.location.assign("#close");
+        //console.log("FUnkar.. ny user upplagd!1");
+        window.location.assign("#close"); */
       }
 
 
@@ -847,8 +869,37 @@ window.addEventListener("load", function() {
   };
 
 
-  /********************* Remove user END ************************************/
+  /********************* Remove book END ************************************/
 
+  /********************* Remove user ******************************************/
+  function removeUserManualy(x,i=0){
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    typ = "&op=delete";
+    id= "&id="+x;
+
+
+      fetch(link + keyMaster + typ + id).then(function(response){
+          return response.json();
+        }).then(function(json){
+          console.log(json);
+          if(json.status=="error"){
+            if(i<12){
+              i++;
+              removeUserManualy(x,i);
+            }else{
+              failCount(i);
+              console.log(json);
+              console.log("misslyckades att ta bort användare")
+            }
+          }
+        }).catch(function(res){
+            console.log("8st försök utan att lyckas"+ res);
+        });
+
+  };
+
+
+  /********************* Remove user END ************************************/
 
 
 
@@ -913,12 +964,11 @@ window.addEventListener("load", function() {
   //logInUser();
   //removeBookManualy(15068);
   //makeNewKey();
+  //removeUserManualy(26346);
+
 
 
   searchGoogle("","liza marklund");
-
-
-
 
   function loggMenu(str){
     menuText.innerHTML=str
@@ -928,12 +978,6 @@ window.addEventListener("load", function() {
     },3000);
 
   }
-
-
-
-
-
-
 
 
     function removeBook(uniqueBook, li, i) {
@@ -973,9 +1017,6 @@ window.addEventListener("load", function() {
 
   function makeUserBookLiberary(){
 
-  //console.log("nu är vi inne i wait for json.. ");3
-  //console.log(userBooks);
-  //console.log(objBook);
   output = document.getElementById("listBooks");
   output.innerHTML = "";
 
@@ -1088,39 +1129,6 @@ window.addEventListener("load", function() {
   }
   }
 
-
-  /*
-  function getOneUser(i=0){
-    userBooks=[];
-
-    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
-    typ = "&op=select";
-
-
-    fetch(link +"key="+key + typ).then(function(response){
-      return response.json();
-    }).then(function(json){
-      if(json.status=="error"){
-        if(i<12){
-          i++;
-          getOneUser(x,i);
-        }else{
-          console.log(json);
-        }
-      }else{
-        console.log(json);
-        userBooks=json.data;
-        makeUserBookLiberary();
-      }
-    }).catch(function(res){
-      console.log("Efter 8st försök men går fortfarande inte: "+res);
-    });
-
-  };
-
-  */
-
-
       function updateBookInLibarary(id,titel,author,i=0){
         let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
         typ = "&op=update";
@@ -1152,47 +1160,16 @@ window.addEventListener("load", function() {
             }).catch(function(res){
               console.log("Efter 20st försök men går fortfarande inte: "+res);
           });
-
       };
 
-
-
-
-
-
     function failCount(x){
+      console.log(x);
+      console.log(countFail);
       countFail += x;
-      //console.log(x);
-      //console.log(countFail);
-
+      console.log(countFail);
       failCounter.innerText= countFail;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 });
-
-
-
-
-
 
 
 /************** Mouse leave scroll top funktion ***********/

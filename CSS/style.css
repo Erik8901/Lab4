@@ -502,6 +502,9 @@ btnAddToShell:active{
 #settingId,#settingUserKey,#settingUpdated,#settingUserName{
   background-color: rgb(204, 204, 204);
 }
+#userKey{
+  background-color: rgb(171, 171, 171);
+}
 
 @media screen and (max-width: 600px){
   .pop-up-loginMenu{
