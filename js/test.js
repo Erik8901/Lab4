@@ -3,6 +3,7 @@ let keyMaster = "key=Ln9a4"; /*användarens inloggningsuppgifter sparas i detta 
 let userLoggedIn = [];
 let userBooks = [];
 let searchBooks = [];
+let countFail = 0;
 
 window.addEventListener("load", function() {
   let btnLoggIn = document.getElementById("btnLoggIn");
@@ -14,6 +15,7 @@ window.addEventListener("load", function() {
   let headUserInfo = document.getElementById("headUserInfo");
   let loggOut = document.getElementById("loggOut");
   let menuText = document.getElementsByClassName("pop-up-Text")[0];
+  let failCounter = document.getElementById("failCounter");
 
   //let loggInStatus = 0;
   //let container = document.getElementsByClassName("container")[0];
@@ -57,10 +59,12 @@ window.addEventListener("load", function() {
               i++;
               logInUser(i);
             }else{
+              failCount(i);
               console.log(" Misslyckades att logga in :< ");
 
             }
           }else{
+            failCount(i);
             checkUser(json,0);
           }
         }).catch(function(res){
@@ -152,10 +156,14 @@ window.addEventListener("load", function() {
             if(i<8){
               i++;
               maekNewKey(i);
+            }else{
+              failCount(i);
+              console.log("misslyckades att skapa nyckel");
             }
           }else{
             key = json.key;
             userKey.value=key;
+            failCount(i);
             makeUser(0);
           }
 
@@ -189,10 +197,12 @@ window.addEventListener("load", function() {
               i++;
               makeUser(i);
             }else{
+              failCount(i);
               loggMenu("Misslyckades!");
               console.log("makeUser: Fler än 8st försök");
             }
           }else{
+            failCount(i);
             checkUserInputs(json);
           }
 
@@ -291,9 +301,11 @@ window.addEventListener("load", function() {
               i++;
               saveNewUser(strObj,i);
             }else{
+              failCount(i);
               loggMenu("Misslyckades att spara användare : "+ res);
             }
           }else{
+            failCount(i);
             loggMenu("Användare Sparad!");
             console.log("Sparad!");
             console.log(json);
@@ -352,9 +364,11 @@ window.addEventListener("load", function() {
               i++;
               updateUserSettings(strObj,i);
             }else{
+              failCount(i);
               loggMenu("Misslyckades att updatera användare : "+ res);
             }
           }else{
+            failCount(i);
             loggMenu("Användare updaterad!");
             console.log("uppdaterad!");
             //console.log(json);
@@ -465,7 +479,7 @@ window.addEventListener("load", function() {
   }
   /************************ Uppdatatera END *******************************/
 
-  
+
   /*******************  Lägg till i databas  ********************************/
   /*
   let addToUserLib = function (){
@@ -579,6 +593,10 @@ window.addEventListener("load", function() {
         book.bookTitel = x.volumeInfo.title
         book.searchSnippet = "Saknar beskrivande text"
         book.Id=x.id;
+        book.authors = "";
+        for(j = 0; j< x.volumeInfo.authors.length; j++){
+          book.authors += x.volumeInfo.authors[j];
+        }
 
         book.imgSrc ="http://books.google.com/books/content?id=nPJGEKuANX8C&printsec=frontcover&img=1&zoom=5&source=gbs_api"
 
@@ -624,7 +642,8 @@ window.addEventListener("load", function() {
       img.src=book.imgSrc;
       list.appendChild(div);
       div.appendChild(img);
-      div.innerHTML+="<br><a href="+book.infoLink +" target=_blank><h3>" + book.bookTitel +"</h3></a><br>"+ book.searchSnippet + "<br><br>"+"<h4>Sammanfattning: </h4><br>"+ book.description;
+      div.innerHTML+="<br><a href="+book.infoLink +" target=_blank><h3>" + book.bookTitel +"</h3></a><br>"+
+          book.searchSnippet + "<br><br>"+"<h4>Sammanfattning: </h4><br>"+ book.description + "<br><br> <strong> Författare: </strong> <p>"+book.authors +"</p> <br> <strong>Google ID: <br></strong>" ;
       div.appendChild(span);
       output.appendChild(list);
       list.appendChild(button);
@@ -640,7 +659,7 @@ window.addEventListener("load", function() {
         btnAddToShell.addEventListener("click",function(){
           let li = event.target.parentElement;
           //let uniqueBook = li.querySelector("span").innerHTML;
-          let uniqueBook = new CreateBooks(li.querySelector("h3").innerHTML, li.querySelector("span").innerHTML);
+          let uniqueBook = new CreateBooks(li.querySelector("h3").innerHTML, li.querySelector("p").innerHTML);
           if (key!="")
             addBookToLibarary(uniqueBook,0);
 
@@ -685,11 +704,14 @@ window.addEventListener("load", function() {
               i++;
               addBookToLibarary(uniqueBook,i);
             }else{
+              failCount(i);
               console.log(json);
+              console.log("misslyckades att lägga till bok i användarens databas");
             }
           }else{
             //console.log("add to libarary "+ uniqueBook);
             console.log("sparad");
+            failCount(i);
             getOneUser();
 
           }
@@ -731,8 +753,11 @@ window.addEventListener("load", function() {
               getAllUsers(i);
             }else{
               console.log(json);
+              failCount(i);
+              console.log("misslyckades att hämta alla användare");
             }
           }else{
+            failCount(i);
             console.log(json);
           }
         }).catch(function(res){
@@ -761,13 +786,17 @@ window.addEventListener("load", function() {
       if(json.status=="error"){
         if(i<12){
           i++;
-          getOneUser(x,i);
+          getOneUser(i);
         }else{
+          failCount(i);
           console.log(json);
+          console.log("misslyckades att hämta data för användare")
         }
       }else{
         console.log(json);
         userBooks=json.data;
+        failCount(i);
+        makeUserBookLiberary();
       }
     }).catch(function(res){
       console.log("Efter 8st försök men går fortfarande inte: "+res);
@@ -882,6 +911,267 @@ window.addEventListener("load", function() {
     },3000);
 
   }
+
+
+
+
+
+
+
+
+    function removeBook(uniqueBook, li, i) {
+
+      let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+      typ = "&op=delete";
+      id = "&id=" + uniqueBook;
+
+
+      fetch(link + "key=" + key + typ + id).then(function(response) {
+        return response.json();
+
+      }).then(function(json) {
+        //console.log(json);
+
+        if (json.status == "error") {
+
+          if (i < 20) {
+            i++
+            removeBook(uniqueBook, li, i);
+          }else{
+            failCount(i);
+            console.log("misslyckades att ta bort bok");
+          }
+        } else {
+          failCount(i);
+          listBooks.removeChild(li);
+
+        }
+
+      }).catch(function(res) {
+
+      });
+    };
+
+  // nedan är de nya funktionerna för labb 4 för VG 2017-12-10
+
+  let btnTest = document.getElementById("btnTest");
+  btnTest.addEventListener("click", function() {
+    //getDataFromDataBase(0);
+    getOneUser();
+
+
+  });
+
+  function makeUserBookLiberary(){
+
+  //console.log("nu är vi inne i wait for json.. ");3
+  //console.log(userBooks);
+  //console.log(objBook);
+  output = document.getElementById("listBooks");
+  output.innerHTML = "";
+
+  for(i = 0; i < userBooks.length; i++){
+
+
+    let book = {};
+    x = userBooks[i];
+
+    book.description = "";
+    book.infoLink = "";
+    book.title = x.title;
+    book.author = x.author;
+    book.Id= x.id;
+    book.imgSrc = "http://books.google.com/books/content?id=7zsJAAAAQAAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api";
+
+    /*
+    if(x.volumeInfo.imageLinks.smallThumbnail!=undefined)
+    book.imgSrc = x.volumeInfo.imageLinks.smallThumbnail;
+
+    if(x.hasOwnProperty("searchInfo")){
+      if(x.searchInfo.hasOwnProperty("textSnippet")){
+        book.searchSnippet = x.searchInfo.textSnippet;
+      }
+    };
+    */
+    let list = document.createElement("li",{id:"books"});
+    let img = document.createElement("img");
+    let button  = document.createElement("button");
+    let div = document.createElement("div");
+    let span = document.createElement("span");
+    div.className="books";
+    button.className="knappTabort";
+    span.innerHTML = book.Id;
+    img.src=book.imgSrc;
+    list.appendChild(div);
+    div.appendChild(img);
+    //div.innerHTML+="<br><a href=# target=_blank><h3>" + book.bookTitel +
+    // book.description +"<br> Google ID: "+ book.bookTitel + "<br> Databas Id: ";
+    div.innerHTML+="<h3 class=title>"+book.title + "</h3></a><p class=author>"+ book.author + "<p><br>"+"<h4>Sammanfattning: </h4><br>"+
+      book.description +"<br> Databas Id: ";
+    div.appendChild(span);
+    output.appendChild(list);
+    list.appendChild(button);
+
+
+
+
+
+    let changeTitle = document.getElementsByClassName("title")[i];
+    let replaceNode="";
+
+    changeTitle.addEventListener("click",function(event){
+      let a = event.target;
+      let parent = event.target.parentNode
+      let x = document.createElement("input");
+      x.id="title";
+      x.value= a.innerText;
+      replaceNode = parent.replaceChild(x,a);
+      x.focus();
+      let changeTitle2 = document.getElementById("title");
+      console.log(changeTitle2);
+      changeTitle2.addEventListener("blur",function(event){
+        console.log("funkar!!")
+        replaceNode.innerText= x.value;
+        replaceNode = parent.replaceChild(replaceNode,x);
+        console.log(book.Id,x.value,book.author);
+        updateBookInLibarary(book.Id, x.value, book.author);
+      });
+    });
+
+
+    let changeAuthor = document.getElementsByClassName("author")[i];
+    changeAuthor.addEventListener("click",function(event){
+      let a = event.target;
+      let parent = event.target.parentNode
+      let x = document.createElement("input");
+      x.id="author";
+      x.value= a.innerText;
+      replaceNode = parent.replaceChild(x,a);
+      x.focus();
+      let changeAuthor2 = document.getElementById("author");
+      console.log(changeAuthor2);
+      changeAuthor2.addEventListener("blur",function(event){
+        console.log("funkar!!")
+        replaceNode.innerText= x.value;
+        replaceNode = parent.replaceChild(replaceNode,x);
+        updateBookInLibarary(book.Id, book.title ,x.value);
+      });
+    });
+
+    //btnRemoveBook.innerHTML = "Click to Remove Book";
+
+    let knappBort = document.getElementsByClassName("knappTabort")[i];
+    //console.log(x);
+    //console.log(knappBort);
+    //console.log(output);
+    knappBort.addEventListener("click",
+    function(event) {
+
+      //console.log(event.target.parentElement);
+
+      let li = event.target.parentElement;
+      let uniqueBook = li.querySelector("span").innerHTML;
+      //console.log(uniqueBook);
+
+      removeBook(uniqueBook, li, 0);
+      //getOneUser();
+    })
+  }
+  }
+
+
+  /*
+  function getOneUser(i=0){
+    userBooks=[];
+
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    typ = "&op=select";
+
+
+    fetch(link +"key="+key + typ).then(function(response){
+      return response.json();
+    }).then(function(json){
+      if(json.status=="error"){
+        if(i<12){
+          i++;
+          getOneUser(x,i);
+        }else{
+          console.log(json);
+        }
+      }else{
+        console.log(json);
+        userBooks=json.data;
+        makeUserBookLiberary();
+      }
+    }).catch(function(res){
+      console.log("Efter 8st försök men går fortfarande inte: "+res);
+    });
+
+  };
+
+  */
+
+
+      function updateBookInLibarary(id,titel,author,i=0){
+        let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+        typ = "&op=update";
+        id = "&id="+(id);
+        title = "&title="+(titel);
+        author = "&author="+(author);
+        console.log(link +"key="+ key + typ + id + title + author);
+
+          fetch(link +"key="+ key + typ + id + title + author).then(function(response){
+              return response.json();
+            }).then(function(json){
+              console.log(json);
+              if(json.status=="error"){
+                if(i<20){
+                  i++;
+                  updateBookInLibarary(id,titel,author,i);
+                }else{
+                  failCount(i);
+                  console.log(json);
+                  console.log("misslyckades att uppdatera bok")
+                }
+              }else{
+                //console.log("add to libarary "+ uniqueBook);
+                console.log("sparad");
+                failCount(i);
+                getOneUser();
+
+              }
+            }).catch(function(res){
+              console.log("Efter 20st försök men går fortfarande inte: "+res);
+          });
+
+      };
+
+
+
+
+
+
+    function failCount(x){
+      countFail += x;
+      //console.log(x);
+      //console.log(countFail);
+
+      failCounter.innerText= countFail;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

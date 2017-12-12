@@ -581,6 +581,7 @@ btnAddToShell:active{
     margin: 15px;
     border-radius: 5px;
     padding: 5px;
+    display: inline-block;
   }
   .searchParameters{
     height: auto;
