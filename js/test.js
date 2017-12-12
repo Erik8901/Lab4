@@ -341,8 +341,16 @@ window.addEventListener("load", function() {
     settingUserKey.value = userLoggedIn[0].key;
     settingUpdated.value = userLoggedIn.updated;
     settingId.value = userLoggedIn.id;
-
-
+  }
+  function unloadSettings(){
+    settingUserName.value= "";
+    settingUserPassword.value="";
+    settingFirstName.value = "";
+    settingLastName.value = "";
+    settingUserEmail.value = "";
+    settingUserKey.value = "";
+    settingUpdated.value = "";
+    settingId.value = "";
   }
 
 
@@ -417,9 +425,13 @@ window.addEventListener("load", function() {
       if(parent.children[i]!=event.target){
           article[i].style.display="none";
           navBar[i].className="navBar";
+
       }else{
         navBar[i].className="navBar navBarSelected"
         article[i].style.display="block";
+        if(i==2){
+          initMap();
+        };
       }
     }
 
@@ -518,6 +530,9 @@ window.addEventListener("load", function() {
         document.getElementsByClassName("fa-user-circle")[0].style.color="rgb(142, 0, 0)";
         key="";
         event.target.style.display="none";
+        let userBooks = [];
+        listBooks.innerHTML="";
+        unloadSettings();
       }
 
     });
@@ -954,14 +969,6 @@ window.addEventListener("load", function() {
 
   // nedan är de nya funktionerna för labb 4 för VG 2017-12-10
 
-  let btnTest = document.getElementById("btnTest");
-  btnTest.addEventListener("click", function() {
-    //getDataFromDataBase(0);
-    getOneUser();
-
-
-  });
-
   function makeUserBookLiberary(){
 
   //console.log("nu är vi inne i wait for json.. ");3
@@ -1028,12 +1035,12 @@ window.addEventListener("load", function() {
       replaceNode = parent.replaceChild(x,a);
       x.focus();
       let changeTitle2 = document.getElementById("title");
-      console.log(changeTitle2);
+      //console.log(changeTitle2);
       changeTitle2.addEventListener("blur",function(event){
-        console.log("funkar!!")
+        //console.log("funkar!!")
         replaceNode.innerText= x.value;
         replaceNode = parent.replaceChild(replaceNode,x);
-        console.log(book.Id,x.value,book.author);
+        //console.log(book.Id,x.value,book.author);
         updateBookInLibarary(book.Id, x.value, book.author);
       });
     });
@@ -1049,9 +1056,9 @@ window.addEventListener("load", function() {
       replaceNode = parent.replaceChild(x,a);
       x.focus();
       let changeAuthor2 = document.getElementById("author");
-      console.log(changeAuthor2);
+      //console.log(changeAuthor2);
       changeAuthor2.addEventListener("blur",function(event){
-        console.log("funkar!!")
+        //console.log("funkar!!")
         replaceNode.innerText= x.value;
         replaceNode = parent.replaceChild(replaceNode,x);
         updateBookInLibarary(book.Id, book.title ,x.value);
@@ -1118,12 +1125,12 @@ window.addEventListener("load", function() {
         id = "&id="+(id);
         title = "&title="+(titel);
         author = "&author="+(author);
-        console.log(link +"key="+ key + typ + id + title + author);
+        //console.log(link +"key="+ key + typ + id + title + author);
 
           fetch(link +"key="+ key + typ + id + title + author).then(function(response){
               return response.json();
             }).then(function(json){
-              console.log(json);
+              //console.log(json);
               if(json.status=="error"){
                 if(i<20){
                   i++;

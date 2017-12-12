@@ -205,7 +205,21 @@ footer{
   min-height: 280px;
   display: absolute;
 }
+.books input{
+  padding: 5px;
+  border-radius: 5px;
+  margin: 15px auto;
+  display: block;
+}
+#btnMakeOwnBook{
+  display:block;
+  width: 85%;
+  padding: 5px;
+  background-color: rgb(174, 250, 109);
+  border-radius: 10px;
+  margin: 30px auto;
 
+}
 .container-flex li{
   box-sizing: border-box;
   margin: 20px;
