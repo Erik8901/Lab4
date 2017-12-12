@@ -1,11 +1,6 @@
 window.addEventListener("load", function() {
 
-  let btnTest = document.getElementById("btnTest");
-  btnTest.addEventListener("click", function() {
-    //getDataFromDataBase(0);
-    makeUserBookLiberary();
 
-  });
 
 
         //console.log(obj);
@@ -219,7 +214,7 @@ window.addEventListener("load", function() {
 
       if (json.status == "error") {
 
-        if (i < 8) {
+        if (i < 20) {
           i++
           removeBook(uniqueBook, li, i);
         }
@@ -235,6 +230,14 @@ window.addEventListener("load", function() {
   };
 
   // nedan är de nya funktionerna för labb 4 för VG 2017-12-10
+
+  let btnTest = document.getElementById("btnTest");
+  btnTest.addEventListener("click", function() {
+    //getDataFromDataBase(0);
+    getOneUser();
+
+
+  });
 
   function makeUserBookLiberary(){
 
@@ -252,8 +255,8 @@ window.addEventListener("load", function() {
 
       book.description = "";
       book.infoLink = "";
-      book.bookTitel = x.title;
-      book.searchSnippet = x.author;
+      book.title = x.title;
+      book.author = x.author;
       book.Id= x.id;
       book.imgSrc = "http://books.google.com/books/content?id=7zsJAAAAQAAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api";
 
@@ -280,7 +283,7 @@ window.addEventListener("load", function() {
       div.appendChild(img);
       //div.innerHTML+="<br><a href=# target=_blank><h3>" + book.bookTitel +
       // book.description +"<br> Google ID: "+ book.bookTitel + "<br> Databas Id: ";
-      div.innerHTML+="<h3 class=title>"+book.bookTitel + "</h3></a><p class=author>"+ book.searchSnippet + "<p><br>"+"<h4>Sammanfattning: </h4><br>"+
+      div.innerHTML+="<h3 class=title>"+book.title + "</h3></a><p class=author>"+ book.author + "<p><br>"+"<h4>Sammanfattning: </h4><br>"+
         book.description +"<br> Databas Id: ";
       div.appendChild(span);
       output.appendChild(list);
@@ -307,6 +310,8 @@ window.addEventListener("load", function() {
           console.log("funkar!!")
           replaceNode.innerText= x.value;
           replaceNode = parent.replaceChild(replaceNode,x);
+          console.log(book.Id,x.value,book.author);
+          updateBookInLibarary(book.Id, x.value, book.author);
         });
       });
 
@@ -326,6 +331,7 @@ window.addEventListener("load", function() {
           console.log("funkar!!")
           replaceNode.innerText= x.value;
           replaceNode = parent.replaceChild(replaceNode,x);
+          updateBookInLibarary(book.Id, book.title ,x.value);
         });
       });
 
@@ -345,10 +351,11 @@ window.addEventListener("load", function() {
         //console.log(uniqueBook);
 
         removeBook(uniqueBook, li, 0);
-        getOneUser();
+        //getOneUser();
       })
     }
     }
+
 
 
     function getOneUser(i=0){
@@ -358,25 +365,61 @@ window.addEventListener("load", function() {
       typ = "&op=select";
 
 
-        fetch(link +"key="+key + typ).then(function(response){
+      fetch(link +"key="+key + typ).then(function(response){
+        return response.json();
+      }).then(function(json){
+        if(json.status=="error"){
+          if(i<12){
+            i++;
+            getOneUser(x,i);
+          }else{
+            console.log(json);
+          }
+        }else{
+          console.log(json);
+          userBooks=json.data;
+          makeUserBookLiberary();
+        }
+      }).catch(function(res){
+        console.log("Efter 8st försök men går fortfarande inte: "+res);
+      });
+
+    };
+
+
+
+
+    function updateBookInLibarary(id,titel,author,i=0){
+      let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+      typ = "&op=update";
+      id = "&id="+(id);
+      title = "&title="+(titel);
+      author = "&author="+(author);
+      console.log(link +"key="+ key + typ + id + title + author);
+
+        fetch(link +"key="+ key + typ + id + title + author).then(function(response){
             return response.json();
           }).then(function(json){
+            console.log(json);
             if(json.status=="error"){
-              if(i<8){
+              if(i<20){
                 i++;
-                getOneUser(x,i);
+                updateBookInLibarary(id,titel,author,i);
               }else{
                 console.log(json);
               }
             }else{
-              console.log(json);
-              userBooks=json.data;
+              //console.log("add to libarary "+ uniqueBook);
+              console.log("sparad");
+              getOneUser();
+
             }
           }).catch(function(res){
-            console.log("Efter 8st försök men går fortfarande inte: "+res);
-          });
+            console.log("Efter 20st försök men går fortfarande inte: "+res);
+        });
 
     };
+
 
 
 

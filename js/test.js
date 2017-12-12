@@ -442,7 +442,7 @@ window.addEventListener("load", function() {
 
 
   /***  Ändra användare eller lösenord i databas *******************************/
-
+  /*
   let updateUserLib = function(){
     http.onreadystatechange = function(){
       if(this.readyState==4){
@@ -465,9 +465,9 @@ window.addEventListener("load", function() {
   }
   /************************ Uppdatatera END *******************************/
 
-
+  
   /*******************  Lägg till i databas  ********************************/
-
+  /*
   let addToUserLib = function (){
     http.onreadystatechange = function(){
       if(this.readyState==4){
@@ -490,7 +490,7 @@ window.addEventListener("load", function() {
 
   }
 
-
+  */
 
   /********************   Lägg till END   *************************************/
 
@@ -639,26 +639,15 @@ window.addEventListener("load", function() {
         let btnAddToShell = document.getElementsByClassName("btnAddToShell")[i];
         btnAddToShell.addEventListener("click",function(){
           let li = event.target.parentElement;
-          let uniqueBook = li.querySelector("span").innerHTML;
-
+          //let uniqueBook = li.querySelector("span").innerHTML;
+          let uniqueBook = new CreateBooks(li.querySelector("h3").innerHTML, li.querySelector("span").innerHTML);
           if (key!="")
             addBookToLibarary(uniqueBook,0);
-          /*
-          let p =  new Promise(function(succeed,fail){
-              book = JSON.stringify(book);
-              succeed(book);
-              fail("Något gick fel");
-            }).then(function(json){
-              addBookToLibarary(json,0);
-            }).catch(function(fail){
-              console.log(fail);
-            });
-          */
 
         });
       }else{
-        console.log("antal böecker: "+userBooks.data.length);
-        let numberOfBooks = userBooks.data.length
+        console.log("antal böecker: "+userBooks.length);
+        let numberOfBooks = userBooks.length
         let knappTaBort = document.getElementsByClassName("knappTabort")[numberOfBooks];
         knappTaBort.addEventListener("click",function(){
           console.log(event.target.parentElement);
@@ -673,52 +662,53 @@ window.addEventListener("load", function() {
       };
 
     }
-    /*********************     skapa li bok elemnt END ***********************/
+  };
+  /*********************     skapa li bok elemnt END ***********************/
 
-    mouseLeaveFunction();
+  mouseLeaveFunction();
 
 
-    /********************** lägg bok i databasen ****************************/
+  /********************** lägg bok i databasen ****************************/
 
-    function addBookToLibarary(uniqueBook,i){
-      let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
-      typ = "&op=insert";
-      title = "&title="+(uniqueBook);
-      author = "&author="+"not used";
+  function addBookToLibarary(uniqueBook,i){
+    let link = "https://www.forverkliga.se/JavaScript/api/crud.php?";
+    typ = "&op=insert";
+    title = "&title="+(uniqueBook.titel);
+    author = "&author="+(uniqueBook.author);
 
-        fetch(link +"key="+ key + typ + title + author).then(function(response){
-            return response.json();
-          }).then(function(json){
-            console.log(json);
-            if(json.status=="error"){
-              if(i<8){
-                i++;
-                addBookToLibarary(uniqueBook,i);
-              }else{
-                console.log(json);
-              }
+      fetch(link +"key="+ key + typ + title + author).then(function(response){
+          return response.json();
+        }).then(function(json){
+          console.log(json);
+          if(json.status=="error"){
+            if(i<12){
+              i++;
+              addBookToLibarary(uniqueBook,i);
             }else{
-              //console.log("add to libarary "+ uniqueBook);
-              console.log("sparad");
-              getOneUser();
-
+              console.log(json);
             }
-          }).catch(function(res){
-            console.log("Efter 8st försök men går fortfarande inte: "+res);
-          });
+          }else{
+            //console.log("add to libarary "+ uniqueBook);
+            console.log("sparad");
+            getOneUser();
 
-    };
-
-
-
-
-
-
-
-
-
+          }
+        }).catch(function(res){
+          console.log("Efter 8st försök men går fortfarande inte: "+res);
+      });
 
   };
+
+
+
+
+
+
+
+
+
+
+
 
   /********************  Hämta data från Google books   END      *************/
 
@@ -769,7 +759,7 @@ window.addEventListener("load", function() {
       return response.json();
     }).then(function(json){
       if(json.status=="error"){
-        if(i<8){
+        if(i<12){
           i++;
           getOneUser(x,i);
         }else{
@@ -821,19 +811,22 @@ window.addEventListener("load", function() {
   /********************  MakeOwnBook Start **********************************/
 
   function makeOwnBook(){
-    let a = document.getElementById("myBookid").value;
-    let b = document.getElementById("myBookTitle").value;
-    let c = document.getElementById("myBookAuthor").value;
+    let a = document.getElementById("myBookTitle").value;
+    let b = document.getElementById("myBookAuthor").value;
+
+    /*
+    let c = document.getElementById("myBookid").value;
     let d = document.getElementById("myBookLink").value;
     let e = document.getElementById("myBoookDescription").value;
     let f = document.getElementById("myBookSearchSnippet").value;
     let g = document.getElementById("myBookImgSrc").value;
     let h = document.getElementById("myBookServer").value;
+    */
+    let uniqueBook = new CreateBooks(a,b);
 
-    let newBook = new CreateBooks(a,b,c,d,e,f,g,h);
-
-    console.log(newBook);
-    createBooks(false,newBook);
+    //console.log(newBook);
+    //createBooks(false,newBook);
+    addBookToLibarary(uniqueBook,0);
 
   }
 
@@ -897,6 +890,12 @@ window.addEventListener("load", function() {
 
 });
 
+
+
+
+
+
+
 /************** Mouse leave scroll top funktion ***********/
   function mouseLeaveFunction() {
     let books = document.getElementsByClassName("books");
@@ -930,15 +929,15 @@ class User {
 };
 
 class CreateBooks{
-  constructor(myBookId,myBookTitel,myBookAuthor,myBookLink,myBookDescription,myBookSearchSnippet,myBookImgSrc,myServer){
-    this.id= myBookId;
+  constructor(myBookTitel,myBookAuthor){
+    //this.id= myBookId;
     this.titel = myBookTitel;
     this.author = myBookAuthor;
-    this.infoLink = myBookLink;
-    this.description = myBookDescription;
-    this.searchSnippet = myBookSearchSnippet;
-    this.imgSrc = myBookImgSrc;
-    this.server = myServer;
+    //this.infoLink = myBookLink;
+    //this.description = myBookDescription;
+    //this.searchSnippet = myBookSearchSnippet;
+    //this.imgSrc = myBookImgSrc;
+    //this.server = myServer;
 
   }
 
