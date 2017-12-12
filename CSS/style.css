@@ -504,6 +504,44 @@ btnAddToShell:active{
 }
 
 @media screen and (max-width: 600px){
+  .pop-up-loginMenu{
+    top: -600px;
+    height: auto;
+    display: block;
+    width: 95%;
+    min-width: 0px;
+  }
+  .pop-up-loginMenu p {
+    height: auto;
+    left: 0px;
+    right: 0px;
+    margin: 5px auto;
+    width: 100%;
+  }
+  .pop-up-loginMenu input,  .pop-up-loginMenu label{
+    display: block;
+    width: 95%;
+    text-align: left;
+    left: 0px;
+    right: 0px;
+    margin: 5px auto;
+
+  }
+  .pop-up-loginMenu > span{
+    position: relative;
+    display: block;
+    left:0;
+    right: 0;
+    margin: 0px auto;
+
+    top: 10px;
+  }
+  .pop-up-loginMenu >span >button{
+    width: 120px;
+    height: 50px;
+
+  }
+
   .container-flex li{
     width: 95%;
     margin: 10px 0px;
@@ -595,7 +633,7 @@ btnAddToShell:active{
     margin: 15px;
     border-radius: 5px;
     padding: 5px;
-    display: inline-block;
+    display: none;
   }
   .searchParameters{
     height: auto;

@@ -881,8 +881,10 @@ window.addEventListener("load", function() {
 
   let btnMakeOwnBook = document.getElementById("btnMakeOwnBook");
   btnMakeOwnBook.addEventListener("click",function(){
-    console.log("make own book");
-    makeOwnBook();
+    //console.log("make own book");
+    if(key!=""){
+      makeOwnBook();
+    }
   })
 
   let btnSearchGoogle = document.getElementById("btnSearchGoogle");
