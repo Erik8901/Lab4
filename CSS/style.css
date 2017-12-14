@@ -1,3 +1,16 @@
+p {
+    margin-top: 30px;
+    
+}
+
+#text {
+    margin-top: 100px;
+    text-align: center;
+    position: relative;
+    margin-left: 400px;
+}
+
+
 *{
   padding:0;
   margin: 0;
