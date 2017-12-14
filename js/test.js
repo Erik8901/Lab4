@@ -592,7 +592,7 @@ window.addEventListener("load", function() {
       .then(function(result){
         return result.json();
       }).then(function(json){
-        console.log(json);
+        //console.log(json);
         if(json.totalItems!= 0){
 
           createBooks(json);
