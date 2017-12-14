@@ -592,7 +592,7 @@ window.addEventListener("load", function() {
       .then(function(result){
         return result.json();
       }).then(function(json){
-        //console.log(json.totalItems);
+        console.log(json);
         if(json.totalItems!= 0){
 
           createBooks(json);
@@ -1163,10 +1163,7 @@ window.addEventListener("load", function() {
       };
 
     function failCount(x){
-      console.log(x);
-      console.log(countFail);
       countFail += x;
-      console.log(countFail);
       failCounter.innerText= countFail;
     }
 });
